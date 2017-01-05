@@ -1,6 +1,7 @@
 #!/usr/bin/python
 # This code is an example for a tutorial on Ubuntu Unity/Gnome AppIndicators:
 # http://candidtim.github.io/appindicator/2014/09/13/ubuntu-appindicator-step-by-step.html
+# icons from https://materialdesignicons.com/
 
 import os
 import signal
@@ -18,7 +19,7 @@ APPINDICATOR_ID = 'myappindicator'
 
 def main():
   indicator = appindicator.Indicator.new(
-    APPINDICATOR_ID, os.path.abspath('sample_icon.svg'),
+    APPINDICATOR_ID, os.path.abspath('ic_battery_charging_white_48dp.png'),
     appindicator.IndicatorCategory.SYSTEM_SERVICES)
   indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
   indicator.set_menu(build_menu())
