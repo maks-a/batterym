@@ -11,7 +11,29 @@ from gi.repository import AppIndicator3 as appindicator
 from gi.repository import Notify as notify
 
 
-APPINDICATOR_ID = 'myappindicator'
+APPINDICATOR_ID = 'batteryindicator'
+indicator = None
+icon = None
+category = appindicator.IndicatorCategory.SYSTEM_SERVICES
+
+
+def set_icon(new_icon):
+    global icon
+    icon = new_icon
+    indicator.set_icon(icon)
+
+
+def register_indicator(app_id, icon, ctgry):
+    return appindicator.Indicator.new(app_id, icon, ctgry)
+
+
+def setup_indicator(icon):
+    global indicator
+    indicator = register_indicator(APPINDICATOR_ID, icon, category)
+    indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
+    indicator.set_menu(build_menu())
+    set_icon(icon)
+    notify.init(APPINDICATOR_ID)
 
 
 def build_menu():
@@ -23,21 +45,21 @@ def build_menu():
     return menu
 
 
-def quit(_):
+def quit(source):
     notify.uninit()
     gtk.main_quit()
 
 
-def main():
-    indicator = appindicator.Indicator.new(
-        APPINDICATOR_ID, os.path.abspath('ic_battery_charging_white_48dp.png'),
-        appindicator.IndicatorCategory.SYSTEM_SERVICES)
-    indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
-    indicator.set_menu(build_menu())
-    notify.init(APPINDICATOR_ID)
+def run_forever():
     gtk.main()
 
 
-if __name__ == "__main__":
+def run():
     signal.signal(signal.SIGINT, signal.SIG_DFL)
-    main()
+    setup_indicator(
+        os.path.abspath('ic_battery_charging_white_48dp.png'))
+    run_forever()
+
+
+if __name__ == "__main__":
+    run()
