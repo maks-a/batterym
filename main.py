@@ -14,16 +14,6 @@ from gi.repository import Notify as notify
 APPINDICATOR_ID = 'myappindicator'
 
 
-def main():
-  indicator = appindicator.Indicator.new(
-    APPINDICATOR_ID, os.path.abspath('ic_battery_charging_white_48dp.png'),
-    appindicator.IndicatorCategory.SYSTEM_SERVICES)
-  indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
-  indicator.set_menu(build_menu())
-  notify.init(APPINDICATOR_ID)
-  gtk.main()
-
-
 def build_menu():
   menu = gtk.Menu()
   item_quit = gtk.MenuItem('Quit')
@@ -36,6 +26,16 @@ def build_menu():
 def quit(_):
   notify.uninit()
   gtk.main_quit()
+
+
+def main():
+  indicator = appindicator.Indicator.new(
+    APPINDICATOR_ID, os.path.abspath('ic_battery_charging_white_48dp.png'),
+    appindicator.IndicatorCategory.SYSTEM_SERVICES)
+  indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
+  indicator.set_menu(build_menu())
+  notify.init(APPINDICATOR_ID)
+  gtk.main()
 
 
 if __name__ == "__main__":
