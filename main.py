@@ -7,6 +7,8 @@ import os
 import time
 import signal
 import threading
+from datetime import datetime
+from datetime import timedelta
 
 from gi.repository import Gtk as gtk
 from gi.repository import AppIndicator3 as appindicator
@@ -21,8 +23,13 @@ th_background_stop = None
 
 
 def run_monitoring(stop_event):
+    t1 = datetime.now()
     while not stop_event.is_set():
-        time.sleep(1)
+        t2 = datetime.now()
+        if (t2 - t1) > timedelta(seconds=3):
+            t1 = t2
+            # do monitoring
+        time.sleep(0.1)
 
 
 def run_background_monitoring():
