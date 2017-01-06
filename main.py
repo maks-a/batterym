@@ -32,6 +32,7 @@ def setup_indicator(icon):
     indicator = register_indicator(APPINDICATOR_ID, icon, category)
     indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
     indicator.set_menu(build_menu())
+    indicator.set_label('84%', '')
     set_icon(icon)
     notify.init(APPINDICATOR_ID)
 
