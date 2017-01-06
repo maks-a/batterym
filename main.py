@@ -39,15 +39,15 @@ def probing():
 
         direction = 1 if is_charging else -1
         battery_life += 5 * direction
-
     set_label()
 
 
 def run_monitoring(stop_event):
-    t1 = datetime.now()
+    step = timedelta(seconds=1)
+    t1 = datetime.now() - step
     while not stop_event.is_set():
         t2 = datetime.now()
-        if (t2 - t1) > timedelta(seconds=0.5):
+        if (t2 - t1) > step:
             t1 = t2
             probing()
         time.sleep(0.1)
