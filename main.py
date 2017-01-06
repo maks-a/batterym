@@ -20,15 +20,36 @@ icon = None
 category = appindicator.IndicatorCategory.SYSTEM_SERVICES
 th_background = None
 th_background_stop = None
+is_charging = None
+battery_life = None
+
+
+def probing():
+    global battery_life
+    global is_charging
+
+    if battery_life is None:
+        battery_life = 0
+
+    if battery_life is not None:
+        if battery_life <= 0:
+            is_charging = True
+        if battery_life >= 100:
+            is_charging = False
+
+        direction = 1 if is_charging else -1
+        battery_life += 5 * direction
+
+    set_label()
 
 
 def run_monitoring(stop_event):
     t1 = datetime.now()
     while not stop_event.is_set():
         t2 = datetime.now()
-        if (t2 - t1) > timedelta(seconds=3):
+        if (t2 - t1) > timedelta(seconds=0.5):
             t1 = t2
-            # do monitoring
+            probing()
         time.sleep(0.1)
 
 
@@ -47,14 +68,18 @@ def set_icon(new_icon):
     indicator.set_icon(icon)
 
 
+def set_label():
+    indicator.set_label('{0}% 0:21'.format(battery_life), '')
+
+
 def setup_indicator(icon):
     global indicator
     indicator = appindicator.Indicator.new(
         APPINDICATOR_ID, icon, category)
     indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
     indicator.set_menu(build_menu())
-    indicator.set_label('84% 0:21', '')
     set_icon(icon)
+    set_label()
 
 
 def build_menu():
