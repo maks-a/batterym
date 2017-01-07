@@ -2,6 +2,7 @@
 # This code is an example for a tutorial on Ubuntu Unity/Gnome AppIndicators:
 # http://candidtim.github.io/appindicator/2014/09/13/ubuntu-appindicator-step-by-step.html
 # icons from https://materialdesignicons.com/
+# /sys/class/power_supply/BAT0/uevent
 
 import os
 import time
