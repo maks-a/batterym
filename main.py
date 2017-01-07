@@ -105,7 +105,7 @@ def run_forever():
 def run():
     signal.signal(signal.SIGINT, signal.SIG_DFL)
     setup_indicator(
-        os.path.abspath('ic_battery_charging_white_48dp.png'))
+        os.path.abspath('res/ic_battery_charging_white_48dp.png'))
     run_background_monitoring()
     run_forever()
 
