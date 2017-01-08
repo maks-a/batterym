@@ -2,10 +2,14 @@
 import re
 
 
-status_file = '/sys/class/power_supply/BAT0/uevent'
+_DEBUG = True
+
+status_file_release = '/sys/class/power_supply/BAT0/uevent'
+status_file_dbg = 'data/uevent'
+status_file = status_file_dbg if _DEBUG else status_file_release
 
 
-def limit(val, lo, hi):
+def _limit(val, lo, hi):
     return max(lo, min(val, hi))
 
 
@@ -13,7 +17,7 @@ def battery_capacity():
     with open(status_file, 'r') as f:
         m = re.search('POWER_SUPPLY_CAPACITY=(\d+)', f.read())
         if m:
-            return limit(int(m.group(1)), 0, 100)
+            return _limit(int(m.group(1)), 0, 100)
 
 
 def battery_status():
