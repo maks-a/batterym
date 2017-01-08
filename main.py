@@ -8,7 +8,7 @@ import os
 import time
 import signal
 import threading
-import src.osdata
+import src.osdata as osdata
 from datetime import datetime
 from datetime import timedelta
 
@@ -21,19 +21,8 @@ indicator = None
 icon = None
 category = appindicator.IndicatorCategory.SYSTEM_SERVICES
 
-th_background = None
-th_background_stop = None
-
-is_charging = None
-battery_life = None
-
 
 def probing():
-    global battery_life
-    global is_charging
-
-    battery_life = src.osdata.battery_capacity()
-    is_charging = src.osdata.is_charging()
     set_label()
 
 
@@ -64,7 +53,8 @@ def set_icon(new_icon):
 
 
 def set_label():
-    indicator.set_label('{0}% 0:21'.format(battery_life), '')
+    indicator.set_label(
+        '{0}% 0:21'.format(osdata.battery_capacity()), '')
 
 
 def setup_indicator(icon):
