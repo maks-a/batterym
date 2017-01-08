@@ -50,6 +50,7 @@ def fill_pattern():
 def main():
     while True:
         update_capacity()
+        print 'capacity: {0}, {1}'.format(capacity, status)
         with open(status_file_dbg, 'w') as f:
             f.write(fill_pattern())
         time.sleep(0.5)
