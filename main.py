@@ -18,12 +18,80 @@ from gi.repository import AppIndicator3 as appindicator
 
 APPINDICATOR_ID = 'batteryindicator'
 indicator = None
-icon = None
 category = appindicator.IndicatorCategory.SYSTEM_SERVICES
+
+battery_capacity = None
+is_charging = None
+icon = None
+
+THEME = 'dark' # or 'light'
+icon_folder = 'res/' + THEME + '/'
+
+
+def icon_file_charging(capacity):
+    filename = 'battery-charging-'
+    if capacity >= 100:
+        filename += '100'
+    elif capacity >= 90:
+        filename += '90'
+    elif capacity >= 80:
+        filename += '80'
+    elif capacity >= 60:
+        filename += '60'
+    elif capacity >= 40:
+        filename += '40'
+    else:
+        filename += '20'
+    filename += '.png'
+    return filename
+
+
+def icon_file(capacity):
+    filename = 'battery-'
+    if capacity >= 100:
+        filename += '100'
+    elif capacity >= 90:
+        filename += '90'
+    elif capacity >= 80:
+        filename += '80'
+    elif capacity >= 70:
+        filename += '70'
+    elif capacity >= 60:
+        filename += '60'
+    elif capacity >= 50:
+        filename += '50'
+    elif capacity >= 40:
+        filename += '40'
+    elif capacity >= 30:
+        filename += '30'
+    elif capacity >= 20:
+        filename += '20'
+    elif capacity >= 10:
+        filename += '10'
+    else:
+        filename += '0'
+    filename += '.png'
+    return filename
+
+
+def get_icon(capacity, is_charging):
+    if capacity is None or is_charging is None:
+        return
+    filename = ''
+    if is_charging:
+        filename = icon_file_charging(capacity)
+    else:
+        filename = icon_file(capacity)
+    return os.path.abspath(os.path.join(icon_folder, filename))
 
 
 def probing():
-    set_label()
+    global battery_capacity
+    global is_charging
+    global icon
+    battery_capacity = osdata.battery_capacity()
+    is_charging = osdata.is_charging()
+    icon = get_icon(battery_capacity, is_charging)
 
 
 def run_monitoring(stop_event):
@@ -34,6 +102,8 @@ def run_monitoring(stop_event):
         if (t2 - t1) > step:
             t1 = t2
             probing()
+            set_icon()
+            set_label()
         time.sleep(0.1)
 
 
@@ -46,24 +116,26 @@ def run_background_monitoring():
     th_background.start()
 
 
-def set_icon(new_icon):
-    global icon
-    icon = new_icon
+def set_icon():
+    if icon is None:
+        return
     indicator.set_icon(icon)
 
 
 def set_label():
-    indicator.set_label(
-        '{0}% 0:21'.format(osdata.battery_capacity()), '')
+    if battery_capacity is None:
+        return
+    indicator.set_label('{0}%'.format(battery_capacity), '')
 
 
-def setup_indicator(icon):
+def setup_indicator():
     global indicator
+    probing()
     indicator = appindicator.Indicator.new(
         APPINDICATOR_ID, icon, category)
     indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
     indicator.set_menu(build_menu())
-    set_icon(icon)
+    set_icon()
     set_label()
 
 
@@ -88,8 +160,7 @@ def run_forever():
 
 def run():
     signal.signal(signal.SIGINT, signal.SIG_DFL)
-    setup_indicator(
-        os.path.abspath('res/ic_battery_charging_white_48dp.png'))
+    setup_indicator()
     run_background_monitoring()
     run_forever()
 

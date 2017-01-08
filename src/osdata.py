@@ -28,15 +28,12 @@ def battery_status():
 
 
 def is_discharging():
-    if battery_status() == 'Discharging':
-        return True
+    return battery_status() == 'Discharging'
 
 
 def is_full():
-    if battery_status() == 'Full':
-        return True
+    return battery_status() == 'Full'
 
 
 def is_charging():
-    if battery_status() == 'Charging':
-        return True
+    return battery_status() == 'Charging'
