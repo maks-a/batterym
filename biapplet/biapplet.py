@@ -98,7 +98,7 @@ def run_monitoring(stop_event):
             probing()
             set_icon()
             set_label()
-        time.sleep(0.1)
+        time.sleep(0.01)
 
 
 def run_background_monitoring():
