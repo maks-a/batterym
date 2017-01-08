@@ -24,7 +24,7 @@ battery_capacity = None
 is_charging = None
 icon = None
 
-THEME = 'dark' # or 'light'
+THEME = 'dark'  # or 'light'
 icon_folder = 'res/'
 
 
