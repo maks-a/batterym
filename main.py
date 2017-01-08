@@ -25,7 +25,11 @@ is_charging = None
 icon = None
 
 THEME = 'dark' # or 'light'
-icon_folder = 'res/' + THEME + '/'
+icon_folder = 'res/'
+
+
+def get_icon_folder():
+    return os.path.join(icon_folder, THEME)
 
 
 def icon_file_charging(capacity):
@@ -82,7 +86,7 @@ def get_icon(capacity, is_charging):
         filename = icon_file_charging(capacity)
     else:
         filename = icon_file(capacity)
-    return os.path.abspath(os.path.join(icon_folder, filename))
+    return os.path.abspath(os.path.join(get_icon_folder(), filename))
 
 
 def probing():
@@ -141,11 +145,23 @@ def setup_indicator():
 
 def build_menu():
     menu = gtk.Menu()
+    item_quit = gtk.MenuItem('Toggle theme')
+    item_quit.connect('activate', toggle_theme)
+    menu.append(item_quit)
     item_quit = gtk.MenuItem('Quit')
     item_quit.connect('activate', quit)
     menu.append(item_quit)
     menu.show_all()
     return menu
+
+
+def toggle_theme(source):
+    global THEME
+    if THEME == 'dark':
+        THEME = 'light'
+    elif THEME == 'light':
+        THEME = 'dark'
+    set_icon()
 
 
 def quit(source):
