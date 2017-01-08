@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import time
+import random
 
 status_file_dbg = 'data/uevent.tmp'
 
@@ -33,11 +34,12 @@ def update_capacity():
 
     if capacity <= 0:
         is_charging = True
-    if capacity >= 100:
+    if capacity >= 105:
         is_charging = False
 
     direction = 1 if is_charging else -1
-    capacity += 5 * direction
+    step = random.randrange(-2, 6, 1)
+    capacity += step * direction
     status = 'Charging' if is_charging else 'Discharging'
     if capacity >= 95:
         status = 'Full'
