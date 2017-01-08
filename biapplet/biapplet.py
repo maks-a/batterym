@@ -27,13 +27,6 @@ is_charging = None
 icon = None
 
 
-
-def get_icon(capacity, is_charging):
-    if capacity is None or is_charging is None:
-        return
-    return resource.icon_path(capacity, is_charging, ui.THEME)
-
-
 def probing():
     global battery_capacity
     global is_charging
@@ -43,26 +36,10 @@ def probing():
     icon = get_icon(battery_capacity, is_charging)
 
 
-def run_monitoring(stop_event):
-    step = timedelta(seconds=1)
-    t1 = datetime.now() - step
-    while not stop_event.is_set():
-        t2 = datetime.now()
-        if (t2 - t1) > step:
-            t1 = t2
-            probing()
-            set_icon()
-            set_label()
-        time.sleep(0.1)
-
-
-def run_background_monitoring():
-    global th_background
-    global th_background_stop
-    th_background_stop = threading.Event()
-    th_background = threading.Thread(
-        target=run_monitoring, args=[th_background_stop])
-    th_background.start()
+def get_icon(capacity, is_charging):
+    if capacity is None or is_charging is None:
+        return
+    return resource.icon_path(capacity, is_charging, ui.THEME)
 
 
 def set_icon():
@@ -111,15 +88,35 @@ def quit(source):
     gtk.main_quit()
 
 
-def run_forever():
-    gtk.main()
+def run_monitoring(stop_event):
+    step = timedelta(seconds=1)
+    t1 = datetime.now() - step
+    while not stop_event.is_set():
+        t2 = datetime.now()
+        if (t2 - t1) > step:
+            t1 = t2
+            probing()
+            set_icon()
+            set_label()
+        time.sleep(0.1)
+
+
+def run_background_monitoring():
+    global th_background
+    global th_background_stop
+    th_background_stop = threading.Event()
+    th_background = threading.Thread(
+        target=run_monitoring, args=[th_background_stop])
+    th_background.start()
 
 
 def run():
     signal.signal(signal.SIGINT, signal.SIG_DFL)
     setup_indicator()
     run_background_monitoring()
-    run_forever()
+
+    # run_forever()
+    gtk.main()
 
 
 if __name__ == "__main__":
