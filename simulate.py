@@ -3,6 +3,8 @@ import time
 import random
 
 status_file_dbg = 'data/uevent.tmp'
+capacity_file = 'data/capacity.tmp'
+status_file = 'data/status.tmp'
 
 capacity = 0
 is_charging = True
@@ -55,6 +57,13 @@ def main():
         print 'capacity: {0}, {1}'.format(capacity, status)
         with open(status_file_dbg, 'w') as f:
             f.write(fill_pattern())
+
+        with open(capacity_file, 'w') as f:
+            f.write(str(capacity))
+
+        with open(status_file, 'w') as f:
+            f.write(status)
+
         time.sleep(0.5)
 
 if __name__ == '__main__':
