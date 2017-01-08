@@ -115,7 +115,7 @@ def run():
     setup_indicator()
     run_background_monitoring()
 
-    # run_forever()
+    # run_forever
     gtk.main()
 
 
