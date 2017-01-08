@@ -8,9 +8,9 @@ import os
 import time
 import signal
 import threading
-import src.ui as ui
-import src.resource as resource
-import src.osdata as osdata
+import ui
+import resource
+import osdata
 from datetime import datetime
 from datetime import timedelta
 
