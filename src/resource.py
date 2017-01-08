@@ -2,7 +2,8 @@
 import os
 
 
-IMAGE_FOLDER_PATTERN = '/usr/share/icons/ubuntu-mono-{0}/status/24'
+IMAGE_FOLDER_PATTERN = '/usr/share/icons/ubuntu-mono-{0}/status/22'
+
 
 def image_path(name, theme):
     folder = IMAGE_FOLDER_PATTERN.format(theme)
