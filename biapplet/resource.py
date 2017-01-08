@@ -12,15 +12,15 @@ def image_path(name, theme):
 
 def icon_filename(capacity, is_charging):
     filename = 'battery-'
-    if capacity >= 100:
+    if capacity >= 90:
         filename += '100'
-    elif capacity >= 80:
+    elif capacity >= 70:
         filename += '080'
-    elif capacity >= 60:
+    elif capacity >= 50:
         filename += '060'
-    elif capacity >= 40:
+    elif capacity >= 30:
         filename += '040'
-    elif capacity >= 20:
+    elif capacity >= 10:
         filename += '020'
     else:
         filename += '000'
