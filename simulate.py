@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import time
 
-status_file_dbg = 'data/uevent'
+status_file_dbg = 'data/uevent.tmp'
 
 capacity = 0
 is_charging = True

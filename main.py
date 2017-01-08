@@ -8,6 +8,7 @@ import os
 import time
 import signal
 import threading
+import src.osdata
 from datetime import datetime
 from datetime import timedelta
 
@@ -19,8 +20,10 @@ APPINDICATOR_ID = 'batteryindicator'
 indicator = None
 icon = None
 category = appindicator.IndicatorCategory.SYSTEM_SERVICES
+
 th_background = None
 th_background_stop = None
+
 is_charging = None
 battery_life = None
 
@@ -29,17 +32,8 @@ def probing():
     global battery_life
     global is_charging
 
-    if battery_life is None:
-        battery_life = 0
-
-    if battery_life is not None:
-        if battery_life <= 0:
-            is_charging = True
-        if battery_life >= 100:
-            is_charging = False
-
-        direction = 1 if is_charging else -1
-        battery_life += 5 * direction
+    battery_life = src.osdata.battery_capacity()
+    is_charging = src.osdata.is_charging()
     set_label()
 
 
