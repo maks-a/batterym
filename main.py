@@ -8,6 +8,8 @@ import os
 import time
 import signal
 import threading
+import src.ui as ui
+import src.resource as resource
 import src.osdata as osdata
 from datetime import datetime
 from datetime import timedelta
@@ -24,69 +26,12 @@ battery_capacity = None
 is_charging = None
 icon = None
 
-THEME = 'dark'  # or 'light'
-icon_folder = 'res/'
-
-
-def get_icon_folder():
-    return os.path.join(icon_folder, THEME)
-
-
-def icon_file_charging(capacity):
-    filename = 'battery-charging-'
-    if capacity >= 100:
-        filename += '100'
-    elif capacity >= 90:
-        filename += '90'
-    elif capacity >= 80:
-        filename += '80'
-    elif capacity >= 60:
-        filename += '60'
-    elif capacity >= 40:
-        filename += '40'
-    else:
-        filename += '20'
-    filename += '.png'
-    return filename
-
-
-def icon_file(capacity):
-    filename = 'battery-'
-    if capacity >= 100:
-        filename += '100'
-    elif capacity >= 90:
-        filename += '90'
-    elif capacity >= 80:
-        filename += '80'
-    elif capacity >= 70:
-        filename += '70'
-    elif capacity >= 60:
-        filename += '60'
-    elif capacity >= 50:
-        filename += '50'
-    elif capacity >= 40:
-        filename += '40'
-    elif capacity >= 30:
-        filename += '30'
-    elif capacity >= 20:
-        filename += '20'
-    elif capacity >= 10:
-        filename += '10'
-    else:
-        filename += '0'
-    filename += '.png'
-    return filename
 
 
 def get_icon(capacity, is_charging):
     if capacity is None or is_charging is None:
         return
-    filename = ''
-    if is_charging:
-        filename = icon_file_charging(capacity)
-    else:
-        filename = icon_file(capacity)
-    return os.path.abspath(os.path.join(get_icon_folder(), filename))
+    return resource.icon_path(capacity, is_charging, ui.THEME)
 
 
 def probing():
@@ -156,11 +101,7 @@ def build_menu():
 
 
 def toggle_theme(source):
-    global THEME
-    if THEME == 'dark':
-        THEME = 'light'
-    elif THEME == 'light':
-        THEME = 'dark'
+    ui.toggle_theme()
     set_icon()
 
 
