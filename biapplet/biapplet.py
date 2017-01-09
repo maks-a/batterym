@@ -11,6 +11,7 @@ import threading
 import ui
 import resource
 import osdata
+import log
 from datetime import datetime
 from datetime import timedelta
 
@@ -24,15 +25,25 @@ category = appindicator.IndicatorCategory.SYSTEM_SERVICES
 
 battery_capacity = None
 is_charging = None
+status = None
 icon = None
 
 
 def probing():
     global battery_capacity
     global is_charging
+    global status
     global icon
-    battery_capacity = osdata.battery_capacity()
-    is_charging = osdata.is_charging()
+    new_capacity = osdata.battery_capacity()
+    new_status = osdata.battery_status()
+
+    if (battery_capacity != new_capacity
+            or status != new_status):
+        log.battery(new_capacity, new_status)
+
+    battery_capacity = new_capacity
+    status = new_status
+    is_charging = status == 'Charging'
     icon = get_icon(battery_capacity, is_charging)
 
 
