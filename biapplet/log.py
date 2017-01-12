@@ -6,7 +6,7 @@ LOG_BATTERY_FILE = 'logs/capacity'
 
 
 def battery(capacity, status):
-    timestamp = dt.now().isoformat()
-    line = '{0} {1}% {2}\n'.format(timestamp, capacity, status)
+    t = dt.now().isoformat()
+    line = '{0} {1}% {2}\n'.format(t, capacity, status)
     with open(LOG_BATTERY_FILE, 'a') as f:
         f.write(line)
