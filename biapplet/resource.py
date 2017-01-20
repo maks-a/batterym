@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import os
+import ui
 
 
 IMAGE_FOLDER_PATTERN = '/usr/share/icons/ubuntu-mono-{0}/status/22'
@@ -30,5 +31,5 @@ def icon_filename(capacity, is_charging):
     return filename
 
 
-def icon_path(capacity, is_charging, theme):
-    return image_path(icon_filename(capacity, is_charging), theme)
+def icon_path(capacity, is_charging):
+    return image_path(icon_filename(capacity, is_charging), ui.THEME)
