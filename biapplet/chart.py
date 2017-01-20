@@ -88,6 +88,7 @@ class Line():
 </svg>
 """
 
+
 def main():
     chart = Line()
     chart.add([100, 95, 90, 60, 20, 20])
