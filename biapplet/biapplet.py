@@ -1,8 +1,4 @@
 #!/usr/bin/python
-# This code is an example for a tutorial on Ubuntu Unity/Gnome AppIndicators:
-# http://candidtim.github.io/appindicator/2014/09/13/ubuntu-appindicator-step-by-step.html
-# icons from https://materialdesignicons.com/
-# /sys/class/power_supply/BAT0/uevent
 
 import os
 import time
@@ -78,12 +74,15 @@ def setup_indicator():
 
 def build_menu():
     menu = gtk.Menu()
-    item_quit = gtk.MenuItem('Toggle theme')
-    item_quit.connect('activate', toggle_theme)
-    menu.append(item_quit)
-    item_quit = gtk.MenuItem('Quit')
-    item_quit.connect('activate', quit)
-    menu.append(item_quit)
+
+    item = gtk.MenuItem('Toggle theme')
+    item.connect('activate', toggle_theme)
+    menu.append(item)
+
+    item = gtk.MenuItem('Quit')
+    item.connect('activate', quit)
+    menu.append(item)
+
     menu.show_all()
     return menu
 
