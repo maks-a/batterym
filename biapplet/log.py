@@ -45,7 +45,7 @@ def get_battery():
 
 
 def get_time_capacity(src):
-    return [[e['time'], e['capacity']] for e in src]
+    return [[e['time'], int(e['capacity'])] for e in src]
 
 
 def convert_to_relative_time(src):
@@ -60,7 +60,7 @@ def convert_to_relative_time(src):
 
 def cut_pauses(src, threshold):
     res = []
-    src = sorted(src)
+    src = sorted(src, reverse=True)
     n = len(src)
     for i in xrange(0, n):
         y = src[i][1]
@@ -69,10 +69,12 @@ def cut_pauses(src, threshold):
             res.append([t2, y])
             continue
         t1 = src[i-1][0]
-        dt = t2 - t1
+        dt = t1 - t2
         if dt >= threshold:
             dt = 1e-3
-        res.append([t1+dt, y])
+        x = res[-1][0]
+        res.append([x-dt, y])
+    res = sorted(res)
     return res
 
 
@@ -99,11 +101,21 @@ class LinearInterpolation:
             y1 = self.data[i-1][1]
             y2 = self.data[i][1]
             for j in xrange(0, samples_number):
-                x = j * st
+                x = x0 + j * st
                 if x1 <= x and x <= x2:
                     y = y1 + (y2 - y1) * (x - x1) / (x2 - x1)
                     res.append([x, y])
         return res
+
+
+def main():
+    a = get_battery()
+    a = get_time_capacity(a)
+    a = convert_to_relative_time(a)
+    threshold_sec = 5 * 60
+    a = cut_pauses(a, threshold_sec)
+    a = LinearInterpolation(a).resample(100)
+    for x in a: print int(x[0]/(60*60)), x[1]
 
 
 class LogProcessingTest(unittest.TestCase):
@@ -165,8 +177,22 @@ class LogProcessingTest(unittest.TestCase):
             [0, 2]
         ]
         exp = [
-            [-5, 1],
-            [-4.999, 2]
+            [-0.001, 1],
+            [0, 2]
+        ]
+        self.assertEqual(cut_pauses(src, 5), exp)
+
+        src = [
+            [-11, 1],
+            [-10, 2],
+            [-5, 3],
+            [0, 4]
+        ]
+        exp = [
+            [-1.002, 1],
+            [-0.002, 2],
+            [-0.001, 3],
+            [0, 4]
         ]
         self.assertEqual(cut_pauses(src, 5), exp)
 
@@ -232,6 +258,55 @@ class LogProcessingTest(unittest.TestCase):
         res = LinearInterpolation(src).resample(6)
         self.assertEqual(res, exp)
 
+        src = [
+            [-10, 20],
+            [0, 30]
+        ]
+        exp = [
+            [-5, 25]
+        ]
+        res = LinearInterpolation(src).resample(1)
+        self.assertEqual(res, exp)
+
+        src = [
+            [-10, 20],
+            [0, 30]
+        ]
+        exp = [
+            [-10, 20],
+            [0, 30]
+        ]
+        res = LinearInterpolation(src).resample(2)
+        self.assertEqual(res, exp)
+
+        src = [
+            [-10, 20],
+            [0, 30]
+        ]
+        exp = [
+            [-10, 20],
+            [-5, 25],
+            [0, 30]
+        ]
+        res = LinearInterpolation(src).resample(3)
+        self.assertEqual(res, exp)
+
+        src = [
+            [-10, 20],
+            [0, 30]
+        ]
+        exp = [
+            [-10, 20],
+            [-8, 22],
+            [-6, 24],
+            [-4, 26],
+            [-2, 28],
+            [0, 30]
+        ]
+        res = LinearInterpolation(src).resample(6)
+        self.assertEqual(res, exp)
+
 
 if __name__ == '__main__':
+    #main()
     unittest.main()
