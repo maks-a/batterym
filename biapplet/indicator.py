@@ -74,7 +74,7 @@ class Indicator:
         menu.append(item)
 
         item = gtk.MenuItem('Quit')
-        item.connect('activate', quit)
+        item.connect('activate', self.quit)
         menu.append(item)
 
         menu.show_all()
@@ -86,6 +86,9 @@ class Indicator:
 
     def run_forever(self):
         gtk.main()
+
+    def quit(self, _):
+        gtk.main_quit()
 
     def update(self):
         self.battery.update()
