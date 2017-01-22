@@ -1,4 +1,5 @@
 #!/usr/bin/python
+import os  # temp
 import ui
 import log
 import osdata
@@ -69,6 +70,10 @@ class Indicator:
     def build_menu(self):
         menu = gtk.Menu()
 
+        item = gtk.MenuItem('Battery monitor')
+        item.connect('activate', self.battery_monitor)
+        menu.append(item)
+
         item = gtk.MenuItem('Toggle theme')
         item.connect('activate', self.toggle_theme)
         menu.append(item)
@@ -80,18 +85,37 @@ class Indicator:
         menu.show_all()
         return menu
 
-    def toggle_theme(self, source):
+    def toggle_theme(self, _):
         ui.toggle_theme()
         self.set_icon()
 
-    def run_forever(self):
-        gtk.main()
-
     def quit(self, _):
         gtk.main_quit()
+
+    def battery_monitor(self, _):
+        self.window = gtk.Window()
+        self.window.set_title('Battery monitor')
+        self.window.set_border_width(10)
+        self.window.set_default_size(800, 600)
+        self.window.set_position(gtk.WindowPosition.CENTER)
+
+        self.window.vbox = gtk.Box()
+        self.window.vbox.set_spacing(5)
+        self.window.vbox.set_orientation(gtk.Orientation.VERTICAL)
+        self.window.add(self.window.vbox)
+
+        self.image = gtk.Image()
+        filepath = os.path.abspath('test.svg')
+        self.image.set_from_file(filepath)
+        self.window.vbox.pack_start(self.image, False, False, 0)
+
+        self.window.show_all()
 
     def update(self):
         self.battery.update()
         self.set_icon()
         self.set_label()
         return True
+
+    def run_forever(self):
+        gtk.main()
