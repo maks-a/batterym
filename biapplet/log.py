@@ -80,11 +80,30 @@ class LinearInterpolation:
 
     def __init__(self, data):
         self.data = sorted(data)
-        self.min = self.data[0][0]
-        self.max = self.data[-1][0]
 
-    def resample(samples_number):
-        pass
+    def resample(self, samples_number):
+        n = len(self.data)
+        if n <= 0 or n == samples_number:
+            return self.data
+        if samples_number == 0:
+            return []
+        if samples_number == 1:
+            return [self.resample(3)[1]]
+        x0 = self.data[0][0]
+        xn = self.data[-1][0]
+        st = (xn - x0) / (samples_number - 1)
+        res = []
+        for i in xrange(1, n):
+            x1 = self.data[i-1][0]
+            x2 = self.data[i][0]
+            y1 = self.data[i-1][1]
+            y2 = self.data[i][1]
+            for j in xrange(0, samples_number):
+                x = j * st
+                if x1 <= x and x <= x2:
+                    y = y1 + (y2 - y1) * (x - x1) / (x2 - x1)
+                    res.append([x, y])
+        return res
 
 
 class LogProcessingTest(unittest.TestCase):
@@ -150,6 +169,68 @@ class LogProcessingTest(unittest.TestCase):
             [-4.999, 2]
         ]
         self.assertEqual(cut_pauses(src, 5), exp)
+
+    def test_LinearInterpolation(self):
+        src = []
+        exp = []
+        res = LinearInterpolation(src).resample(10)
+        self.assertEqual(res, exp)
+
+        src = [
+            [0, 20],
+            [10, 30]
+        ]
+        exp = []
+        res = LinearInterpolation(src).resample(0)
+        self.assertEqual(res, exp)
+
+        src = [
+            [0, 20],
+            [10, 30]
+        ]
+        exp = [
+            [5, 25]
+        ]
+        res = LinearInterpolation(src).resample(1)
+        self.assertEqual(res, exp)
+
+        src = [
+            [0, 20],
+            [10, 30]
+        ]
+        exp = [
+            [0, 20],
+            [10, 30]
+        ]
+        res = LinearInterpolation(src).resample(2)
+        self.assertEqual(res, exp)
+
+        src = [
+            [0, 20],
+            [10, 30]
+        ]
+        exp = [
+            [0, 20],
+            [5, 25],
+            [10, 30]
+        ]
+        res = LinearInterpolation(src).resample(3)
+        self.assertEqual(res, exp)
+
+        src = [
+            [0, 20],
+            [10, 30]
+        ]
+        exp = [
+            [0, 20],
+            [2, 22],
+            [4, 24],
+            [6, 26],
+            [8, 28],
+            [10, 30]
+        ]
+        res = LinearInterpolation(src).resample(6)
+        self.assertEqual(res, exp)
 
 
 if __name__ == '__main__':
