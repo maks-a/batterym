@@ -99,6 +99,9 @@ class Indicator:
         self.window.set_default_size(800, 600)
         self.window.set_position(gtk.WindowPosition.CENTER)
 
+        icon = '/usr/share/icons/Humanity/devices/48/battery.svg'
+        self.window.set_icon_from_file(icon)
+
         self.window.vbox = gtk.Box()
         self.window.vbox.set_spacing(5)
         self.window.vbox.set_orientation(gtk.Orientation.VERTICAL)
