@@ -53,6 +53,7 @@ class Indicator:
             APPINDICATOR_ID, self.get_icon(), CATEGORY)
         self.indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
         self.indicator.set_menu(self.build_menu())
+        self.window = None
 
         gobject.timeout_add(500, self.update)
 
@@ -118,6 +119,9 @@ class Indicator:
         self.battery.update()
         self.set_icon()
         self.set_label()
+        if self.window and self.window.props.visible:
+            filepath = os.path.abspath('test.svg')
+            self.image.set_from_file(filepath)
         return True
 
     def run_forever(self):
