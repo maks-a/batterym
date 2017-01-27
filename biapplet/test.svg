@@ -1,0 +1,27 @@
+<svg>
+<polyline
+	points="0,0 650,0 650,80 0,80" 
+	fill="none"
+	stroke-width="1" 
+	stroke="#000"
+/>
+<polyline
+	points="30,10 620,10 620,60 30,60" 
+	fill="#FFF" 
+/>
+<polyline
+	points="0,0 650,0 650,80 0,80 0,0" 
+	fill="none" 
+	stroke-width="1" 
+	stroke="#F00"
+/>
+<polyline
+	points="30,15 200,20 620,50" 
+	fill="none"
+	stroke-width="1" 
+	stroke="#000"
+/>
+<text x="10" y="70" font-family="Verdana" font-size="10">
+    12 hours
+</text>
+</svg>
