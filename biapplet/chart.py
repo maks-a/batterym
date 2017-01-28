@@ -159,18 +159,21 @@ class Chart:
 
     def __init__(self, width=650, height=75,
                  padding_top=10, padding_bottom=20,
-                 padding_left=20, padding_right=40):
+                 padding_left=20, padding_right=40,
+                 inverseX=False):
         self.width = width
         self.height = height
         self.padding_top = padding_top
         self.padding_bottom = padding_bottom
         self.padding_left = padding_left
         self.padding_right = padding_right
+        self.inverseX = inverseX
         self.traces = []
         self.canvas = BoundingBox([0, 0])
 
         self.add_frame()  # TODO: remove
         self.add_background()
+        self.add_axes()
 
     def add_frame(self):
         points = get_rectangular(self.width, self.height)
@@ -186,12 +189,47 @@ class Chart:
         w = self.width - self.padding_left - self.padding_right
         h = self.height - self.padding_top - self.padding_bottom
         points = get_rectangular(w, h)
-        points = shift_points(
-            points, [self.padding_left, self.padding_bottom])
+        padding = [self.padding_left, self.padding_bottom]
+        points = shift_points(points, padding)
         data = {}
         data['points'] = points
         data['atr'] = {}
         data['atr']['fill'] = get_color('white')
+        self.traces.append(data)
+
+    def add_axes(self):
+        d = 5
+        w = self.width - self.padding_left - self.padding_right
+        h = self.height - self.padding_top - self.padding_bottom
+        padding = [self.padding_left, self.padding_bottom]
+
+        data = {}
+        data['atr'] = {}
+        data['atr']['fill'] = 'none'
+        data['atr']['stroke-width'] = 0.5
+        data['atr']['stroke'] = '#777'
+
+        points = [[0, h], [w+d, h]]
+        points = shift_points(points, padding)
+        data['points'] = points
+        self.traces.append(data)
+
+        data = dict(data)
+        points = [[0, 0], [w+d, 0]]
+        points = shift_points(points, padding)
+        data['points'] = points
+        self.traces.append(data)
+
+        data = dict(data)
+        points = [[0, -d], [0, h]]
+        points = shift_points(points, padding)
+        data['points'] = points
+        self.traces.append(data)
+
+        data = dict(data)
+        points = [[w, -d], [w, h]]
+        points = shift_points(points, padding)
+        data['points'] = points
         self.traces.append(data)
 
     def add(self, ys, xs=None, stroke_width=1, stroke='black'):
@@ -222,10 +260,13 @@ class Chart:
         xk = w / self.canvas.width()
         yk = h / self.canvas.height()
 
+        if self.inverseX:
+            canvas = shift_points(canvas, [-self.canvas.width(), 0])
+            canvas = scale_points(canvas, [-1, 1])
         points = scale_points(canvas, [xk, yk])
         points = round_points(points)
-        points = shift_points(
-            points, [self.padding_left, self.padding_bottom])
+        padding = [self.padding_left, self.padding_bottom]
+        points = shift_points(points, padding)
         return points
 
     def render_points(self, points):
@@ -277,8 +318,11 @@ def main():
     chart.add([100, 20, 30])
     chart.render_to_svg('test1.svg')
 
-    chart = Chart()
-    chart.add(xs=[0, 1, 7], ys=[100, 20, 30])
+    chart = Chart(inverseX=True)
+    ys = [100, 20, 30]
+    import random
+    ys = [random.randrange(0, 100) for i in xrange(200)]
+    chart.add(ys)
     chart.render_to_svg('test.svg')
 
 
