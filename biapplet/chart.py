@@ -237,10 +237,11 @@ class Chart:
 
 def main():
     chart = Chart(inverseX=True)
-    ys = [100, 20, 30]
-    import random
-    ys = [random.randrange(0, 100) for i in xrange(200)]
-    chart.add(ys)
+    ys = [100, 10, 40]
+    xs = [0, 10, 50]
+    #import random
+    #ys = [random.randrange(0, 100) for i in xrange(200)]
+    chart.add(xs=xs, ys=ys)
     chart.render_to_svg('test.svg')
 
 
