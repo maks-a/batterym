@@ -1,5 +1,6 @@
 #!/usr/bin/python
 from __future__ import division
+import copy
 
 
 """
@@ -104,11 +105,12 @@ class Chart:
         self.padding_right = padding_right
         self.inverseX = inverseX
         self.traces = []
+        self.texts = []
         self.canvas = BoundingBox([0, 0])
         self.xlabels = xlabels
         self.ylabels = ylabels
 
-        self.add_frame()  # TODO: remove
+        #self.add_frame()  # TODO: remove
         self.add_background()
         self.add_labels()
         self.add_axes()
@@ -154,28 +156,28 @@ class Chart:
         dx1 = d if self.inverseX else 0
 
         # X top
-        data = dict(data)
+        data = copy.deepcopy(data)
         points = [[-dx0, h], [w+dx1, h]]
         points = shift_points(points, padding)
         data['points'] = points
         self.traces.append(data)
 
         # X bottom
-        data = dict(data)
+        data = copy.deepcopy(data)
         points = [[-dx0, 0], [w+dx1, 0]]
         points = shift_points(points, padding)
         data['points'] = points
         self.traces.append(data)
 
         # Y left
-        data = dict(data)
+        data = copy.deepcopy(data)
         points = [[0, -d], [0, h]]
         points = shift_points(points, padding)
         data['points'] = points
         self.traces.append(data)
 
         # Y right
-        data = dict(data)
+        data = copy.deepcopy(data)
         points = [[w, -d], [w, h]]
         points = shift_points(points, padding)
         data['points'] = points
@@ -193,25 +195,53 @@ class Chart:
         data['atr']['stroke'] = '#ddd'
         data['atr']['shape-rendering'] = 'crispEdges'
 
+        text = {}
+        text['atr'] = {}
+        text['atr']['font-family'] = 'Verdana'
+        text['atr']['font-size'] = 10
+        text['atr']['fill'] = '#333'
+
         yn = len(self.ylabels)
         step = h / (yn-1)
         for i in xrange(0, yn):
-            data = dict(data)
+            data = copy.deepcopy(data)
             y = i * step
             points = [[0, y], [w, y]]
             points = shift_points(points, padding)
             data['points'] = points
             self.traces.append(data)
 
+            x = w+5 if self.inverseX else -5
+
+            text = copy.deepcopy(text)
+            text['text'] = self.ylabels[i]
+            point = shift_point([x, y-3], padding)
+            point = self.to_real_coords(point)
+            text['atr']['x'] = point[0]
+            text['atr']['y'] = point[1]
+            text['atr']['text-anchor'] = 'start' if self.inverseX else 'end'
+            self.texts.append(text)
+
+
         xn = len(self.xlabels)
         step = w / (xn-1)
         for i in xrange(0, xn):
-            data = dict(data)
+            data = copy.deepcopy(data)
             x = i * step
             points = [[x, 0], [x, h]]
             points = shift_points(points, padding)
             data['points'] = points
             self.traces.append(data)
+
+            text = copy.deepcopy(text)
+            j = xn - i - 1 if self.inverseX else i
+            text['text'] = self.xlabels[j]
+            point = shift_point([x, -15], padding)
+            point = self.to_real_coords(point)
+            text['atr']['x'] = point[0]
+            text['atr']['y'] = point[1]
+            text['atr']['text-anchor'] = 'middle'
+            self.texts.append(text)
 
     def add(self, ys, xs=None, stroke_width=1, stroke='black'):
         ny = len(ys)
@@ -250,9 +280,13 @@ class Chart:
         points = shift_points(points, padding)
         return points
 
+    def to_real_coords(self, point):
+        point = shift_point(point, [0, -self.height])
+        point = scale_point(point, [1, -1])
+        return point
+
     def render_points(self, points):
-        points = shift_points(points, [0, -self.height])
-        points = scale_points(points, [1, -1])
+        points = [self.to_real_coords(p) for p in points]
 
         coords = ['{0},{1}'.format(p[0], p[1]) for p in points]
 
@@ -279,11 +313,28 @@ class Chart:
         res.append('/>')
         return res
 
+    def render_text(self, text):
+        res = []
+        res.append('<text')
+
+        atr = text.get('atr')
+        if atr:
+            for a in atr:
+                res.append('\t{0}=\"{1}\"'.format(a, atr[a]))
+
+        res.append('>')
+        res.append(str(text['text']))
+        res.append('</text>')
+        return res
+
     def render(self):
         svg = []
         svg.append('<svg>')
         for t in self.traces:
             svg.extend(self.render_trace(t))
+
+        for t in self.texts:
+            svg.extend(self.render_text(t))
         svg.append('</svg>')
         return svg
 
@@ -295,9 +346,9 @@ class Chart:
 
 
 def main():
-    xlabels = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, '12 hours']
+    xlabels = [0, 2, 4, 6, 8, 10, '12 hours']
     ylabels = ['0 %', '50 %', '100 %']
-    chart = Chart(inverseX=False, xlabels=xlabels, ylabels=ylabels)
+    chart = Chart(inverseX=True, xlabels=xlabels, ylabels=ylabels)
     ys = [100, 10, 40]
     xs = [0, 10, 50]
     #import random
