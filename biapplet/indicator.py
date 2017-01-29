@@ -118,11 +118,11 @@ class Indicator:
         self.window.add(self.window.vbox)
 
         self.image = gtk.Image()
-        filepath = os.path.abspath('test.svg')
-        self.image.set_from_file(filepath)
         self.window.vbox.pack_start(self.image, False, False, 0)
 
         self.window.show_all()
+
+        self.update()
 
     def update(self):
         self.battery.update()
