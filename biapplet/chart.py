@@ -205,6 +205,7 @@ class Chart:
         data['atr']['stroke-width'] = 1
         data['atr']['stroke'] = '#ddd'
         data['atr']['shape-rendering'] = 'crispEdges'
+        data['atr']['stroke-dasharray'] = '2, 5'
 
         text = {}
         text['atr'] = {}
