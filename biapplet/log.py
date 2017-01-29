@@ -119,9 +119,13 @@ def main():
 
     import chart
     b = chart.scale_points(b, [-1, 1])
-    for x in b: print x[0], x[1]
+    for x in b:
+        print x[0], x[1]
 
-    chart = chart.Chart(inverseX=True)
+    xlabels = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, '12 hours']
+    ylabels = ['0 %', '50 %', '100 %']
+    chart = chart.Chart(inverseX=True,
+                        xlabels=xlabels, ylabels=ylabels)
     xs = [x[0] for x in b]
     ys = [x[1] for x in b]
     chart.add(xs=xs, ys=ys, stroke='#2e7eb3')
@@ -319,4 +323,4 @@ class LogProcessingTest(unittest.TestCase):
 
 if __name__ == '__main__':
     main()
-    #unittest.main()
+    # unittest.main()

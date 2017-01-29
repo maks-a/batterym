@@ -94,7 +94,8 @@ class Chart:
     def __init__(self, width=650, height=75,
                  padding_top=10, padding_bottom=20,
                  padding_left=20, padding_right=40,
-                 inverseX=False):
+                 inverseX=False,
+                 xlabels=[], ylabels=[]):
         self.width = width
         self.height = height
         self.padding_top = padding_top
@@ -104,9 +105,12 @@ class Chart:
         self.inverseX = inverseX
         self.traces = []
         self.canvas = BoundingBox([0, 0])
+        self.xlabels = xlabels
+        self.ylabels = ylabels
 
         self.add_frame()  # TODO: remove
         self.add_background()
+        self.add_labels()
         self.add_axes()
 
     def add_frame(self):
@@ -176,6 +180,38 @@ class Chart:
         points = shift_points(points, padding)
         data['points'] = points
         self.traces.append(data)
+
+    def add_labels(self):
+        w = self.width - self.padding_left - self.padding_right
+        h = self.height - self.padding_top - self.padding_bottom
+        padding = [self.padding_left, self.padding_bottom]
+
+        data = {}
+        data['atr'] = {}
+        data['atr']['fill'] = 'none'
+        data['atr']['stroke-width'] = 1
+        data['atr']['stroke'] = '#ddd'
+        data['atr']['shape-rendering'] = 'crispEdges'
+
+        yn = len(self.ylabels)
+        step = h / (yn-1)
+        for i in xrange(0, yn):
+            data = dict(data)
+            y = i * step
+            points = [[0, y], [w, y]]
+            points = shift_points(points, padding)
+            data['points'] = points
+            self.traces.append(data)
+
+        xn = len(self.xlabels)
+        step = w / (xn-1)
+        for i in xrange(0, xn):
+            data = dict(data)
+            x = i * step
+            points = [[x, 0], [x, h]]
+            points = shift_points(points, padding)
+            data['points'] = points
+            self.traces.append(data)
 
     def add(self, ys, xs=None, stroke_width=1, stroke='black'):
         ny = len(ys)
@@ -259,7 +295,9 @@ class Chart:
 
 
 def main():
-    chart = Chart(inverseX=True)
+    xlabels = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, '12 hours']
+    ylabels = ['0 %', '50 %', '100 %']
+    chart = Chart(inverseX=False, xlabels=xlabels, ylabels=ylabels)
     ys = [100, 10, 40]
     xs = [0, 10, 50]
     #import random
