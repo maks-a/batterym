@@ -109,18 +109,6 @@ class LinearInterpolation:
                     res.append([x, y])
         return res
 
-def glue_same_status(chunks):
-    result = []
-    chunk = []
-    prev = None
-    for curr in chunks:
-        if prev is not None:
-            pass
-
-        prev = copy.deepcopy(curr)
-    return result
-
-
 def calculate_virtual_time(samples, threshold_sec):
     result = []
     chunk = []
