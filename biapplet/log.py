@@ -147,7 +147,7 @@ def separate_by_status(samples):
     return result
 
 
-def main():
+def calculate_history_chart(image_path):
     a = get_battery()
 
     # find max time
@@ -163,6 +163,7 @@ def main():
     # cut pauses
     threshold_sec = 15 * 60
     res = calculate_virtual_time(a, threshold_sec)
+    res = filter(lambda d: d['virtual_time_sec'] < 12*60*60, res)
     res = separate_by_status(res)
 
     # plot chunks
@@ -178,22 +179,12 @@ def main():
         is_charging = ch[0]['status'] == 'Charging'
         color = '#4aa635' if is_charging else '#2e7eb3'
 
+        xs = [x['virtual_time_sec']/(60*60) for x in ch]
         ys = [int(x['capacity']) for x in ch]
-
-        xs = []
-        for x in ch:
-            t = x['virtual_time_sec']/(60*60)
-            if t > 12.0:
-                continue
-            xs.append(t)
-        n = len(xs)
-        if n < 2:
-            continue
-        ys = ys[:n]
 
         plot.add(xs=xs, ys=ys, stroke=color, fill=color)
 
-    plot.render_to_svg('test.svg')
+    plot.render_to_svg(image_path)
 
 
 class LogProcessingTest(unittest.TestCase):
@@ -386,5 +377,5 @@ class LogProcessingTest(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    main()
-    # unittest.main()
+    # main()
+    unittest.main()
