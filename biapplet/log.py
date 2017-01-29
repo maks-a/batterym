@@ -109,76 +109,64 @@ class LinearInterpolation:
                     res.append([x, y])
         return res
 
+def glue_same_status(chunks):
+    result = []
+    chunk = []
+    prev = None
+    for curr in chunks:
+        if prev is not None:
+            pass
 
-def main1():
-    a = get_battery()
-    a = get_time_capacity(a)
-    a = convert_to_relative_time(a)
-    threshold_sec = 5 * 60
-    a = cut_pauses(a, threshold_sec)
-    a = LinearInterpolation(a).resample(100)
-    b = [[(x[0]/(60*60)), int(x[1])] for x in a]
+        prev = copy.deepcopy(curr)
+    return result
 
-    import chart
-    b = chart.scale_points(b, [-1, 1])
-    # for x in b: print x[0], x[1]
 
-    xlabels = [0, 2, 4, 6, 8, 10, '12 hours']
-    ylabels = ['0 %', '50 %', '100 %']
-    chart = chart.Chart(inverseX=True,
-                        xlabels=xlabels, ylabels=ylabels)
-    xs = [x[0] for x in b]
-    ys = [x[1] for x in b]
-    color = '#2e7eb3'
-    chart.add(xs=xs, ys=ys, stroke=color, fill=color)
-    chart.render_to_svg('test.svg')
+def calculate_virtual_time(samples, threshold_sec):
+    result = []
+    chunk = []
+    prev = None
+    virtual_time = 0
+    for curr in samples:
+        if prev is not None:
+            t1 = prev['relative_time_sec']
+            t2 = curr['relative_time_sec']
+            delta = t2 - t1
+
+            is_time_exceeded = delta >= threshold_sec
+            is_status_changed = curr['status'] != prev['status']
+            is_pause = is_status_changed or is_time_exceeded
+
+            if is_status_changed:
+                result.append(chunk)
+                chunk = []
+
+            virtual_time += 0 if is_pause else delta
+
+        curr['virtual_time_sec'] = virtual_time
+        chunk.append(curr)
+        prev = copy.deepcopy(curr)
+
+    result.append(chunk)
+
+    return result
 
 
 def main():
     a = get_battery()
 
     # find max time
-    timeline = [e['time'] for e in a]
-    t0 = max(timeline)
+    t0 = max([e['time'] for e in a])
 
     # add relative time
     for e in a:
-        e['relative_time'] = (t0 - e['time']).total_seconds()
+        e['relative_time_sec'] = (t0 - e['time']).total_seconds()
 
     # sort by relative_time
-    a = sorted(a, key=lambda e: e['relative_time'])
+    a = sorted(a, key=lambda e: e['relative_time_sec'])
 
     # cut pauses
     threshold_sec = 15 * 60
-
-    res = []
-    chunk = []
-    prev_e = None
-    vt = 0
-    for e in a:
-        if prev_e is not None:
-            t1 = prev_e['relative_time']
-            t2 = e['relative_time']
-            dt = t2 - t1
-            is_time_exceeded = dt >= threshold_sec
-            if prev_e['status'] != e['status'] or is_time_exceeded:
-                if len(chunk) > 1:
-                    res.append(chunk)
-                chunk = []
-                if is_time_exceeded:
-                    dt = 0
-            vt += dt
-
-        e['virtual_time'] = vt
-        chunk.append(e)
-        prev_e = copy.deepcopy(e)
-
-    if len(chunk) > 1:
-        res.append(chunk)
-
-    for e in res:
-        e.reverse()
-    res.reverse()
+    res = calculate_virtual_time(a, threshold_sec)
 
     # plot chunks
     import chart
@@ -197,7 +185,7 @@ def main():
 
         xs = []
         for x in ch:
-            t = x['virtual_time']/(60*60)
+            t = x['virtual_time_sec']/(60*60)
             if t > 12.0:
                 continue
             xs.append(t)
