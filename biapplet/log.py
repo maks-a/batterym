@@ -109,9 +109,8 @@ class LinearInterpolation:
                     res.append([x, y])
         return res
 
+
 def calculate_virtual_time(samples, threshold_sec):
-    result = []
-    chunk = []
     prev = None
     virtual_time = 0
     for curr in samples:
@@ -119,23 +118,32 @@ def calculate_virtual_time(samples, threshold_sec):
             t1 = prev['relative_time_sec']
             t2 = curr['relative_time_sec']
             delta = t2 - t1
-
-            is_time_exceeded = delta >= threshold_sec
+            is_overtime = delta >= threshold_sec
             is_status_changed = curr['status'] != prev['status']
-            is_pause = is_status_changed or is_time_exceeded
 
-            if is_status_changed:
+            if not is_overtime and not is_status_changed:
+                virtual_time += delta
+
+        curr['virtual_time_sec'] = virtual_time
+        prev = copy.deepcopy(curr)
+
+    return samples
+
+
+def separate_by_status(samples):
+    result = []
+    chunk = []
+    prev = None
+    for curr in samples:
+        if prev is not None:
+            if curr['status'] != prev['status']:
                 result.append(chunk)
                 chunk = []
 
-            virtual_time += 0 if is_pause else delta
-
-        curr['virtual_time_sec'] = virtual_time
         chunk.append(curr)
-        prev = copy.deepcopy(curr)
+        prev = curr
 
     result.append(chunk)
-
     return result
 
 
@@ -155,6 +163,7 @@ def main():
     # cut pauses
     threshold_sec = 15 * 60
     res = calculate_virtual_time(a, threshold_sec)
+    res = separate_by_status(res)
 
     # plot chunks
     import chart
