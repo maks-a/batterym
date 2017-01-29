@@ -1,5 +1,7 @@
 #!/usr/bin/python
+from __future__ import division
 import re
+import copy
 import datetime
 import unittest
 
@@ -108,7 +110,7 @@ class LinearInterpolation:
         return res
 
 
-def main():
+def main1():
     a = get_battery()
     a = get_time_capacity(a)
     a = convert_to_relative_time(a)
@@ -119,7 +121,7 @@ def main():
 
     import chart
     b = chart.scale_points(b, [-1, 1])
-    #for x in b: print x[0], x[1]
+    # for x in b: print x[0], x[1]
 
     xlabels = [0, 2, 4, 6, 8, 10, '12 hours']
     ylabels = ['0 %', '50 %', '100 %']
@@ -130,6 +132,83 @@ def main():
     color = '#2e7eb3'
     chart.add(xs=xs, ys=ys, stroke=color, fill=color)
     chart.render_to_svg('test.svg')
+
+
+def main():
+    a = get_battery()
+
+    # find max time
+    timeline = [e['time'] for e in a]
+    t0 = max(timeline)
+
+    # add relative time
+    for e in a:
+        e['relative_time'] = (t0 - e['time']).total_seconds()
+
+    # sort by relative_time
+    a = sorted(a, key=lambda e: e['relative_time'])
+
+    # cut pauses
+    threshold_sec = 15 * 60
+
+    res = []
+    chunk = []
+    prev_e = None
+    vt = 0
+    for e in a:
+        if prev_e is not None:
+            t1 = prev_e['relative_time']
+            t2 = e['relative_time']
+            dt = t2 - t1
+            is_time_exceeded = dt >= threshold_sec
+            if prev_e['status'] != e['status'] or is_time_exceeded:
+                if len(chunk) > 1:
+                    res.append(chunk)
+                chunk = []
+                if is_time_exceeded:
+                    dt = 0
+            vt += dt
+
+        e['virtual_time'] = vt
+        chunk.append(e)
+        prev_e = copy.deepcopy(e)
+
+    if len(chunk) > 1:
+        res.append(chunk)
+
+    for e in res:
+        e.reverse()
+    res.reverse()
+
+    # plot chunks
+    import chart
+
+    ylabels = ['0 %', '25 %', '50 %', '75%', '100 %']
+    xlabels = [0, 2, 4, 6, 8, 10, '12 hours']
+    plot = chart.Chart(inverseX=True,
+                       xlabels=xlabels, ylabels=ylabels,
+                       padding_top=30,
+                       height=450)
+    for ch in res:
+        is_charging = ch[0]['status'] == 'Charging'
+        color = '#4aa635' if is_charging else '#2e7eb3'
+
+        ys = [int(x['capacity']) for x in ch]
+
+        xs = []
+        for x in ch:
+            t = x['virtual_time']/(60*60)
+            if t > 12.0:
+                continue
+            xs.append(t)
+        n = len(xs)
+        if n < 2:
+            continue
+        ys = ys[:n]
+
+        plot.add(xs=xs, ys=ys, stroke=color, fill=color)
+
+    plot.render_to_svg('test.svg')
 
 
 class LogProcessingTest(unittest.TestCase):
