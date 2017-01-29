@@ -205,7 +205,8 @@ class Chart:
         data['atr']['stroke-width'] = 1
         data['atr']['stroke'] = '#ddd'
         data['atr']['shape-rendering'] = 'crispEdges'
-        data['atr']['stroke-dasharray'] = '2, 5'
+        if self.is_axes_on_top:
+            data['atr']['stroke-dasharray'] = '1, 5'
 
         text = {}
         text['atr'] = {}
