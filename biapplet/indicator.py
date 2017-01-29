@@ -14,6 +14,8 @@ from gi.repository import AppIndicator3 as appindicator
 
 APPINDICATOR_ID = 'batteryindicator'
 CATEGORY = appindicator.IndicatorCategory.SYSTEM_SERVICES
+BATTERY_MONITOR_ICON = '/usr/share/icons/Humanity/devices/48/battery.svg'
+CAPACITY_HISTORY_CHART = os.path.abspath('capacity_history_12h.svg')
 
 
 class Battery:
@@ -64,7 +66,9 @@ class Indicator:
         self.indicator.set_menu(self.build_menu())
         self.window = None
 
-        gobject.timeout_add(500, self.update)
+        sec = 1000
+        gobject.timeout_add(0.5*sec, self.update)
+        gobject.timeout_add(30*sec, self.calculate_chart)
 
     def get_icon(self):
         return resource.icon_path(
@@ -109,8 +113,7 @@ class Indicator:
         self.window.set_default_size(700, 500)
         self.window.set_position(gtk.WindowPosition.CENTER)
 
-        icon = '/usr/share/icons/Humanity/devices/48/battery.svg'
-        self.window.set_icon_from_file(icon)
+        self.window.set_icon_from_file(BATTERY_MONITOR_ICON)
 
         self.window.vbox = gtk.Box()
         self.window.vbox.set_spacing(5)
@@ -129,8 +132,11 @@ class Indicator:
         self.set_icon()
         self.set_label()
         if self.window and self.window.props.visible:
-            filepath = os.path.abspath('test.svg')
-            self.image.set_from_file(filepath)
+            self.image.set_from_file(CAPACITY_HISTORY_CHART)
+        return True
+
+    def calculate_chart(self):
+        log.calculate_history_chart(CAPACITY_HISTORY_CHART)
         return True
 
     def run_forever(self):
