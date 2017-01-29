@@ -212,7 +212,7 @@ class Chart:
         text['atr'] = {}
         text['atr']['font-family'] = 'Verdana'
         text['atr']['font-size'] = 10
-        text['atr']['fill'] = '#333'
+        text['atr']['fill'] = '#777'
 
         yn = len(self.ylabels)
         step = h / (yn-1)
@@ -378,13 +378,13 @@ def main():
     # 4aa635 green
 
     color = '#2e7eb3'
-    ys = [100, 80, 50]
-    xs = [0, 20, 40]
+    ys = [10, 60, 60]
+    xs = [10, 20, 30]
     chart.add(xs=xs, ys=ys, stroke=color, fill=color)
 
     color = '#4aa635'
-    ys = [50, 70, 80]
-    xs = [40, 50, 60]
+    ys = [40, 70, 80]
+    xs = [30, 40, 50]
     chart.add(xs=xs, ys=ys, stroke=color, fill=color)
 
     chart.render_to_svg('test.svg')
