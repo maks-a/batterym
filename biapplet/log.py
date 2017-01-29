@@ -119,8 +119,7 @@ def main():
 
     import chart
     b = chart.scale_points(b, [-1, 1])
-    for x in b:
-        print x[0], x[1]
+    #for x in b: print x[0], x[1]
 
     xlabels = [0, 2, 4, 6, 8, 10, '12 hours']
     ylabels = ['0 %', '50 %', '100 %']
@@ -128,7 +127,8 @@ def main():
                         xlabels=xlabels, ylabels=ylabels)
     xs = [x[0] for x in b]
     ys = [x[1] for x in b]
-    chart.add(xs=xs, ys=ys, stroke='#2e7eb3')
+    color = '#2e7eb3'
+    chart.add(xs=xs, ys=ys, stroke=color, fill=color)
     chart.render_to_svg('test.svg')
 
 

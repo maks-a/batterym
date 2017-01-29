@@ -58,6 +58,16 @@ def get_color(text):
     return t.get(text, text)
 
 
+def close_points(points):
+    res = points[:]
+    first = res[0]
+    last = res[-1]
+    res.append([last[0], 0])
+    res.append([first[0], 0])
+    res.append(first)
+    return res
+
+
 def tostr(point):
     return '({0}, {1})'.format(point[0], point[1])
 
@@ -109,6 +119,7 @@ class Chart:
         self.canvas = BoundingBox([0, 0])
         self.xlabels = xlabels
         self.ylabels = ylabels
+        self.is_axes_on_top = False
 
         #self.add_frame()  # TODO: remove
         self.add_background()
@@ -222,7 +233,6 @@ class Chart:
             text['atr']['text-anchor'] = 'start' if self.inverseX else 'end'
             self.texts.append(text)
 
-
         xn = len(self.xlabels)
         step = w / (xn-1)
         for i in xrange(0, xn):
@@ -243,7 +253,8 @@ class Chart:
             text['atr']['text-anchor'] = 'middle'
             self.texts.append(text)
 
-    def add(self, ys, xs=None, stroke_width=1, stroke='black'):
+    def add(self, ys, xs=None, stroke_width=1, stroke='black',
+            fill='none'):
         ny = len(ys)
         if xs is None:
             xs = range(0, ny)
@@ -251,16 +262,19 @@ class Chart:
         xs = xs[:n]
         ys = ys[:n]
 
-        points = []
-        for i in xrange(0, n):
-            point = [xs[i], ys[i]]
-            points.append(point)
-            self.canvas.include(point)
+        points = [[xs[i], ys[i]] for i in xrange(0, n)]
+
+        if fill != 'none':
+            self.is_axes_on_top = True
+            points = close_points(points)
+
+        for p in points:
+            self.canvas.include(p)
 
         data = {}
         data['canvas'] = points
         data['atr'] = {}
-        data['atr']['fill'] = 'none'
+        data['atr']['fill'] = fill
         data['atr']['stroke-width'] = stroke_width
         data['atr']['stroke'] = get_color(stroke)
         self.traces.append(data)
@@ -328,6 +342,10 @@ class Chart:
         return res
 
     def render(self):
+        if self.is_axes_on_top:
+            self.add_labels()
+            self.add_axes()
+
         svg = []
         svg.append('<svg>')
         for t in self.traces:
@@ -357,7 +375,8 @@ def main():
     # 2e7eb3 blue
     # fa730c orange
     # 4aa635 green
-    chart.add(xs=xs, ys=ys, stroke='#cc1d37')
+    color = '#2e7eb3'
+    chart.add(xs=xs, ys=ys, stroke=color, fill=color)
     chart.render_to_svg('test.svg')
 
 
