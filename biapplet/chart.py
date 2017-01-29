@@ -368,7 +368,8 @@ class Chart:
 def main():
     xlabels = [0, 2, 4, 6, 8, 10, '12 hours']
     ylabels = ['0 %', '50 %', '100 %']
-    chart = Chart(inverseX=True, xlabels=xlabels, ylabels=ylabels)
+    chart = Chart(inverseX=True, xlabels=xlabels, ylabels=ylabels,
+        height=400)
 
     #import random
     #ys = [random.randrange(0, 100) for i in xrange(200)]
@@ -383,8 +384,8 @@ def main():
     chart.add(xs=xs, ys=ys, stroke=color, fill=color)
 
     color = '#4aa635'
-    ys = [40, 70, 80]
-    xs = [30, 40, 50]
+    ys = [40, 70, 100, 98]
+    xs = [30, 40, 50, 60]
     chart.add(xs=xs, ys=ys, stroke=color, fill=color)
 
     chart.render_to_svg('test.svg')
