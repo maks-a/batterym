@@ -14,16 +14,28 @@ from __future__ import division
 """
 
 
+def round_point(point):
+    return [int(point[0]), int(point[1])]
+
+
+def scale_point(point, k):
+    return [k[0]*point[0], k[1]*point[1]]
+
+
+def shift_point(point, offset):
+    return [point[0]+offset[0], point[1]+offset[1]]
+
+
 def round_points(points):
-    return [[int(p[0]), int(p[1])] for p in points]
+    return [round_point(p) for p in points]
 
 
 def scale_points(points, k):
-    return [[k[0]*p[0], k[1]*p[1]] for p in points]
+    return [scale_point(p, k) for p in points]
 
 
 def shift_points(points, offset):
-    return [[p[0]+offset[0], p[1]+offset[1]] for p in points]
+    return [shift_point(p, offset) for p in points]
 
 
 def get_square():
@@ -51,13 +63,13 @@ def tostr(point):
 
 class BoundingBox:
 
-    def __init__(self):
-        self.left_bottom = None
-        self.right_top = None
-
-    def __init__(self, point):
-        self.left_bottom = point[:]
-        self.right_top = point[:]
+    def __init__(self, point=None):
+        if point is None:
+            self.left_bottom = None
+            self.right_top = None
+        else:
+            self.left_bottom = point[:]
+            self.right_top = point[:]
 
     def include(self, point):
         if self.left_bottom is None or self.right_top is None:
