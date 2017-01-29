@@ -115,7 +115,17 @@ def main():
     threshold_sec = 5 * 60
     a = cut_pauses(a, threshold_sec)
     a = LinearInterpolation(a).resample(100)
-    for x in a: print int(x[0]/(60*60)), x[1]
+    b = [[(x[0]/(60*60)), int(x[1])] for x in a]
+
+    import chart
+    b = chart.scale_points(b, [-1, 1])
+    for x in b: print x[0], x[1]
+
+    chart = chart.Chart(inverseX=True)
+    xs = [x[0] for x in b]
+    ys = [x[1] for x in b]
+    chart.add(xs=xs, ys=ys, stroke='#2e7eb3')
+    chart.render_to_svg('test.svg')
 
 
 class LogProcessingTest(unittest.TestCase):
@@ -308,5 +318,5 @@ class LogProcessingTest(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    #main()
-    unittest.main()
+    main()
+    #unittest.main()

@@ -98,13 +98,15 @@ class Chart:
         self.add_axes()
 
     def add_frame(self):
-        points = get_rectangular(self.width, self.height)
+        points = get_rectangular(self.width-2, self.height-2)
+        points = shift_points(points, [1, 1])
         data = {}
         data['points'] = points
         data['atr'] = {}
         data['atr']['fill'] = 'none'
         data['atr']['stroke-width'] = 1
-        data['atr']['stroke'] = '#f00'
+        data['atr']['stroke'] = '#ddd'
+        data['atr']['shape-rendering'] = 'crispEdges'
         self.traces.append(data)
 
     def add_background(self):
@@ -120,7 +122,7 @@ class Chart:
         self.traces.append(data)
 
     def add_axes(self):
-        d = 5
+        d = 3
         w = self.width - self.padding_left - self.padding_right
         h = self.height - self.padding_top - self.padding_bottom
         padding = [self.padding_left, self.padding_bottom]
@@ -128,26 +130,35 @@ class Chart:
         data = {}
         data['atr'] = {}
         data['atr']['fill'] = 'none'
-        data['atr']['stroke-width'] = 0.5
-        data['atr']['stroke'] = '#777'
+        data['atr']['stroke-width'] = 1
+        data['atr']['stroke'] = '#999'
+        data['atr']['shape-rendering'] = 'crispEdges'
 
-        points = [[0, h], [w+d, h]]
-        points = shift_points(points, padding)
-        data['points'] = points
-        self.traces.append(data)
+        dx0 = 1 if self.inverseX else d
+        dx1 = d if self.inverseX else 0
 
+        # X top
         data = dict(data)
-        points = [[0, 0], [w+d, 0]]
+        points = [[-dx0, h], [w+dx1, h]]
         points = shift_points(points, padding)
         data['points'] = points
         self.traces.append(data)
 
+        # X bottom
+        data = dict(data)
+        points = [[-dx0, 0], [w+dx1, 0]]
+        points = shift_points(points, padding)
+        data['points'] = points
+        self.traces.append(data)
+
+        # Y left
         data = dict(data)
         points = [[0, -d], [0, h]]
         points = shift_points(points, padding)
         data['points'] = points
         self.traces.append(data)
 
+        # Y right
         data = dict(data)
         points = [[w, -d], [w, h]]
         points = shift_points(points, padding)
@@ -241,7 +252,11 @@ def main():
     xs = [0, 10, 50]
     #import random
     #ys = [random.randrange(0, 100) for i in xrange(200)]
-    chart.add(xs=xs, ys=ys)
+    # c90c28 dark red
+    # 2e7eb3 blue
+    # fa730c orange
+    # 4aa635 green
+    chart.add(xs=xs, ys=ys, stroke='#cc1d37')
     chart.render_to_svg('test.svg')
 
 
