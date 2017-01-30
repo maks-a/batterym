@@ -25,6 +25,7 @@ class Battery:
         self._capacity = None
         self._update_period = timedelta(minutes=10)
         self._last_update = datetime.now() - self._update_period
+        self.observers = []
         self.update()
 
     def status(self):
@@ -39,8 +40,9 @@ class Battery:
     def update(self):
         status = osdata.battery_status()
         capacity = osdata.battery_capacity()
-        is_new_data = (self._status != status
-                       or self._capacity != capacity)
+        is_new_status = self._status != status
+        is_new_capacity = self._capacity != capacity
+        is_new_data = is_new_status or is_new_capacity
         self._status = status
         self._capacity = capacity
 
@@ -52,14 +54,27 @@ class Battery:
             self._last_update = current_time
             self.log()
 
+        if is_new_status:
+            self.notify_observers('status', status)
+        if is_new_capacity:
+            self.notify_observers('capacity', capacity)
+
     def log(self):
         log.battery(self.capacity(), self.status())
+
+    def notify_observers(self, message, value):
+        for observer in self.observers:
+            observer.get_update(message, value)
+
+    def register_observer(self, observer):
+        self.observers.append(observer)
 
 
 class Indicator:
 
     def __init__(self):
         self.battery = Battery()
+        self.battery.register_observer(self)
         self.indicator = appindicator.Indicator.new(
             APPINDICATOR_ID, self.get_icon(), CATEGORY)
         self.indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
@@ -70,6 +85,9 @@ class Indicator:
         gobject.timeout_add(0.5*sec, self.update)
         gobject.timeout_add(30*sec, self.calculate_chart)
 
+        self.calculate_chart()
+
+    def get_update(self, message, value):
         self.calculate_chart()
 
     def get_icon(self):
