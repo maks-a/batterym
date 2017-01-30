@@ -70,6 +70,8 @@ class Indicator:
         gobject.timeout_add(0.5*sec, self.update)
         gobject.timeout_add(30*sec, self.calculate_chart)
 
+        self.calculate_chart()
+
     def get_icon(self):
         return resource.icon_path(
             self.battery.capacity(), self.battery.is_charging())
