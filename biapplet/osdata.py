@@ -2,7 +2,7 @@
 import re
 
 
-_DEBUG = True
+_DEBUG = False
 
 uevent_file_release = '/sys/class/power_supply/BAT0/uevent'
 uevent_file_dbg = 'test/data/uevent.tmp'
