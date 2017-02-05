@@ -3,18 +3,6 @@ from __future__ import division
 import copy
 
 
-"""
-<svg>
-<polyline
-    points="0,0 50,0 150,100 250,100 300,150" 
-    fill="rgb(0,249,249)" 
-    stroke-width="0" 
-    stroke="rgb(0,0,0)"
-/>
-</svg>
-"""
-
-
 def round_point(point):
     return [int(point[0]), int(point[1])]
 
@@ -369,7 +357,7 @@ def main():
     xlabels = [0, 2, 4, 6, 8, 10, '12 hours']
     ylabels = ['0 %', '50 %', '100 %']
     chart = Chart(inverseX=True, xlabels=xlabels, ylabels=ylabels,
-        height=400)
+                  height=400)
 
     #import random
     #ys = [random.randrange(0, 100) for i in xrange(200)]
