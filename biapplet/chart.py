@@ -272,8 +272,13 @@ class Chart:
     def canvas_to_points(self, canvas):
         w = self.width - self.padding_left - self.padding_right
         h = self.height - self.padding_top - self.padding_bottom
-        xk = w / self.canvas.width()
-        yk = h / self.canvas.height()
+
+        xk = w
+        yk = h
+        if self.canvas.width():
+            xk /= self.canvas.width()
+        if self.canvas.height():
+            yk /= self.canvas.height()
 
         if self.inverseX:
             canvas = shift_points(canvas, [-self.canvas.width(), 0])
