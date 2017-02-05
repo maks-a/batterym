@@ -155,7 +155,8 @@ def calculate_history_chart(image_path):
 
     # add relative time
     for e in a:
-        e['relative_time_sec'] = (t0 - e['time']).total_seconds()
+        t = float((t0 - e['time']).total_seconds())
+        e['relative_time_sec'] = t
 
     # sort by relative_time
     a = sorted(a, key=lambda e: e['relative_time_sec'])
@@ -163,7 +164,25 @@ def calculate_history_chart(image_path):
     # cut pauses
     threshold_sec = 15 * 60
     res = calculate_virtual_time(a, threshold_sec)
-    res = filter(lambda d: d['virtual_time_sec'] < 12*60*60, res)
+
+    # add virtual time
+    for e in res:
+        t = e['virtual_time_sec']
+        e['virtual_time_min'] = t/(60)
+        e['virtual_time_hour'] = t/(60*60)
+
+    # y = kx + b, b=0
+    # x = y/k - b/k
+    b = 0
+    life = 8
+    k = 100/life
+    y = float(res[0]['capacity'])
+    x = y/k - b/k
+    xl = [0, x]
+    yl = [0, y]
+    xoffset = x
+
+    res = filter(lambda d: d['virtual_time_hour'] < (12.0-x), res)
     res = separate_by_status(res)
 
     # plot chunks
@@ -179,12 +198,18 @@ def calculate_history_chart(image_path):
         is_charging = ch[0]['status'] == 'Charging'
         color = '#4aa635' if is_charging else '#2e7eb3'
 
-        xs = [x['virtual_time_sec']/(60*60) for x in ch]
+        xs = [x['virtual_time_hour']+xoffset for x in ch]
         ys = [int(x['capacity']) for x in ch]
 
         plot.add(xs=xs, ys=ys, stroke=color, fill=color)
 
+
+    plot.add(xs=xl, ys=yl, stroke='#2e7eb3', stroke_dash=True)
     plot.render_to_svg(image_path)
+
+
+def main():
+    calculate_history_chart('test.svg')
 
 
 class LogProcessingTest(unittest.TestCase):
@@ -377,5 +402,5 @@ class LogProcessingTest(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    # main()
-    unittest.main()
+    main()
+    #unittest.main()
