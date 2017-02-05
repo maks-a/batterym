@@ -244,7 +244,7 @@ class Chart:
             self.texts.append(text)
 
     def add(self, ys, xs=None, stroke_width=1, stroke='black',
-            fill='none'):
+            fill='none', stroke_dash=False):
         ny = len(ys)
         if xs is None:
             xs = range(0, ny)
@@ -267,6 +267,10 @@ class Chart:
         data['atr']['fill'] = fill
         data['atr']['stroke-width'] = stroke_width
         data['atr']['stroke'] = get_color(stroke)
+        if stroke_dash:
+            if stroke_dash is True:
+                stroke_dash = '10, 5'
+            data['atr']['stroke-dasharray'] = stroke_dash
         self.traces.append(data)
 
     def canvas_to_points(self, canvas):
