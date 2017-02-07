@@ -194,6 +194,8 @@ def calculate_history_chart(image_path):
                        xlabels=xlabels, ylabels=ylabels,
                        padding_top=30,
                        height=450)
+    plot.set_minimal_canvas([0, 0], [12, 100])
+
     for ch in res:
         is_charging = ch[0]['status'] == 'Charging'
         color = '#4aa635' if is_charging else '#2e7eb3'

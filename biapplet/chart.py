@@ -63,12 +63,9 @@ def tostr(point):
 class BoundingBox:
 
     def __init__(self, point=None):
-        if point is None:
-            self.left_bottom = None
-            self.right_top = None
-        else:
-            self.left_bottom = point[:]
-            self.right_top = point[:]
+        self.left_bottom = None
+        self.right_top = None
+        self.include(point)
 
     def include(self, point):
         if self.left_bottom is None or self.right_top is None:
@@ -113,6 +110,10 @@ class Chart:
         self.add_background()
         self.add_labels()
         self.add_axes()
+
+    def set_minimal_canvas(self, point1, point2):
+        self.canvas.include(point1)
+        self.canvas.include(point2)
 
     def add_frame(self):
         points = get_rectangular(self.width-2, self.height-2)
