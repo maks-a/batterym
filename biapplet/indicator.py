@@ -25,30 +25,36 @@ CAPACITY_HISTORY_CHART = os.path.abspath('capacity_history_12h.svg')
 class Battery:
 
     def __init__(self):
-        self._status = None
-        self._capacity = None
+        self._data = {}
         self._update_period = timedelta(minutes=10)
         self._last_update = datetime.now() - self._update_period
         self.observers = []
         self.update()
 
+    def data(self, key=None):
+        return self._data if key == None else self._data.get(key)
+
     def status(self):
-        return self._status
+        return self.data('status')
 
     def capacity(self):
-        return self._capacity
+        return self.data('capacity')
 
     def is_charging(self):
         return self.status() == 'Charging'
 
     def update(self):
-        status = osdata.battery_status()
-        capacity = osdata.battery_capacity()
-        is_new_status = self._status != status
-        is_new_capacity = self._capacity != capacity
-        is_new_data = is_new_status or is_new_capacity
-        self._status = status
-        self._capacity = capacity
+        new_data = {
+            'status' : osdata.battery_status(),
+            'capacity' : osdata.battery_capacity()        
+        }
+
+        for k in new_data:
+            if self.data(k) != new_data[k]:
+                self.notify_observers(k, new_data[k])
+
+        is_new_data = self._data != new_data
+        self._data = new_data
 
         current_time = datetime.now()
         past_time = current_time - self._last_update
@@ -57,11 +63,6 @@ class Battery:
         if is_new_data or is_update_time:
             self._last_update = current_time
             self.log()
-
-        if is_new_status:
-            self.notify_observers('status', status)
-        if is_new_capacity:
-            self.notify_observers('capacity', capacity)
 
     def log(self):
         log.battery(self.capacity(), self.status())
