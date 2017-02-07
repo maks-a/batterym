@@ -26,7 +26,6 @@ def battery_capacity():
         m = re.search('(\d+)', f.read())
         if m:
             return _limit(int(m.group(1)), 0, 100)
-    #print 'battery_capacity() failed'
 
 
 def battery_status():
@@ -34,7 +33,6 @@ def battery_status():
         m = re.search('(\w+)', f.read())
         if m:
             return m.group(1)
-    #print 'battery_status() failed'
 
 
 def is_discharging():
