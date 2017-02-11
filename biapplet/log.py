@@ -174,7 +174,10 @@ def calculate_slope(src):
             return
         k = dy/dx
         ks.append(k)
-    k = sum(ks)/len(ks)
+    n = len(ks)
+    if n <= 0:
+        return
+    k = sum(ks)/n
     return k
 
 
@@ -204,23 +207,33 @@ def calculate_history_chart(image_path):
 
     xoffset = 0
     slope = calculate_slope(res)
-    if slope is not None and slope > 0:
+    xl = yl = []
+    eps = 1e-9
+    if slope is not None and (slope < -eps or eps < slope):
         # y = kx + b, b=0
         # x = y/k - b/k
         # k = 100/life
         b = 0
-        life = 100/slope
-        k = 100/life
-        y = float(res[0]['capacity'])
+        life = 100.0/abs(slope)
+        k = slope
+        y = res[0]['capacity']
         x = y/k - b/k
-        xl = [0, x]
-        yl = [0, y]
+        x = abs(x)
+        if slope > 0:
+            yl = [0, y]
+            xl = [0, x]
+        else:
+            dy = 100.0-y
+            x = -dy/slope
+            xl = [0, x]
+            yl = [100, y]
+
         xoffset = x
 
         #life_time = datetime.timedelta(seconds=life*60*60)
         #remaining_life_time = datetime.timedelta(seconds=xoffset*60*60)
-        #print life, xoffset
-        #print life_time, remaining_life_time
+        #print life_time
+        #print remaining_life_time
 
     res = filter(lambda d: d['virtual_time_hour'] < (12.0-xoffset), res)
     res = separate_by_status(res)
@@ -236,17 +249,22 @@ def calculate_history_chart(image_path):
                        height=450)
     plot.set_minimal_canvas([0, 0], [12, 100])
 
+    blue = '#2e7eb3'
+    green = '#4aa635'
+    prediction_color = None
     for ch in res:
         is_charging = ch[0]['status'] == 'Charging'
-        color = '#4aa635' if is_charging else '#2e7eb3'
+        color = green if is_charging else blue
+        if prediction_color is None:
+            prediction_color = color
 
         xs = [x['virtual_time_hour']+xoffset for x in ch]
         ys = [int(x['capacity']) for x in ch]
 
         plot.add(xs=xs, ys=ys, stroke=color, fill=color)
 
-
-    plot.add(xs=xl, ys=yl, stroke='#2e7eb3', stroke_dash=True)
+    plot.add(xs=xl, ys=yl, 
+             stroke=prediction_color, stroke_dash=True)
     plot.render_to_svg(image_path)
 
 
