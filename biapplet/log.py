@@ -29,7 +29,7 @@ def parse_log_line(line):
         '(\d+-\d+-\d+T\d+:\d+:\d+\.\d*)\s+(\d+)%\s+(\w+)', line)
     if m:
         ts = to_datetime(m.group(1))
-        cap = m.group(2)
+        cap = float(m.group(2))
         stat = m.group(3)
         return {
             'time': ts,
@@ -147,6 +147,30 @@ def separate_by_status(samples):
     return result
 
 
+def calculate_life(src):
+    time_limit = 5.0 / 60.0
+    a = filter(lambda d: d['virtual_time_hour'] < time_limit, src)
+    a = sorted(a, key=lambda e: e['virtual_time_hour'])
+    if len(a) <= 0:
+        return
+
+    curr_status = a[0]['status']
+    b = []
+    for e in a:
+        if e['status'] != curr_status:
+            break
+        b.append(e)
+    a = b
+
+    if len(a) <= 0:
+        return
+    dy = a[-1]['capacity'] - a[0]['capacity']
+    dx = a[-1]['virtual_time_hour'] - a[0]['virtual_time_hour']
+    k = dy/dx
+    life = 100.0/k
+    return life
+
+
 def calculate_history_chart(image_path):
     a = get_battery()
 
@@ -173,8 +197,9 @@ def calculate_history_chart(image_path):
 
     # y = kx + b, b=0
     # x = y/k - b/k
+    # k = 100/life
     b = 0
-    life = 8
+    life = calculate_life(res)
     k = 100/life
     y = float(res[0]['capacity'])
     x = y/k - b/k
@@ -182,7 +207,7 @@ def calculate_history_chart(image_path):
     yl = [0, y]
     xoffset = x
 
-    res = filter(lambda d: d['virtual_time_hour'] < (12.0-x), res)
+    res = filter(lambda d: d['virtual_time_hour'] < (12.0-xoffset), res)
     res = separate_by_status(res)
 
     # plot chunks
