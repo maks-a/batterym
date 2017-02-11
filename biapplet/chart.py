@@ -48,6 +48,8 @@ def get_color(text):
 
 def close_points(points):
     res = points[:]
+    if len(res) < 1:
+        return res
     first = res[0]
     last = res[-1]
     res.append([last[0], 0])
