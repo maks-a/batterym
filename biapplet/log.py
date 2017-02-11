@@ -147,8 +147,8 @@ def separate_by_status(samples):
     return result
 
 
-def calculate_life(src):
-    time_limit = 5.0 / 60.0
+def calculate_slope(src):
+    time_limit = 10.0 / 60.0
     a = filter(lambda d: d['virtual_time_hour'] < time_limit, src)
     a = sorted(a, key=lambda e: e['virtual_time_hour'])
     if len(a) <= 0:
@@ -175,8 +175,7 @@ def calculate_life(src):
         k = dy/dx
         ks.append(k)
     k = sum(ks)/len(ks)
-    life = 100.0/k
-    return life
+    return k
 
 
 def calculate_history_chart(image_path):
@@ -204,12 +203,13 @@ def calculate_history_chart(image_path):
         e['virtual_time_hour'] = t/(60*60)
 
     xoffset = 0
-    life = calculate_life(res)
-    if life is not None and life > 0:
+    slope = calculate_slope(res)
+    if slope is not None and slope > 0:
         # y = kx + b, b=0
         # x = y/k - b/k
         # k = 100/life
         b = 0
+        life = 100/slope
         k = 100/life
         y = float(res[0]['capacity'])
         x = y/k - b/k
@@ -217,10 +217,10 @@ def calculate_history_chart(image_path):
         yl = [0, y]
         xoffset = x
 
-    #life_time = datetime.timedelta(seconds=life*60*60)
-    #remaining_life_time = datetime.timedelta(seconds=xoffset*60*60)
-    #print life, xoffset
-    #print life_time, remaining_life_time
+        #life_time = datetime.timedelta(seconds=life*60*60)
+        #remaining_life_time = datetime.timedelta(seconds=xoffset*60*60)
+        #print life, xoffset
+        #print life_time, remaining_life_time
 
     res = filter(lambda d: d['virtual_time_hour'] < (12.0-xoffset), res)
     res = separate_by_status(res)
