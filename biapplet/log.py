@@ -148,7 +148,7 @@ def separate_by_status(samples):
 
 
 def calculate_life(src):
-    time_limit = 5.0 / 60.0
+    time_limit = 10.0 / 60.0
     a = filter(lambda d: d['virtual_time_hour'] < time_limit, src)
     a = sorted(a, key=lambda e: e['virtual_time_hour'])
     if len(a) <= 0:
@@ -164,9 +164,17 @@ def calculate_life(src):
 
     if len(a) <= 0:
         return
-    dy = a[-1]['capacity'] - a[0]['capacity']
-    dx = a[-1]['virtual_time_hour'] - a[0]['virtual_time_hour']
-    k = dy/dx
+
+    ks = []
+    n = len(a)
+    for i in xrange(1, n):
+        dy = a[i]['capacity'] - a[0]['capacity']
+        dx = a[i]['virtual_time_hour'] - a[0]['virtual_time_hour']
+        if dx < 1e-9:
+            return
+        k = dy/dx
+        ks.append(k)
+    k = sum(ks)/len(ks)
     life = 100.0/k
     return life
 
