@@ -171,7 +171,7 @@ def calculate_slope(src):
         dy = a[i]['capacity'] - a[0]['capacity']
         dx = a[i]['virtual_time_hour'] - a[0]['virtual_time_hour']
         if dx < 1e-9:
-            return
+            continue
         k = dy/dx
         ks.append(k)
     n = len(ks)
@@ -232,8 +232,7 @@ def calculate_history_chart(image_path):
 
         #life_time = datetime.timedelta(seconds=life*60*60)
         #remaining_life_time = datetime.timedelta(seconds=xoffset*60*60)
-        #print life_time
-        #print remaining_life_time
+        #print life_time, remaining_life_time
 
     res = filter(lambda d: d['virtual_time_hour'] < (12.0-xoffset), res)
     res = separate_by_status(res)
