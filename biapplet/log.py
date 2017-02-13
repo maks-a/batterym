@@ -125,6 +125,8 @@ def calculate_virtual_time(samples, threshold_sec):
                 virtual_time += delta
 
         curr['virtual_time_sec'] = virtual_time
+        curr['virtual_time_min'] = virtual_time/60
+        curr['virtual_time_hour'] = virtual_time/(60*60)
         prev = copy.deepcopy(curr)
 
     return samples
@@ -206,12 +208,6 @@ def calculate_history_chart(image_path):
     # cut pauses
     threshold_sec = 15 * 60
     res = calculate_virtual_time(a, threshold_sec)
-
-    # add virtual time
-    for e in res:
-        t = e['virtual_time_sec']
-        e['virtual_time_min'] = t/(60)
-        e['virtual_time_hour'] = t/(60*60)
 
     xoffset = 0
     slope = calculate_slope(res)
