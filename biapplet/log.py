@@ -147,6 +147,17 @@ def separate_by_status(samples):
     return result
 
 
+def median(lst):
+    n = len(lst)
+    if n < 1:
+        return
+    lst = sorted(lst)
+    m = int(n/2)
+    if n % 2 == 1:
+        return lst[m]
+    return (lst[m-1] + lst[m])/2
+
+
 def calculate_slope(src):
     time_limit = 10.0 / 60.0
     a = filter(lambda d: d['virtual_time_hour'] < time_limit, src)
@@ -174,10 +185,7 @@ def calculate_slope(src):
             continue
         k = dy/dx
         ks.append(k)
-    n = len(ks)
-    if n <= 0:
-        return
-    k = sum(ks)/n
+    k = median(ks)
     return k
 
 
@@ -268,7 +276,7 @@ def calculate_history_chart(image_path):
 
 
 def main():
-    calculate_history_chart('test.svg')
+    calculate_history_chart('capacity_history_12h.svg')
 
 
 class LogProcessingTest(unittest.TestCase):
