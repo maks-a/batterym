@@ -26,7 +26,7 @@ class Indicator:
     def __init__(self):
         sec = 1000
         self.battery = battery.Battery()
-        self.battery_new_info = False
+        self.battery.new_params = None
         self.battery.register_callback(self.battery_update_callback)
         self.battery.update()
 
@@ -39,31 +39,35 @@ class Indicator:
         self.log_update_period = timedelta(minutes=5)
         self.log_last_update = datetime.now()
         self.update_battery()
-        self.calculate_chart()
+        self.update_chart()
         gobject.timeout_add(1*sec, self.update_battery)
         gobject.timeout_add(1*sec, self.update_log)
-        gobject.timeout_add(30*sec, self.calculate_chart)
+        gobject.timeout_add(30*sec, self.update_chart)
 
     def battery_update_callback(self, params):
-        self.battery_new_info = True
+        self.battery.new_params = params
 
     def update_battery(self):
         self.battery.update()
-        if self.battery_new_info:
-            self.update_log(is_new_data=True)
+        if self.battery.new_params is not None:
             self.set_icon()
             self.set_label()
-            self.calculate_chart()
-        self.battery_new_info = False
+            self.update_log(is_new_data=True)
+            self.update_chart()
+        self.battery.new_params = None
         return True
 
     def update_log(self, is_new_data=False):
-        current_time = datetime.now()
-        past_time = current_time - self.log_last_update
-        is_update_time = past_time >= self.log_update_period
+        now = datetime.now()
+        time_diff = now - self.log_last_update
+        is_update_time = self.log_update_period <= time_diff
         if is_new_data or is_update_time:
-            self.log_last_update = current_time
             log.battery(self.battery.capacity(), self.battery.status())
+            self.log_last_update = now
+        return True
+
+    def update_chart(self):
+        log.calculate_history_chart(CAPACITY_HISTORY_CHART)
         return True
 
     def get_icon(self):
@@ -95,13 +99,6 @@ class Indicator:
         menu.show_all()
         return menu
 
-    def toggle_theme(self, _):
-        ui.toggle_theme()
-        self.set_icon()
-
-    def quit(self, _):
-        gtk.main_quit()
-
     def battery_monitor(self, _):
         self.window = gtk.Window()
         self.window.set_title('Battery monitor')
@@ -109,23 +106,22 @@ class Indicator:
         self.window.set_size_request(700, 500)
         self.window.set_resizable(False)
         self.window.set_position(gtk.WindowPosition.CENTER)
-
         self.window.set_icon_from_file(BATTERY_MONITOR_ICON)
-
         self.window.vbox = gtk.Box()
         self.window.vbox.set_spacing(5)
         self.window.vbox.set_orientation(gtk.Orientation.VERTICAL)
         self.window.add(self.window.vbox)
-
         self.image = gtk.Image()
         self.image.set_from_file(CAPACITY_HISTORY_CHART)
         self.window.vbox.pack_start(self.image, False, False, 0)
-
         self.window.show_all()
 
-    def calculate_chart(self):
-        log.calculate_history_chart(CAPACITY_HISTORY_CHART)
-        return True
+    def toggle_theme(self, _):
+        ui.toggle_theme()
+        self.set_icon()
+
+    def quit(self, _):
+        gtk.main_quit()
 
     def run_forever(self):
         gtk.main()

@@ -30,6 +30,6 @@ class Battery(observable.Observable):
         # send only changed parameter names
         if self._data != data:
             params = [k for k in data if self.data(k) != data[k]]
-            self.update_callbacks(set(params))
+            self.update_callbacks(params)
 
         self._data = data

@@ -4,7 +4,7 @@
 class Observable(object):
 
     def __init__(self):
-        self.unregister_all_callbacks()
+        self.callbacks = []
 
     def register_callback(self, callback):
         if not callback in self.callbacks:
