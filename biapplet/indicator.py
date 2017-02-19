@@ -4,6 +4,7 @@ import ui
 import log
 import battery
 import resource
+from datetime import datetime, timedelta
 
 import gi
 gi.require_version('Gtk', '3.0')
@@ -23,22 +24,47 @@ CAPACITY_HISTORY_CHART = os.path.abspath('capacity_history_12h.svg')
 class Indicator:
 
     def __init__(self):
+        sec = 1000
         self.battery = battery.Battery()
-        self.battery.register_observer(self)
+        self.battery_new_info = False
+        self.battery.register_callback(self.battery_update_callback)
+        self.battery.update()
+
         self.indicator = appindicator.Indicator.new(
             APPINDICATOR_ID, self.get_icon(), CATEGORY)
         self.indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
         self.indicator.set_menu(self.build_menu())
         self.window = None
 
-        sec = 1000
-        gobject.timeout_add(0.5*sec, self.update)
+        self.log_update_period = timedelta(minutes=5)
+        self.log_last_update = datetime.now()
+        self.update_battery()
+        self.calculate_chart()
+        gobject.timeout_add(1*sec, self.update_battery)
+        gobject.timeout_add(1*sec, self.update_log)
         gobject.timeout_add(30*sec, self.calculate_chart)
 
-        self.calculate_chart()
+    def battery_update_callback(self, params):
+        self.battery_new_info = True
 
-    def get_update(self, message, value):
-        self.calculate_chart()
+    def update_battery(self):
+        self.battery.update()
+        if self.battery_new_info:
+            self.update_log(is_new_data=True)
+            self.set_icon()
+            self.set_label()
+            self.calculate_chart()
+        self.battery_new_info = False
+        return True
+
+    def update_log(self, is_new_data=False):
+        current_time = datetime.now()
+        past_time = current_time - self.log_last_update
+        is_update_time = past_time >= self.log_update_period
+        if is_new_data or is_update_time:
+            self.log_last_update = current_time
+            log.battery(self.battery.capacity(), self.battery.status())
+        return True
 
     def get_icon(self):
         return resource.icon_path(
@@ -92,19 +118,10 @@ class Indicator:
         self.window.add(self.window.vbox)
 
         self.image = gtk.Image()
+        self.image.set_from_file(CAPACITY_HISTORY_CHART)
         self.window.vbox.pack_start(self.image, False, False, 0)
 
         self.window.show_all()
-
-        self.update()
-
-    def update(self):
-        self.battery.update()
-        self.set_icon()
-        self.set_label()
-        if self.window and self.window.props.visible:
-            self.image.set_from_file(CAPACITY_HISTORY_CHART)
-        return True
 
     def calculate_chart(self):
         log.calculate_history_chart(CAPACITY_HISTORY_CHART)
