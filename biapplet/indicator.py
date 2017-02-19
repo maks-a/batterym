@@ -24,7 +24,6 @@ CAPACITY_HISTORY_CHART = os.path.abspath('capacity_history_12h.svg')
 class Indicator:
 
     def __init__(self):
-        sec = 1000
         self.battery = battery.Battery()
         self.battery.new_params = None
         self.battery.register_callback(self.battery_update_callback)
@@ -40,6 +39,7 @@ class Indicator:
         self.log_last_update = datetime.now()
         self.update_battery()
         self.update_chart()
+        sec = 1000
         gobject.timeout_add(1*sec, self.update_battery)
         gobject.timeout_add(1*sec, self.update_log)
         gobject.timeout_add(30*sec, self.update_chart)
