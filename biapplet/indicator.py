@@ -4,6 +4,7 @@ import ui
 import log
 import battery
 import resource
+import plotter
 from datetime import datetime, timedelta
 
 import gi
@@ -67,7 +68,9 @@ class Indicator:
         return True
 
     def update_chart(self):
-        log.calculate_history_chart(CAPACITY_HISTORY_CHART)
+        plotter.caluclate_chart(CAPACITY_HISTORY_CHART)
+        if self.window and self.window.props.visible:
+            self.image.set_from_file(CAPACITY_HISTORY_CHART)
         return True
 
     def get_icon(self):
