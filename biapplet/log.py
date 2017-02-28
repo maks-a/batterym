@@ -37,7 +37,7 @@ def get_battery():
     lines = []
     with open(LOG_BATTERY_FILE, 'r') as f:
         lines = f.readlines()
-    return filter(lambda x: x != None, [parse_log_line(x) for x in lines])
+    return filter(lambda x: x is not None, [parse_log_line(x) for x in lines])
 
 
 class LogProcessingTest(unittest.TestCase):
