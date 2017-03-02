@@ -1,7 +1,6 @@
 #!/usr/bin/python
 import re
 import datetime
-import unittest
 
 
 LOG_BATTERY_FILE = 'logs/capacity'
@@ -14,40 +13,32 @@ def battery(capacity, status):
         f.write(line)
 
 
-def to_datetime(dt_iso):
-    # 2017-01-09T23:02:12.315436
-    dt, _, us = dt_iso.partition('.')
-    dt = datetime.datetime.strptime(dt, '%Y-%m-%dT%H:%M:%S')
-    us = int(us.rstrip("Z"), 10)
-    return dt + datetime.timedelta(microseconds=us)
-
-
-def parse_log_line(line):
-    m = re.search(
-        '(\d+-\d+-\d+T\d+:\d+:\d+\.\d*)\s+(\d+)%\s+(\w+)', line)
+def parse_log_line(line, prog):
+    m = prog.match(line)
     if m:
         return {
-            'time': to_datetime(m.group(1)),
-            'capacity': float(m.group(2)),
-            'status': m.group(3)
+            'time': datetime.datetime(
+                int(m.group('Y')), int(m.group('m')), int(m.group('d')),
+                int(m.group('H')), int(m.group('M')), int(m.group('S'))),
+            'capacity': float(m.group('cap')),
+            'status': m.group('stat')
         }
 
 
-def get_battery():
-    lines = []
-    with open(LOG_BATTERY_FILE, 'r') as f:
+def get_lines(fname):
+    with open(fname, 'r') as f:
         lines = f.readlines()
-    return filter(lambda x: x is not None, [parse_log_line(x) for x in lines])
+        return lines
 
 
-class LogProcessingTest(unittest.TestCase):
+def parse_log_lines(lines):
+    Ymd = '(?P<Y>\d+)-(?P<m>\d+)-(?P<d>\d+)'
+    HMSus = '(?P<H>\d+):(?P<M>\d+):(?P<S>\d+)\.(?P<us>\d*)'
+    pattern = Ymd + 'T' + HMSus + '\s+(?P<cap>\d+)%\s+(?P<stat>\w+)'
+    prog = re.compile(pattern)
+    return [parse_log_line(lines, prog) for lines in lines]
 
-    def test_to_datetime(self):
-        self.assertEqual(
-            to_datetime('2017-01-09T23:02:12.315436'),
-            datetime.datetime(2017, 1, 9, 23, 2, 12, 315436))
 
-
-if __name__ == '__main__':
-    # main()
-    unittest.main()
+def get_battery():
+    lines = get_lines(LOG_BATTERY_FILE)
+    return filter(lambda line: line is not None, parse_log_lines(lines))
