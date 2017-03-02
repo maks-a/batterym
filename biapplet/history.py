@@ -1,6 +1,5 @@
 #!/usr/bin/python
 import log
-import copy
 
 
 def add_relative_time(data):
@@ -11,10 +10,12 @@ def add_relative_time(data):
 
 
 def add_virtual_time(samples, threshold_sec):
-    prev = None
     virtual_time = 0
-    for curr in samples:
-        if prev is not None:
+    n = len(samples)
+    for i in xrange(0, n):
+        curr = samples[i]
+        if i > 0:
+            prev = samples[i - 1]
             t1 = prev['relative_time_sec']
             t2 = curr['relative_time_sec']
             delta = t2 - t1
@@ -23,7 +24,6 @@ def add_virtual_time(samples, threshold_sec):
             if not is_overtime and not is_status_changed:
                 virtual_time += delta
         curr['virtual_time_hour'] = virtual_time/(60*60)
-        prev = copy.deepcopy(curr)
     return samples
 
 
