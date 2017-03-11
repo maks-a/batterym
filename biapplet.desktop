@@ -1,0 +1,9 @@
+[Desktop Entry]
+Version=0.1
+Name=Battery Indicator Application
+Comment=View state of battery
+Exec=biapplet
+Icon=/usr/share/icons/ubuntu-mono-dark/status/22/battery-100.svg
+Type=Application
+Terminal=false
+Categories=GNOME;GTK;Utility;
