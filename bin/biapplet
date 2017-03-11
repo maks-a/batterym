@@ -1,0 +1,11 @@
+#!/usr/bin/python
+import sys
+from os.path import abspath, dirname, join
+
+try:
+    import biapplet
+except ImportError:
+    sys.path.append(abspath(join(dirname(__file__), '..')))
+
+from biapplet import biapplet
+biapplet.run()

@@ -10,8 +10,8 @@ setup(name="biapplet",
       author='',
       author_email='',
       license='',
-      packages=[''],
+      packages=['biapplet'],
       data_files=[
           ('/usr/share/batterym', ['biapplet.desktop'])],
-      scripts=["biapplet/biapplet.py"]
+      scripts=["bin/biapplet"]
       )
