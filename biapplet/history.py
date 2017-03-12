@@ -12,6 +12,7 @@ def add_relative_time(data):
 def add_virtual_time(samples, threshold_sec):
     virtual_time = 0
     n = len(samples)
+    sequence_id = 0
     for i in xrange(0, n):
         curr = samples[i]
         if i > 0:
@@ -23,17 +24,20 @@ def add_virtual_time(samples, threshold_sec):
             is_status_changed = curr['status'] != prev['status']
             if not is_overtime and not is_status_changed:
                 virtual_time += delta
+            else:
+                sequence_id += 1
         curr['virtual_time_hour'] = virtual_time/(60*60)
+        curr['sequence_id'] = sequence_id
     return samples
 
 
-def separate_by_status(samples):
+def separate_by_sequence_id(samples):
     result = []
     chunk = []
     prev = None
     for curr in samples:
         if prev is not None:
-            if curr['status'] != prev['status']:
+            if curr['sequence_id'] != prev['sequence_id']:
                 result.append(chunk)
                 chunk = []
         chunk.append(curr)
@@ -85,7 +89,7 @@ class History:
         # shift
         for e in data:
             e['virtual_time_hour'] += self._plot_xoffset
-        data = separate_by_status(data)
+        data = separate_by_sequence_id(data)
         # exptract plot data
         self._plot_data = [extract_plot_data(batch) for batch in data]
 

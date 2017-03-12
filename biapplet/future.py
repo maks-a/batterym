@@ -1,6 +1,6 @@
 #!/usr/bin/python
 from __future__ import division
-from history import separate_by_status
+from history import separate_by_sequence_id
 
 
 def median(lst):
@@ -73,7 +73,7 @@ class Future:
     def current_status_data(self):
         time_limit_hour = 10.0 / 60.0
         data = self._history.get_recent_history(time_limit_hour)
-        batches = separate_by_status(data)
+        batches = separate_by_sequence_id(data)
         return batches[0] if len(batches) > 0 else None
 
     def calculate_slope(self, data):
