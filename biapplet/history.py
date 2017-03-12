@@ -94,4 +94,4 @@ class History:
         self._plot_data = [extract_plot_data(batch) for batch in data]
 
     def plot_data(self, status):
-        return [x for x in self._plot_data if x.get('status') == status]
+        return [x for x in self._plot_data if x.get('status') in status]

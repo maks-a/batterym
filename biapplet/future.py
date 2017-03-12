@@ -68,7 +68,7 @@ class Future:
         return self._battery_life
 
     def plot_data(self, status):
-        return [x for x in self._plot_data if x.get('status') == status]
+        return [x for x in self._plot_data if x.get('status') in status]
 
     def current_status_data(self):
         time_limit_hour = 10.0 / 60.0

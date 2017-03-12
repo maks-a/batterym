@@ -15,10 +15,10 @@ def extract_plot_data(history, future):
     history.set_plot_data_xlimit(hours=12.0)
     history.calculate_plot_data()
     return {
-        'history charging': history.plot_data('Charging'),
-        'history discharging': history.plot_data('Discharging'),
-        'future charging': future.plot_data('Charging'),
-        'future discharging': future.plot_data('Discharging'),
+        'history charging': history.plot_data(['Charging', 'Full']),
+        'history discharging': history.plot_data(['Discharging']),
+        'future charging': future.plot_data(['Charging', 'Full']),
+        'future discharging': future.plot_data(['Discharging']),
     }
 
 
