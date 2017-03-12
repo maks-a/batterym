@@ -247,7 +247,7 @@ class Chart:
             self.texts.append(text)
 
     def add(self, ys, xs=None, stroke_width=1, stroke='black',
-            fill='none', stroke_dash=False):
+            fill='none', stroke_dash=False, drop=None):
         ny = len(ys)
         if xs is None:
             xs = range(0, ny)
@@ -256,6 +256,15 @@ class Chart:
         ys = ys[:n]
 
         points = [[xs[i], ys[i]] for i in xrange(0, n)]
+
+        drops = []
+        if drop is not None and len(points) >= 1:
+            first = points[0]
+            last = points[-1]
+            drops.append(first)
+            drops.append([first[0], 0])
+            drops.append([last[0], 0])
+            drops.append(last)
 
         if fill != 'none':
             self.is_axes_on_top = True
@@ -275,6 +284,15 @@ class Chart:
                 stroke_dash = '10, 5'
             data['atr']['stroke-dasharray'] = stroke_dash
         self.traces.append(data)
+
+        if len(drops) > 0:
+            data = {}
+            data['canvas'] = drops
+            data['atr'] = {}
+            data['atr']['fill'] = 'none'
+            data['atr']['stroke-width'] = 1
+            data['atr']['stroke'] = get_color(drop)
+            self.traces.append(data)
 
     def canvas_to_points(self, canvas):
         w = self.width - self.padding_left - self.padding_right

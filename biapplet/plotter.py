@@ -24,8 +24,9 @@ def extract_plot_data(history, future):
 
 def create_chart(plot_data, image_path):
     blue = '#2e7eb3'
+    light_blue = '#81b1d1'
     green = '#4aa635'
-    white = '#ffffff'
+    light_green = '#7db471'
     ylabels = ['0 %', '25 %', '50 %', '75%', '100 %']
     xlabels = [0, 2, 4, 6, 8, 10, '12 hours']
     plot = Chart(xlabels=xlabels, ylabels=ylabels,
@@ -33,10 +34,12 @@ def create_chart(plot_data, image_path):
     plot.set_minimal_canvas([0, 0], [12, 100])
 
     for p in plot_data['history charging']:
-        plot.add(xs=p['xs'], ys=p['ys'], stroke=white, fill=green)
+        plot.add(xs=p['xs'], ys=p['ys'], stroke=green, fill=green,
+                 drop=light_green)
 
     for p in plot_data['history discharging']:
-        plot.add(xs=p['xs'], ys=p['ys'], stroke=white, fill=blue)
+        plot.add(xs=p['xs'], ys=p['ys'], stroke=blue, fill=blue,
+                 drop=light_blue)
 
     for p in plot_data['future charging']:
         plot.add(xs=p['xs'], ys=p['ys'], stroke=green, stroke_dash=True)
