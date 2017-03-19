@@ -3,7 +3,11 @@
 ## Requirements
 
 - `sudo apt-get install --reinstall python-gi`
+
+## Install
+
 - `sudo python setup.py install`
+- add `batterym` to Startup Applications
 
 ## Links
 
