@@ -1,16 +1,28 @@
 #!/usr/bin/python
 import re
+import os
 import datetime
 
 
-LOG_BATTERY_FILE = 'batterym/logs/capacity'
+LOG_BATTERY_FILE = '/var/lib/batterym/logs/capacity'
+
+
+def create_missing_dirs(filename):
+    basedir = os.path.dirname(filename)
+    if not os.path.exists(basedir):
+        os.makedirs(basedir)
+
+
+def append_to_file(filename, line):
+    create_missing_dirs(filename)
+    with open(filename, 'a') as f:
+        f.write(line)
 
 
 def battery(capacity, status):
     t = datetime.datetime.now().isoformat()
     line = '{0} {1}% {2}\n'.format(t, capacity, status)
-    with open(LOG_BATTERY_FILE, 'a') as f:
-        f.write(line)
+    append_to_file(LOG_BATTERY_FILE, line)
 
 
 def parse_log_line(line, prog):

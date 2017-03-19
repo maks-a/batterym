@@ -12,6 +12,10 @@ setup(name="batterym",
       license='',
       packages=['batterym'],
       data_files=[
-          ('/usr/share/batterym', ['batterym.desktop'])],
+          ('/usr/share/batterym', ['batterym.desktop']),
+          ('/var/lib/batterym/logs', ['logs/capacity'])
+          ],
       scripts=["bin/batterym"]
       )
+
+os.chmod('/var/lib/batterym/logs/capacity', 0777)
