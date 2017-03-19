@@ -1,5 +1,8 @@
 #!/usr/bin/python
 import log
+# import scipy.ndimage
+# import scipy.signal
+# import numpy as np
 
 
 def add_relative_time(data):
@@ -29,6 +32,25 @@ def add_virtual_time(samples, threshold_sec):
         curr['virtual_time_hour'] = virtual_time/(60*60)
         curr['sequence_id'] = sequence_id
     return samples
+
+
+# def smooth_virtual_time(samples):
+#     chunks = separate_by_sequence_id(samples)
+#     k = 5
+#     modes = ['reflect', 'constant', 'nearest', 'mirror', 'wrap']
+#     for chunk in chunks:
+#         ys = [x['capacity'] for x in chunk]
+#         #xs = [x['virtual_time_hour'] for x in chunk]
+#         ys2 = scipy.ndimage.gaussian_filter(ys, k)
+#         #ys2 = scipy.signal.savgol_filter(ys, k, 2)
+#         n = len(ys2)
+#         if n < 2*k:
+#             continue
+#         for i in xrange(0, n):
+#             e = chunk[i]
+#             e['capacity_raw'] = e['capacity']
+#             e['capacity'] = ys2[i]
+#     return [item for sublist in chunks for item in sublist]
 
 
 def separate_by_sequence_id(samples):
@@ -65,6 +87,7 @@ class History:
         data = add_relative_time(log_data)
         data = sorted(data, key=lambda e: e['relative_time_sec'])
         data = add_virtual_time(data, threshold_sec)
+        #data = smooth_virtual_time(data)
         self._data = data
         self._plot_data = []
         self._plot_xoffset = 0
