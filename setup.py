@@ -5,7 +5,7 @@ from distutils.core import setup
 
 setup(name="batterym",
       version="0.1.0",
-      description="Battery Indicator Application for Ubuntu",
+      description="Battery Monitor for Ubuntu",
       url='',
       author='',
       author_email='',
