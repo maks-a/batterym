@@ -2,8 +2,8 @@
 
 ## Requirements
 
-`sudo apt-get install --reinstall python-gi`
-`sudo python setup.py install`
+- `sudo apt-get install --reinstall python-gi`
+- `sudo python setup.py install`
 
 ## Links
 
