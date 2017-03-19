@@ -103,21 +103,23 @@ class Indicator:
         return menu
 
     def battery_monitor(self, _):
-        self.window = gtk.Window()
-        self.window.set_title('Battery monitor')
-        self.window.set_border_width(10)
-        self.window.set_size_request(700, 500)
-        self.window.set_resizable(False)
-        self.window.set_position(gtk.WindowPosition.CENTER)
-        self.window.set_icon_from_file(BATTERY_MONITOR_ICON)
-        self.window.vbox = gtk.Box()
-        self.window.vbox.set_spacing(5)
-        self.window.vbox.set_orientation(gtk.Orientation.VERTICAL)
-        self.window.add(self.window.vbox)
-        self.image = gtk.Image()
-        self.image.set_from_file(CAPACITY_HISTORY_CHART)
-        self.window.vbox.pack_start(self.image, False, False, 0)
-        self.window.show_all()
+        if self.window is None:
+            self.window = gtk.Window()
+        if not self.window.props.visible:
+            self.window.set_title('Battery monitor')
+            self.window.set_border_width(10)
+            self.window.set_size_request(700, 500)
+            self.window.set_resizable(False)
+            self.window.set_position(gtk.WindowPosition.CENTER)
+            self.window.set_icon_from_file(BATTERY_MONITOR_ICON)
+            self.window.vbox = gtk.Box()
+            self.window.vbox.set_spacing(5)
+            self.window.vbox.set_orientation(gtk.Orientation.VERTICAL)
+            self.window.add(self.window.vbox)
+            self.image = gtk.Image()
+            self.image.set_from_file(CAPACITY_HISTORY_CHART)
+            self.window.vbox.pack_start(self.image, False, False, 0)
+            self.window.show_all()
 
     def toggle_theme(self, _):
         ui.toggle_theme()
