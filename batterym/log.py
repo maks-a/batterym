@@ -3,7 +3,7 @@ import re
 import datetime
 
 
-LOG_BATTERY_FILE = 'logs/capacity'
+LOG_BATTERY_FILE = 'batterym/logs/capacity'
 
 
 def battery(capacity, status):
