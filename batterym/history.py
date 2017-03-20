@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import log
+#import unittest
 
 
 def add_relative_time(data):
@@ -31,48 +32,105 @@ def add_virtual_time(samples, threshold_sec):
     return samples
 
 
-def running_mean(l, N):
-    sum = 0
-    result = [0 for x in l]
+# def running_mean(l, N):
+#     sum = 0
+#     result = [0 for x in l]
 
-    k = len(l)
-    N = min(k, N)
-    for i in xrange(0, N):
-        sum += l[i]
-        result[i] = sum / (i+1)
+#     k = len(l)
+#     N = min(k, N)
+#     for i in xrange(0, N):
+#         sum += l[i]
+#         result[i] = sum / (i+1)
 
-    for i in range(N, k):
-        sum = sum - l[i-N] + l[i]
-        result[i] = sum / N
+#     for i in range(N, k):
+#         sum = sum - l[i-N] + l[i]
+#         result[i] = sum / N
 
-    return result
+#     return result
 
 
-def my_filter(a, w):
-    n = len(a)
-    k = int((w-1) / 2)
-    result = [0 for x in a]
-    for i in xrange(0, n):
-        l = max(0, i-k)
-        r = min(n-1, i+k)
-        d = min(i-l, r-i)
-        result[i] = float(a[i-d] + a[i+d]) / 2.0
+# def my_filter(a, w):
+#     n = len(a)
+#     k = int((w-1) / 2)
+#     result = [0 for x in a]
+#     for i in xrange(0, n):
+#         l = max(0, i-k)
+#         r = min(n-1, i+k)
+#         d = min(i-l, r-i)
+#         result[i] = float(a[i-d] + a[i+d]) / 2.0
 
-    return result
+#     return result
+
+
+# def my_filter2(a):
+#     result = a[:]
+#     n = len(result)
+#     i = -1
+#     while i < n:
+#         i += 1
+#         for j in xrange(i+1, n):
+#             if a[i] == a[j]:
+#                 continue
+#             if j-i > 1:
+#                 for k in xrange(i, j):
+#                     t = (k-i) / (1.0*(j-i))
+#                     result[k] = (1-t)*a[i] + t*a[j]
+#                 result[j-1] = a[j]
+#             i = j-1
+#             break
+#     return result
+
+
+# def find_duplicate_idxs(a):
+#     result = []
+#     n = len(a)
+#     i = -1
+#     while i < n:
+#         i += 1
+#         for j in xrange(i+1, n):
+#             if a[i] == a[j]:
+#                 continue
+#             if j-i > 1:
+#                 for k in xrange(i+1, j):
+#                     result.append(k)
+#             i = j-1
+#             break
+#     return result
 
 
 def smooth_virtual_time(samples):
-    chunks = separate_by_sequence_id(samples)
-    for chunk in chunks:
-        ys = [x['capacity'] for x in chunk]
-        ys = my_filter(ys, 7)
-        # ys = running_mean(ys, 3)
-        n = len(ys)
-        for i in xrange(0, n):
-            e = chunk[i]
-            e['capacity_raw'] = e['capacity']
-            e['capacity'] = ys[i]
-    return [item for sublist in chunks for item in sublist]
+    return samples
+#     chunks = separate_by_sequence_id(samples)
+#     k = len(chunks)
+#     for j in xrange(0, k):
+#         chunk = chunks[j]
+#         ys = [x['capacity'] for x in chunk]
+#         idxs = find_duplicate_idxs(ys)
+#         # ys.reverse()
+#         # ys = my_filter2(ys)
+#         #ys = my_filter2(ys)
+#         # ys.reverse()
+#         #ys = my_filter(ys, 9)
+#         # ys = my_filter(ys, 9)
+#         #ys = running_mean(ys, 3)
+#         new_chunk = []
+#         n = len(chunk)
+#         for i in xrange(0, n):
+#             if i not in idxs:
+#                 new_chunk.append(chunk[i])
+#         chunks[j] = new_chunk
+
+#         # chunk = chunks[j]
+#         # ys = [x['capacity'] for x in chunk]
+#         # ys = my_filter(ys, 5)
+#         # n = len(ys)
+#         # for i in xrange(0, n):
+#         #     e = chunk[i]
+#         #     e['capacity_raw'] = e['capacity']
+#         #     e['capacity'] = ys[i]
+#         # chunks[j] = chunk
+
+#     return [item for sublist in chunks for item in sublist]
 
 
 def separate_by_sequence_id(samples):
@@ -193,5 +251,20 @@ def main():
     plot.render_to_svg(image_path)
 
 
+# class TestStringMethods(unittest.TestCase):
+
+#     def test_my_filter2(self):
+#         self.assertEqual(my_filter2([]), [])
+#         self.assertEqual(my_filter2([1]), [1])
+#         self.assertEqual(my_filter2([1, 2]), [1, 2])
+#         self.assertEqual(my_filter2([1, 2, 3]), [1, 2, 3])
+#         self.assertEqual(my_filter2([1, 1, 3]), [1, 2, 3])
+#         self.assertEqual(my_filter2([1, 1, 3, 3]), [1, 2, 3, 3])
+#         self.assertEqual(my_filter2([1, 1, 3, 3, 5]), [1, 2, 3, 4, 5])
+#         self.assertEqual(my_filter2([1, 1, 2, 2, 3]), [1, 1.5, 2, 2.5, 3])
+
+
 if __name__ == '__main__':
-    main()
+    #main()
+    #unittest.main()
+    pass

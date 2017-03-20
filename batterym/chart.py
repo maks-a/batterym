@@ -108,7 +108,7 @@ class Chart:
         self.ylabels = ylabels
         self.is_axes_on_top = False
 
-        #self.add_frame()  # TODO: remove
+        # self.add_frame()  # TODO: remove
         self.add_background()
         self.add_labels()
         self.add_axes()
@@ -327,6 +327,11 @@ class Chart:
         pts = ' '.join(coords)
         return '\tpoints="{0}"'.format(pts)
 
+    def render_cirle(self, point, color='red'):
+        p = self.to_real_coords(point)
+        return '<circle cx="{0}" cy="{1}" r="{2}" fill="{3}"/>'.format(
+            p[0], p[1], 1, color)
+
     def render_trace(self, trace):
         res = []
         res.append('<polyline')
@@ -345,6 +350,10 @@ class Chart:
                 res.append('\t{0}=\"{1}\"'.format(a, atr[a]))
 
         res.append('/>')
+
+        # for p in points:
+        #     res.append(self.render_cirle(p, color))
+
         return res
 
     def render_text(self, text):
