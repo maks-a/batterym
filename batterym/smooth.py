@@ -59,6 +59,9 @@ def run_test(filename):
 
     ax.plot(x, y, '+:', color='#aaaaaa')
 
+    x2, y2 = steps_filter(x, y)
+    ax.plot(x2, y2, '-o', color='red')
+
     # modes = ['reflect', 'constant', 'nearest', 'mirror', 'wrap']
     # ax.plot(x, scipy.ndimage.gaussian_filter(y, 5, mode=modes[2]), color='red')
 
