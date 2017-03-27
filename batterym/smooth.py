@@ -59,12 +59,11 @@ def eliminate(x, y, index_extractor):
     return new_x, new_y
 
 
-
 def steps_filter(x, y):
     x, y = eliminate(x, y, duplicate_idxs)
     # dx = 10.0 / 60.0
     # x, y = eliminate(x, y, lambda x, y: steep(x, y, dx))
-    x, y = eliminate(x, y, dilute)
+    # x, y = eliminate(x, y, dilute)
     return x, y
 
 
