@@ -67,16 +67,45 @@ def steps_filter(x, y):
     return x, y
 
 
+def running_mean(l, N):
+    sum = 0
+    result = [0 for x in l]
+
+    k = len(l)
+    N = min(k, N)
+    for i in xrange(0, N):
+        sum += l[i]
+        result[i] = sum / (i+1)
+
+    for i in range(N, k):
+        sum = sum - l[i-N] + l[i]
+        result[i] = sum / N
+
+    return result
+
+
 def run_test(filename):
     x, y = np.loadtxt(filename, skiprows=0).T
-    x = list(x)
+
+    x = list([-e for e in x])
     y = list(y)
-    x = [-e for e in x]
+    x.reverse()
+    y.reverse()
+    f = interp1d(x, y, kind='linear')
+
+    dx = 1.0 / 60.0
+    xmin = min(x)
+    xmax = max(x)
+    samps = int((xmax - xmin) / dx)
+    x2 = np.linspace(xmin, xmax, samps)
+    y2 = f(x2)
+    y2 = running_mean(y2, 15)
+
     fig, ax = plt.subplots()
 
     ax.plot(x, y, 'x:', color='red')
 
-    x2, y2 = steps_filter(x, y)
+    # x2, y2 = steps_filter(x, y)
     ax.plot(x2, y2, '-o', color='blue')
 
     # modes = ['reflect', 'constant', 'nearest', 'mirror', 'wrap']
