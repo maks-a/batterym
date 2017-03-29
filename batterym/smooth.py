@@ -111,6 +111,8 @@ def run_test(filename):
     # modes = ['reflect', 'constant', 'nearest', 'mirror', 'wrap']
     # ax.plot(x, scipy.ndimage.gaussian_filter(y, 5, mode=modes[2]), color='red')
 
+    mng = plt.get_current_fig_manager()
+    mng.resize(*mng.window.maxsize())
     plt.show()
 
 
