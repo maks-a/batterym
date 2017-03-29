@@ -84,7 +84,8 @@ def steps_filter(x, y):
     dx = 5.0 / 60.0
     x5 = linspace(xmin, xmax, dx)
     y5 = interpolate_linear(x2, y4, x5)
-    return x5, y5
+    y6 = interpolate_linear(x5, y5, x)
+    return x, y6
 
 
 ########################################################################
