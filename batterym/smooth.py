@@ -1,9 +1,9 @@
 #!/usr/bin/python
 import numpy as np
 import matplotlib.pyplot as plt
-import scipy.ndimage
-from scipy.optimize import curve_fit
-from scipy.interpolate import interp1d
+# import scipy.ndimage
+# from scipy.optimize import curve_fit
+# from scipy.interpolate import interp1d
 import unittest
 
 
@@ -27,7 +27,7 @@ def dilute(x, y):
     idxs = []
     n = len(x)
     for i in xrange(n):
-        if i == 0 or i+1 == n or i%2!=0:
+        if i == 0 or i+1 == n or i % 2 != 0:
             continue
         idxs.append(i)
     return idxs
@@ -84,6 +84,41 @@ def running_mean(l, N):
     return result
 
 
+def is_within(a, lo, hi):
+    return lo <= a and a <= hi
+
+
+def interpolate(x, y, new_x):
+    n = len(x)
+    if n < 2:
+        return []
+    new_n = len(new_x)
+    new_y = [None] * new_n
+    j = 0
+    for i in xrange(1, n):
+        while j < new_n and new_x[j] < x[i-1]:
+            j += 1
+        if j >= new_n:
+            break
+        dx = x[i] - x[i-1]
+        dy = y[i] - y[i-1]
+        if dx == 0:
+            w = 0
+        else:
+            w = 1.0 * dy / dx
+        while j < new_n and is_within(new_x[j], x[i-1], x[i]):
+            dxx = new_x[j] - x[i-1]
+            dyy = w * dxx
+            new_y[j] = y[i-1] + dyy
+            j += 1
+    return new_y
+
+
+def linspace(lo, hi, sz):
+    step = 1.0 * (hi-lo) / sz
+    return [lo+i*step for i in xrange(0, sz+1)]
+
+
 def run_test(filename):
     x, y = np.loadtxt(filename, skiprows=0).T
 
@@ -91,15 +126,17 @@ def run_test(filename):
     y = list(y)
     x.reverse()
     y.reverse()
-    f = interp1d(x, y, kind='linear')
 
-    dx = 1.0 / 60.0
+    dx = 10.0 / 60.0
     xmin = min(x)
     xmax = max(x)
     samps = int((xmax - xmin) / dx)
-    x2 = np.linspace(xmin, xmax, samps)
-    y2 = f(x2)
-    y2 = running_mean(y2, 15)
+    #x2 = np.linspace(xmin, xmax, samps)
+    #f = interp1d(x, y, kind='linear')
+    #y2 = f(x2)
+    x2 = linspace(xmin, xmax, samps)
+    y2 = interpolate(x, y, x2)
+    #y2 = running_mean(y2, 3)
 
     fig, ax = plt.subplots()
 
@@ -127,7 +164,7 @@ def main():
 
 class MyTest(unittest.TestCase):
 
-    def test1(self):
+    def test_duplicate_idxs(self):
         self.assertEqual(duplicate_idxs(None, []), [])
         self.assertEqual(duplicate_idxs(None, [1]), [])
         self.assertEqual(duplicate_idxs(None, [1, 1]), [])
@@ -136,7 +173,19 @@ class MyTest(unittest.TestCase):
         self.assertEqual(duplicate_idxs(None, [1, 1, 1, 2, 2]), [1])
         self.assertEqual(duplicate_idxs(None, [1, 1, 1, 2, 2, 2]), [1, 4])
 
+    def test_interpolate(self):
+        self.assertEqual(interpolate([2, 4], [2, 5], []), [])
+        self.assertEqual(interpolate([2, 4], [2, 5], [3]), [3.5])
+        self.assertEqual(interpolate([2, 4], [2, 5], [2, 3, 4]), [2, 3.5, 5])
+        self.assertEqual(interpolate([2, 2], [5, 5], []), [])
+        self.assertEqual(interpolate([2, 2], [5, 5], [2]), [5])
+        self.assertEqual(interpolate([2, 2], [2, 5], [2]), [2])
+        self.assertEqual(interpolate([1], [2], []), [])
+        self.assertEqual(interpolate([1], [2], [3]), [])
+        self.assertEqual(interpolate([1], [2], [3, 4]), [])
+        self.assertEqual(interpolate([-10, -8], [10, 20], [-9]), [15])
+
 
 if __name__ == '__main__':
-    main()
-    #unittest.main()
+    # main()
+    unittest.main()
