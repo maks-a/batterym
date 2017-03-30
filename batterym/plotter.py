@@ -51,7 +51,7 @@ def create_chart(plot_data, image_path):
 
 
 def caluclate_chart(image_path):
-    history = History(log.get_battery())
+    history = History(log.get_battery(), smoothing=True)
     future = Future(history)
     plot_data = extract_plot_data(history, future)
     # life_time = datetime.timedelta(
