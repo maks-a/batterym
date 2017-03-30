@@ -37,12 +37,15 @@ def interpolate_linear(x, y, new_x):
     return new_y
 
 
+def interpolate_point(segment_start, segment_end, p):
+    return (1.0 - p) * segment_start + p * segment_end
+
+
 def linspace(lo, hi, step):
     sz = int((hi - lo) / step)
     if sz == 0:
         return []
-    step = 1.0 * (hi-lo) / sz
-    return [lo+i*step for i in xrange(0, sz+1)]
+    return [interpolate_point(lo, hi, 1.0*i/sz) for i in xrange(0, sz+1)]
 
 
 def tangent_filter(a, w):
