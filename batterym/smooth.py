@@ -90,7 +90,7 @@ def steps_filter(x, y):
     y3 = tangent_filter(y2, 10)
     y4 = scale_dif(y2, y3, 0.5)
 
-    dx = 5.0 / 60.0
+    dx = 10.0 / 60.0
     x5 = linspace(xmin, xmax, dx)
     y5 = interpolate_linear(x2, y4, x5)
     y6 = interpolate_linear(x5, y5, x)
