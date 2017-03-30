@@ -35,11 +35,11 @@ def create_chart(plot_data, image_path):
 
     for p in plot_data['history charging']:
         plot.add(xs=p['xs'], ys=p['ys'], stroke=green, fill=green,
-                 drop=light_green)
+                 drop=green)
 
     for p in plot_data['history discharging']:
         plot.add(xs=p['xs'], ys=p['ys'], stroke=blue, fill=blue,
-                 drop=light_blue)
+                 drop=blue)
 
     for p in plot_data['future charging']:
         plot.add(xs=p['xs'], ys=p['ys'], stroke=green, stroke_dash=True)
