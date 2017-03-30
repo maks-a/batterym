@@ -39,6 +39,8 @@ def interpolate_linear(x, y, new_x):
 
 def linspace(lo, hi, step):
     sz = int((hi - lo) / step)
+    if sz == 0:
+        return []
     step = 1.0 * (hi-lo) / sz
     return [lo+i*step for i in xrange(0, sz+1)]
 
@@ -71,6 +73,10 @@ def scale_dif(y1, y2, k):
 
 
 def steps_filter(x, y):
+    xn = len(x)
+    yn = len(y)
+    if xn < 3 or yn < 3:
+        return x, y
     xmin = min(x)
     xmax = max(x)
 
@@ -85,6 +91,8 @@ def steps_filter(x, y):
     x5 = linspace(xmin, xmax, dx)
     y5 = interpolate_linear(x2, y4, x5)
     y6 = interpolate_linear(x5, y5, x)
+    if yn != len(y6):
+        return x, y
     return x, y6
 
 
@@ -128,6 +136,12 @@ class MyTest(unittest.TestCase):
         self.assertEqual(interpolate_linear([1], [2], [3]), [])
         self.assertEqual(interpolate_linear([1], [2], [3, 4]), [])
         self.assertEqual(interpolate_linear([-10, -8], [10, 20], [-9]), [15])
+
+    def test_linspace(self):
+        self.assertEqual(linspace(2, 5, 3), [2, 5])
+        self.assertEqual(linspace(2, 5, 1.5), [2, 3.5, 5])
+        self.assertEqual(linspace(2, 5, 1), [2, 3, 4, 5])
+        self.assertEqual(linspace(2, 5, 4), [])
 
 
 if __name__ == '__main__':
