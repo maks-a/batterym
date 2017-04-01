@@ -15,9 +15,11 @@ def find_resources(resource_dir):
 def chmod(folder, mod):
     files = os.listdir(folder)
     for fname in files:
+        fname = os.path.join(folder, fname)
         if not os.path.isfile(fname) :
             continue
         os.chmod(fname, mod)
+        print 'changing mode of {0} to {1}'.format(fname, mod)
 
 
 setup(name='batterym',
