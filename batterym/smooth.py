@@ -127,7 +127,7 @@ def main():
 
 class MyTest(unittest.TestCase):
 
-    def test_interpolate(self):
+    def test_interpolate_linear(self):
         self.assertEqual(interpolate_linear([2, 4], [2, 5], []), [])
         self.assertEqual(interpolate_linear([2, 4], [2, 5], [3]), [3.5])
         self.assertEqual(interpolate_linear(
@@ -145,6 +145,18 @@ class MyTest(unittest.TestCase):
         self.assertEqual(linspace(2, 5, 1.5), [2, 3.5, 5])
         self.assertEqual(linspace(2, 5, 1), [2, 3, 4, 5])
         self.assertEqual(linspace(2, 5, 4), [])
+
+    def test_subtract(self):
+        self.assertEqual(subtract([], []), [])
+        self.assertEqual(subtract([1], [1]), [0])
+        self.assertEqual(subtract([5, 6, 7], [1, 2, 3]), [4, 4, 4])
+
+    def test_scale(self):
+        self.assertEqual(scale([], 0), [])
+        self.assertEqual(scale([], 1), [])
+        self.assertEqual(scale([2], 1), [2])
+        self.assertEqual(scale([2], 0), [0])
+        self.assertEqual(scale([1, 2, 3], 2), [2, 4, 6])
 
 
 if __name__ == '__main__':
