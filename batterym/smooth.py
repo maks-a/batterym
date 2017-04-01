@@ -100,29 +100,29 @@ def steps_filter(x, y):
 
 
 ########################################################################
-def run_test(filename):
-    x, y = np.loadtxt(filename, skiprows=0).T
-    x = list([-e for e in x])
-    y = list(y)
-    x.reverse()
-    y.reverse()
-    x5, y5 = steps_filter(x, y)
+# def run_test(filename):
+#     x, y = np.loadtxt(filename, skiprows=0).T
+#     x = list([-e for e in x])
+#     y = list(y)
+#     x.reverse()
+#     y.reverse()
+#     x5, y5 = steps_filter(x, y)
 
-    fig, ax = plt.subplots()
-    ax.plot(x, y, 'x:', color='red')
-    ax.plot(x5, y5, '-o', color='blue')
-    mng = plt.get_current_fig_manager()
-    mng.resize(*mng.window.maxsize())
-    plt.show()
+#     fig, ax = plt.subplots()
+#     ax.plot(x, y, 'x:', color='red')
+#     ax.plot(x5, y5, '-o', color='blue')
+#     mng = plt.get_current_fig_manager()
+#     mng.resize(*mng.window.maxsize())
+#     plt.show()
 
 
-def main():
-    folder = './test/chart/'
-    run_test(folder + 'data1.txt')
-    run_test(folder + 'data2.txt')
-    run_test(folder + 'data3.txt')
-    run_test(folder + 'data4.txt')
-    run_test(folder + 'data5.txt')
+# def main():
+#     folder = './test/chart/'
+#     run_test(folder + 'data1.txt')
+#     run_test(folder + 'data2.txt')
+#     run_test(folder + 'data3.txt')
+#     run_test(folder + 'data4.txt')
+#     run_test(folder + 'data5.txt')
 
 
 class MyTest(unittest.TestCase):
