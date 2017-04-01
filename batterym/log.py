@@ -1,10 +1,12 @@
 #!/usr/bin/python
 import re
 import os
+import resource
 import datetime
 
 
-LOG_BATTERY_FILE = '/var/lib/batterym/logs/capacity'
+LOG_BATTERY_FILE = os.path.join(
+    resource.RESOURCES_DIRECTORY_PATH, 'logs/capacity')
 
 
 def create_missing_dirs(filename):
