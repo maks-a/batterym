@@ -5,6 +5,8 @@ import ui
 
 IMAGE_FOLDER_PATTERN = '/usr/share/icons/ubuntu-mono-{0}/status/22'
 
+RESOURCES_DIRECTORY_PATH = '/usr/share/batterym'
+
 
 def image_path(name, theme):
     folder = IMAGE_FOLDER_PATTERN.format(theme)
