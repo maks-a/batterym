@@ -1,0 +1,597 @@
+<svg>
+<polyline
+	points="20,430 610,430 610,30 20,30 20,430"
+	fill="#fff"
+/>
+<polyline
+	points="20,430.0 610,430.0"
+	stroke="#ddd"
+	stroke-width="1"
+	fill="none"
+	shape-rendering="crispEdges"
+/>
+<polyline
+	points="20,330.0 610,330.0"
+	shape-rendering="crispEdges"
+	stroke="#ddd"
+	stroke-width="1"
+	fill="none"
+/>
+<polyline
+	points="20,230.0 610,230.0"
+	stroke="#ddd"
+	stroke-width="1"
+	fill="none"
+	shape-rendering="crispEdges"
+/>
+<polyline
+	points="20,130.0 610,130.0"
+	shape-rendering="crispEdges"
+	stroke="#ddd"
+	stroke-width="1"
+	fill="none"
+/>
+<polyline
+	points="20,30.0 610,30.0"
+	stroke="#ddd"
+	stroke-width="1"
+	fill="none"
+	shape-rendering="crispEdges"
+/>
+<polyline
+	points="20.0,430 20.0,30"
+	shape-rendering="crispEdges"
+	stroke="#ddd"
+	stroke-width="1"
+	fill="none"
+/>
+<polyline
+	points="118.333333333,430 118.333333333,30"
+	stroke="#ddd"
+	stroke-width="1"
+	fill="none"
+	shape-rendering="crispEdges"
+/>
+<polyline
+	points="216.666666667,430 216.666666667,30"
+	shape-rendering="crispEdges"
+	stroke="#ddd"
+	stroke-width="1"
+	fill="none"
+/>
+<polyline
+	points="315.0,430 315.0,30"
+	stroke="#ddd"
+	stroke-width="1"
+	fill="none"
+	shape-rendering="crispEdges"
+/>
+<polyline
+	points="413.333333333,430 413.333333333,30"
+	shape-rendering="crispEdges"
+	stroke="#ddd"
+	stroke-width="1"
+	fill="none"
+/>
+<polyline
+	points="511.666666667,430 511.666666667,30"
+	stroke="#ddd"
+	stroke-width="1"
+	fill="none"
+	shape-rendering="crispEdges"
+/>
+<polyline
+	points="610.0,430 610.0,30"
+	shape-rendering="crispEdges"
+	stroke="#ddd"
+	stroke-width="1"
+	fill="none"
+/>
+<polyline
+	points="19,30 613,30"
+	stroke="#999"
+	stroke-width="1"
+	fill="none"
+	shape-rendering="crispEdges"
+/>
+<polyline
+	points="19,430 613,430"
+	shape-rendering="crispEdges"
+	stroke="#999"
+	stroke-width="1"
+	fill="none"
+/>
+<polyline
+	points="20,433 20,30"
+	stroke="#999"
+	stroke-width="1"
+	fill="none"
+	shape-rendering="crispEdges"
+/>
+<polyline
+	points="610,433 610,30"
+	shape-rendering="crispEdges"
+	stroke="#999"
+	stroke-width="1"
+	fill="none"
+/>
+<polyline
+	points="369,30 365,30 361,30 357,30 353,30 349,30 345,30 341,30 336,30 332,30 328,30 324,30 320,30 316,30 312,30 308,30 308,430 369,430 369,30"
+	stroke="#4aa635"
+	stroke-width="1"
+	fill="#4aa635"
+/>
+<polyline
+	points="369,30 369,430 308,430 308,30"
+	stroke="#7db471"
+	stroke-width="1"
+	fill="none"
+/>
+<polyline
+	points="308,38 304,38 300,38 295,38 291,38 291,42 287,42 283,46 279,50 276,54 273,58 271,62 269,66 267,70 265,74 263,78 261,82 260,86 259,90 259,430 308,430 308,38"
+	stroke="#4aa635"
+	stroke-width="1"
+	fill="#4aa635"
+/>
+<polyline
+	points="308,38 308,430 259,430 259,90"
+	stroke="#7db471"
+	stroke-width="1"
+	fill="none"
+/>
+<polyline
+	points="41,150 40,154 39,158 38,162 37,166 36,170 35,174 34,178 33,182 31,186 30,190 29,194 28,198 27,202 26,206 25,210 24,214 23,218 22,222 21,226 20,230 20,430 41,430 41,150"
+	stroke="#4aa635"
+	stroke-width="1"
+	fill="#4aa635"
+/>
+<polyline
+	points="41,150 41,430 20,430 20,230"
+	stroke="#7db471"
+	stroke-width="1"
+	fill="none"
+/>
+<polyline
+	points="446,190 446,190 445,186 444,186 444,186 443,186 443,186 442,182 441,182 441,182 437,178 435,178 431,174 427,170 424,166 421,162 418,158 415,154 412,150 408,146 406,142 403,138 401,134 399,130 395,126 393,122 390,118 387,114 386,110 385,110 385,430 446,430 446,190"
+	stroke="#2e7eb3"
+	stroke-width="1"
+	fill="#2e7eb3"
+/>
+<polyline
+	points="446,190 446,430 385,430 385,110"
+	stroke="#81b1d1"
+	stroke-width="1"
+	fill="none"
+/>
+<polyline
+	points="385,70 385,66 384,66 383,66 383,66 376,62 375,58 375,430 385,430 385,70"
+	stroke="#2e7eb3"
+	stroke-width="1"
+	fill="#2e7eb3"
+/>
+<polyline
+	points="385,70 385,430 375,430 375,58"
+	stroke="#81b1d1"
+	stroke-width="1"
+	fill="none"
+/>
+<polyline
+	points="375,42 375,38 371,38 369,34 369,430 375,430 375,42"
+	stroke="#2e7eb3"
+	stroke-width="1"
+	fill="#2e7eb3"
+/>
+<polyline
+	points="375,42 375,430 369,430 369,34"
+	stroke="#81b1d1"
+	stroke-width="1"
+	fill="none"
+/>
+<polyline
+	points="259,262 255,258 251,258 251,254 247,254 243,254 242,250 238,250 234,250 231,246 227,246 226,242 222,242 219,238 216,234 213,230 211,226 208,222 204,218 201,214 197,210 197,206 193,206 193,202 189,202 185,198 181,194 181,190 176,190 175,186 171,186 170,182 166,182 165,178 161,178 160,174 156,174 155,170 151,170 148,166 145,162 141,158 138,154 136,150 133,146 130,142 127,138 125,134 122,130 120,126 117,122 116,118 116,430 259,430 259,262"
+	stroke="#2e7eb3"
+	stroke-width="1"
+	fill="#2e7eb3"
+/>
+<polyline
+	points="259,262 259,430 116,430 116,118"
+	stroke="#81b1d1"
+	stroke-width="1"
+	fill="none"
+/>
+<polyline
+	points="116,262 113,258 110,254 106,250 103,246 99,242 95,238 92,234 88,230 84,226 81,222 78,218 78,214 78,430 116,430 116,262"
+	stroke="#2e7eb3"
+	stroke-width="1"
+	fill="#2e7eb3"
+/>
+<polyline
+	points="116,262 116,430 78,430 78,214"
+	stroke="#81b1d1"
+	stroke-width="1"
+	fill="none"
+/>
+<polyline
+	points="78,202 75,198 72,194 68,190 65,186 62,182 59,178 56,174 53,170 50,166 47,162 44,158 41,154 41,150 41,430 78,430 78,202"
+	stroke="#2e7eb3"
+	stroke-width="1"
+	fill="#2e7eb3"
+/>
+<polyline
+	points="78,202 78,430 41,430 41,150"
+	stroke="#81b1d1"
+	stroke-width="1"
+	fill="none"
+/>
+<polyline
+	points="610,430 446,190"
+	stroke="#2e7eb3"
+	stroke-width="1"
+	stroke-dasharray="10, 5"
+	fill="none"
+/>
+<polyline
+	points="20,430.0 610,430.0"
+	fill="none"
+	stroke="#ddd"
+	stroke-width="1"
+	stroke-dasharray="1, 5"
+	shape-rendering="crispEdges"
+/>
+<polyline
+	points="20,330.0 610,330.0"
+	shape-rendering="crispEdges"
+	stroke="#ddd"
+	stroke-width="1"
+	stroke-dasharray="1, 5"
+	fill="none"
+/>
+<polyline
+	points="20,230.0 610,230.0"
+	fill="none"
+	stroke="#ddd"
+	stroke-width="1"
+	stroke-dasharray="1, 5"
+	shape-rendering="crispEdges"
+/>
+<polyline
+	points="20,130.0 610,130.0"
+	shape-rendering="crispEdges"
+	stroke="#ddd"
+	stroke-width="1"
+	stroke-dasharray="1, 5"
+	fill="none"
+/>
+<polyline
+	points="20,30.0 610,30.0"
+	fill="none"
+	stroke="#ddd"
+	stroke-width="1"
+	stroke-dasharray="1, 5"
+	shape-rendering="crispEdges"
+/>
+<polyline
+	points="20.0,430 20.0,30"
+	shape-rendering="crispEdges"
+	stroke="#ddd"
+	stroke-width="1"
+	stroke-dasharray="1, 5"
+	fill="none"
+/>
+<polyline
+	points="118.333333333,430 118.333333333,30"
+	fill="none"
+	stroke="#ddd"
+	stroke-width="1"
+	stroke-dasharray="1, 5"
+	shape-rendering="crispEdges"
+/>
+<polyline
+	points="216.666666667,430 216.666666667,30"
+	shape-rendering="crispEdges"
+	stroke="#ddd"
+	stroke-width="1"
+	stroke-dasharray="1, 5"
+	fill="none"
+/>
+<polyline
+	points="315.0,430 315.0,30"
+	fill="none"
+	stroke="#ddd"
+	stroke-width="1"
+	stroke-dasharray="1, 5"
+	shape-rendering="crispEdges"
+/>
+<polyline
+	points="413.333333333,430 413.333333333,30"
+	shape-rendering="crispEdges"
+	stroke="#ddd"
+	stroke-width="1"
+	stroke-dasharray="1, 5"
+	fill="none"
+/>
+<polyline
+	points="511.666666667,430 511.666666667,30"
+	fill="none"
+	stroke="#ddd"
+	stroke-width="1"
+	stroke-dasharray="1, 5"
+	shape-rendering="crispEdges"
+/>
+<polyline
+	points="610.0,430 610.0,30"
+	shape-rendering="crispEdges"
+	stroke="#ddd"
+	stroke-width="1"
+	stroke-dasharray="1, 5"
+	fill="none"
+/>
+<polyline
+	points="19,30 613,30"
+	stroke="#999"
+	stroke-width="1"
+	fill="none"
+	shape-rendering="crispEdges"
+/>
+<polyline
+	points="19,430 613,430"
+	shape-rendering="crispEdges"
+	stroke="#999"
+	stroke-width="1"
+	fill="none"
+/>
+<polyline
+	points="20,433 20,30"
+	stroke="#999"
+	stroke-width="1"
+	fill="none"
+	shape-rendering="crispEdges"
+/>
+<polyline
+	points="610,433 610,30"
+	shape-rendering="crispEdges"
+	stroke="#999"
+	stroke-width="1"
+	fill="none"
+/>
+<text
+	font-size="10"
+	text-anchor="start"
+	y="433.0"
+	x="615"
+	font-family="Verdana"
+	fill="#777"
+>
+0 %
+</text>
+<text
+	font-size="10"
+	text-anchor="start"
+	y="333.0"
+	x="615"
+	font-family="Verdana"
+	fill="#777"
+>
+25 %
+</text>
+<text
+	font-size="10"
+	text-anchor="start"
+	y="233.0"
+	x="615"
+	font-family="Verdana"
+	fill="#777"
+>
+50 %
+</text>
+<text
+	font-size="10"
+	text-anchor="start"
+	y="133.0"
+	x="615"
+	font-family="Verdana"
+	fill="#777"
+>
+75%
+</text>
+<text
+	font-size="10"
+	text-anchor="start"
+	y="33.0"
+	x="615"
+	font-family="Verdana"
+	fill="#777"
+>
+100 %
+</text>
+<text
+	font-size="10"
+	text-anchor="middle"
+	y="445"
+	x="20.0"
+	font-family="Verdana"
+	fill="#777"
+>
+12 hours
+</text>
+<text
+	font-size="10"
+	text-anchor="middle"
+	y="445"
+	x="118.333333333"
+	font-family="Verdana"
+	fill="#777"
+>
+10
+</text>
+<text
+	font-size="10"
+	text-anchor="middle"
+	y="445"
+	x="216.666666667"
+	font-family="Verdana"
+	fill="#777"
+>
+8
+</text>
+<text
+	font-size="10"
+	text-anchor="middle"
+	y="445"
+	x="315.0"
+	font-family="Verdana"
+	fill="#777"
+>
+6
+</text>
+<text
+	font-size="10"
+	text-anchor="middle"
+	y="445"
+	x="413.333333333"
+	font-family="Verdana"
+	fill="#777"
+>
+4
+</text>
+<text
+	font-size="10"
+	text-anchor="middle"
+	y="445"
+	x="511.666666667"
+	font-family="Verdana"
+	fill="#777"
+>
+2
+</text>
+<text
+	font-size="10"
+	text-anchor="middle"
+	y="445"
+	x="610.0"
+	font-family="Verdana"
+	fill="#777"
+>
+0
+</text>
+<text
+	font-size="10"
+	text-anchor="start"
+	y="433.0"
+	x="615"
+	font-family="Verdana"
+	fill="#777"
+>
+0 %
+</text>
+<text
+	font-size="10"
+	text-anchor="start"
+	y="333.0"
+	x="615"
+	font-family="Verdana"
+	fill="#777"
+>
+25 %
+</text>
+<text
+	font-size="10"
+	text-anchor="start"
+	y="233.0"
+	x="615"
+	font-family="Verdana"
+	fill="#777"
+>
+50 %
+</text>
+<text
+	font-size="10"
+	text-anchor="start"
+	y="133.0"
+	x="615"
+	font-family="Verdana"
+	fill="#777"
+>
+75%
+</text>
+<text
+	font-size="10"
+	text-anchor="start"
+	y="33.0"
+	x="615"
+	font-family="Verdana"
+	fill="#777"
+>
+100 %
+</text>
+<text
+	font-size="10"
+	text-anchor="middle"
+	y="445"
+	x="20.0"
+	font-family="Verdana"
+	fill="#777"
+>
+12 hours
+</text>
+<text
+	font-size="10"
+	text-anchor="middle"
+	y="445"
+	x="118.333333333"
+	font-family="Verdana"
+	fill="#777"
+>
+10
+</text>
+<text
+	font-size="10"
+	text-anchor="middle"
+	y="445"
+	x="216.666666667"
+	font-family="Verdana"
+	fill="#777"
+>
+8
+</text>
+<text
+	font-size="10"
+	text-anchor="middle"
+	y="445"
+	x="315.0"
+	font-family="Verdana"
+	fill="#777"
+>
+6
+</text>
+<text
+	font-size="10"
+	text-anchor="middle"
+	y="445"
+	x="413.333333333"
+	font-family="Verdana"
+	fill="#777"
+>
+4
+</text>
+<text
+	font-size="10"
+	text-anchor="middle"
+	y="445"
+	x="511.666666667"
+	font-family="Verdana"
+	fill="#777"
+>
+2
+</text>
+<text
+	font-size="10"
+	text-anchor="middle"
+	y="445"
+	x="610.0"
+	font-family="Verdana"
+	fill="#777"
+>
+0
+</text>
+</svg>
