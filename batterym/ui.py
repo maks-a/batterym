@@ -7,6 +7,10 @@ THEME_LIGHT = 'light'
 THEME = THEME_DARK
 
 
+def reset_theme():
+    THEME = THEME_DARK
+
+
 def toggle_theme():
     global THEME
     if THEME == THEME_DARK:
@@ -17,3 +21,21 @@ def toggle_theme():
 
 def get_theme():
     return THEME
+
+
+#####################################################################
+class MyTest(unittest.TestCase):
+
+    def test_reset_theme(self):
+        reset_theme()
+        self.assertEqual(get_theme(), THEME_DARK)
+
+    def test_toggle_theme(self):
+        reset_theme()
+
+        toggle_theme()
+        self.assertEqual(get_theme(), THEME_LIGHT)
+
+        toggle_theme()
+        self.assertEqual(get_theme(), THEME_DARK)
+

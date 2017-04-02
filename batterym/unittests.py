@@ -9,7 +9,6 @@ testmodules = [
     'history',
     'indicator',
     'log',
-    'main',
     'observable',
     'osdata',
     'plotter',
