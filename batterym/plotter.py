@@ -6,7 +6,7 @@ from history import History
 from future import Future
 from chart import Chart
 
-import datetime  # TMP
+#import datetime  # TMP
 
 
 def extract_plot_data(history, future):
@@ -63,9 +63,9 @@ def caluclate_chart(image_path):
     create_chart(plot_data, image_path)
 
 
-def main():
-    caluclate_chart('capacity_history_12h.svg')
+# def main():
+#     caluclate_chart('capacity_history_12h.svg')
 
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()
