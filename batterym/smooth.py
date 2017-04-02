@@ -182,6 +182,6 @@ class MyTest(unittest.TestCase):
         self.assertEqual(evaluate_array([5, 6, 7], [1, 2, 3], 1), [1, 2, 3])
 
 
-if __name__ == '__main__':
-    # main()
-    unittest.main()
+# if __name__ == '__main__':
+#     main()
+#     unittest.main()

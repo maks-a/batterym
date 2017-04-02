@@ -1,7 +1,6 @@
 #!/usr/bin/python
 import osdata
 import observable
-import unittest
 
 
 class Battery(observable.Observable):

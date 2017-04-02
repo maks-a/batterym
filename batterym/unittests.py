@@ -10,7 +10,7 @@ testmodules = [
     'indicator',
     'log',
     'main',
-    'obervable',
+    'observable',
     'osdata',
     'plotter',
     'resource',
