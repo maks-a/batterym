@@ -31,6 +31,10 @@ class MyTest(unittest.TestCase):
         reset_theme()
         self.assertEqual(get_theme(), THEME_DARK)
 
+        toggle_theme()
+        reset_theme()
+        self.assertEqual(get_theme(), THEME_DARK)
+
     def test_toggle_theme(self):
         reset_theme()
 

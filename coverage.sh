@@ -1,4 +1,4 @@
 
 coverage run batterym/unittests.py
-coverage report -m
+coverage report
 coverage html
