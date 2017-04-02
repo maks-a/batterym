@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import log
+import unittest
 
 from history import History
 from future import Future

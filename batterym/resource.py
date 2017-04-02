@@ -1,6 +1,7 @@
 #!/usr/bin/python
 import os
 import ui
+import unittest
 
 
 IMAGE_FOLDER_PATTERN = '/usr/share/icons/ubuntu-mono-{0}/status/22'

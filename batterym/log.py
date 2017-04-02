@@ -3,6 +3,7 @@ import re
 import os
 import resource
 import datetime
+import unittest
 
 
 LOG_BATTERY_FILE = os.path.join(

@@ -6,6 +6,7 @@ import battery
 import resource
 import plotter
 from datetime import datetime, timedelta
+import unittest
 
 import gi
 gi.require_version('Gtk', '3.0')

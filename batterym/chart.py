@@ -1,6 +1,7 @@
 #!/usr/bin/python
 from __future__ import division
 import copy
+import unittest
 
 
 def round_point(point):

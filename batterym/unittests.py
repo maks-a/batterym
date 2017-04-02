@@ -3,6 +3,18 @@ import unittest
 
 testmodules = [
     'smooth',
+    'battery',
+    'chart',
+    'future',
+    'history',
+    'indicator',
+    'log',
+    'main',
+    'obervable',
+    'osdata',
+    'plotter',
+    'resource',
+    'ui',
     ]
 
 suite = unittest.TestSuite()

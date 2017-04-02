@@ -1,6 +1,7 @@
 #!/usr/bin/python
 from __future__ import division
 from history import separate_by_sequence_id
+import unittest
 
 
 def median(lst):

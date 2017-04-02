@@ -1,4 +1,5 @@
 #!/usr/bin/python
+import unittest
 
 THEME_DARK = 'dark'
 THEME_LIGHT = 'light'
