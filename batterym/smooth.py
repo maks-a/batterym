@@ -13,9 +13,13 @@ def is_within(a, lo, hi):
 
 def interpolate_linear(x, y, new_x):
     n = len(x)
-    if n < 2:
-        return []
     new_n = len(new_x)
+    if n < 2 or new_n < 1:
+        return []
+    if min(new_x) < min(x):
+        raise ValueError('A value in x_new is below the interpolation')
+    if max(x) < max(new_x):
+        raise ValueError('A value in x_new is above the interpolation')
     new_y = [None] * new_n
     j = 0
     for i in xrange(1, n):
@@ -139,6 +143,12 @@ class MyTest(unittest.TestCase):
         self.assertEqual(interpolate_linear([1], [2], [3]), [])
         self.assertEqual(interpolate_linear([1], [2], [3, 4]), [])
         self.assertEqual(interpolate_linear([-10, -8], [10, 20], [-9]), [15])
+
+        with self.assertRaises(ValueError):
+            interpolate_linear([3, 4], [6], [1])
+
+        with self.assertRaises(ValueError):
+            interpolate_linear([3, 4], [6], [7])
 
     def test_linspace(self):
         self.assertEqual(linspace(2, 5, 3), [2, 5])
