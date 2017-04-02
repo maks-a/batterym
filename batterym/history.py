@@ -119,56 +119,56 @@ class History:
         return [x for x in self._plot_data if x.get('status') in status]
 
 
-def main():
-    image_path = 'capacity_history_12h.svg'
+# def main():
+#     image_path = 'capacity_history_12h.svg'
 
-    history1 = History(log.get_battery())
-    history1.set_plot_data_xlimit(hours=12.0)
-    history1.calculate_plot_data()
-    plot_data1 = {
-        'history charging': history1.plot_data(['Charging', 'Full']),
-        'history discharging': history1.plot_data(['Discharging']),
-    }
+#     history1 = History(log.get_battery())
+#     history1.set_plot_data_xlimit(hours=12.0)
+#     history1.calculate_plot_data()
+#     plot_data1 = {
+#         'history charging': history1.plot_data(['Charging', 'Full']),
+#         'history discharging': history1.plot_data(['Discharging']),
+#     }
 
-    history2 = History(log.get_battery(), smoothing=True)
-    history2.set_plot_data_xlimit(hours=12.0)
-    history2.calculate_plot_data()
-    plot_data2 = {
-        'history charging': history2.plot_data(['Charging', 'Full']),
-        'history discharging': history2.plot_data(['Discharging']),
-    }
+#     history2 = History(log.get_battery(), smoothing=True)
+#     history2.set_plot_data_xlimit(hours=12.0)
+#     history2.calculate_plot_data()
+#     plot_data2 = {
+#         'history charging': history2.plot_data(['Charging', 'Full']),
+#         'history discharging': history2.plot_data(['Discharging']),
+#     }
 
-    white = '#fff'
-    red = '#f00'
-    blue = '#2e7eb3'
-    light_blue = '#8cc'
-    green = '#4aa635'
-    light_green = '#8c8'
-    ylabels = ['0 %', '25 %', '50 %', '75%', '100 %']
-    xlabels = [0, 2, 4, 6, 8, 10, '12 hours']
+#     white = '#fff'
+#     red = '#f00'
+#     blue = '#2e7eb3'
+#     light_blue = '#8cc'
+#     green = '#4aa635'
+#     light_green = '#8c8'
+#     ylabels = ['0 %', '25 %', '50 %', '75%', '100 %']
+#     xlabels = [0, 2, 4, 6, 8, 10, '12 hours']
 
-    from chart import Chart
-    plot = Chart(xlabels=xlabels, ylabels=ylabels,
-                 inverseX=True, padding_top=30, height=450)
-    plot.set_minimal_canvas([0, 0], [12, 100])
+#     from chart import Chart
+#     plot = Chart(xlabels=xlabels, ylabels=ylabels,
+#                  inverseX=True, padding_top=30, height=450)
+#     plot.set_minimal_canvas([0, 0], [12, 100])
 
-    for p in plot_data1['history charging']:
-        plot.add(xs=p['xs'], ys=p['ys'], stroke=light_green, fill=light_green,
-                 drop=white)
+#     for p in plot_data1['history charging']:
+#         plot.add(xs=p['xs'], ys=p['ys'], stroke=light_green, fill=light_green,
+#                  drop=white)
 
-    for p in plot_data1['history discharging']:
-        plot.add(xs=p['xs'], ys=p['ys'], stroke=light_blue, fill=light_blue,
-                 drop=white)
+#     for p in plot_data1['history discharging']:
+#         plot.add(xs=p['xs'], ys=p['ys'], stroke=light_blue, fill=light_blue,
+#                  drop=white)
 
-    for p in plot_data2['history charging']:
-        plot.add(xs=p['xs'], ys=p['ys'], stroke=red)
+#     for p in plot_data2['history charging']:
+#         plot.add(xs=p['xs'], ys=p['ys'], stroke=red)
 
-    for p in plot_data2['history discharging']:
-        plot.add(xs=p['xs'], ys=p['ys'], stroke=red)
+#     for p in plot_data2['history discharging']:
+#         plot.add(xs=p['xs'], ys=p['ys'], stroke=red)
 
-    plot.render_to_svg(image_path)
+#     plot.render_to_svg(image_path)
 
 
-if __name__ == '__main__':
-    # main()
-    pass
+# if __name__ == '__main__':
+#     # main()
+#     pass
