@@ -393,31 +393,31 @@ class Chart:
                 f.write(line + '\n')
 
 
-def main():
-    xlabels = [0, 2, 4, 6, 8, 10, '12 hours']
-    ylabels = ['0 %', '50 %', '100 %']
-    chart = Chart(inverseX=True, xlabels=xlabels, ylabels=ylabels,
-                  height=400)
+# def main():
+#     xlabels = [0, 2, 4, 6, 8, 10, '12 hours']
+#     ylabels = ['0 %', '50 %', '100 %']
+#     chart = Chart(inverseX=True, xlabels=xlabels, ylabels=ylabels,
+#                   height=400)
 
-    #import random
-    #ys = [random.randrange(0, 100) for i in xrange(200)]
-    # c90c28 dark red
-    # 2e7eb3 blue
-    # fa730c orange
-    # 4aa635 green
+#     #import random
+#     #ys = [random.randrange(0, 100) for i in xrange(200)]
+#     # c90c28 dark red
+#     # 2e7eb3 blue
+#     # fa730c orange
+#     # 4aa635 green
 
-    color = '#2e7eb3'
-    ys = [10, 60, 60]
-    xs = [10, 20, 30]
-    chart.add(xs=xs, ys=ys, stroke=color, fill=color)
+#     color = '#2e7eb3'
+#     ys = [10, 60, 60]
+#     xs = [10, 20, 30]
+#     chart.add(xs=xs, ys=ys, stroke=color, fill=color)
 
-    color = '#4aa635'
-    ys = [40, 70, 100, 98]
-    xs = [30, 40, 50, 60]
-    chart.add(xs=xs, ys=ys, stroke=color, fill=color)
+#     color = '#4aa635'
+#     ys = [40, 70, 100, 98]
+#     xs = [30, 40, 50, 60]
+#     chart.add(xs=xs, ys=ys, stroke=color, fill=color)
 
-    chart.render_to_svg('test.svg')
+#     chart.render_to_svg('test.svg')
 
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()
