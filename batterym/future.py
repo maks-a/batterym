@@ -7,7 +7,7 @@ import unittest
 def median(lst):
     n = len(lst)
     if n < 1:
-        return
+        return 0
     lst = sorted(lst)
     m = int(n/2)
     if n % 2 == 1:
@@ -85,3 +85,24 @@ class Future:
             if not is_zero(dx):
                 slopes.append(dy / dx)
         return median(slopes)
+
+
+#####################################################################
+class MyTest(unittest.TestCase):
+
+    def test_median(self):
+        self.assertEqual(median([]), 0)
+        self.assertEqual(median([1]), 1)
+        self.assertEqual(median([1, 3]), 2)
+        self.assertEqual(median([1, 3, 4]), 3)
+
+    def test_is_zero(self):
+        self.assertEqual(is_zero(1e-7, abs_tol=1e-3), True)
+        self.assertEqual(is_zero(1e-3, abs_tol=1e-7), False)
+
+    def test_line_plot_data(self):
+        self.assertEqual(line_plot_data(42, 100.0/10),
+            {'status': 'Discharging', 'xs': [0, 4.2], 'ys': [0, 42]})
+
+        self.assertEqual(line_plot_data(42, -100.0/2),
+            {'status': 'Charging', 'xs': [0, 1.16], 'ys': [100, 42]})
