@@ -23,8 +23,6 @@ def interpolate_linear(x, y, new_x):
     new_y = [None] * new_n
     j = 0
     for i in xrange(1, n):
-        while j < new_n and new_x[j] < x[i-1]:
-            j += 1
         if j >= new_n:
             break
         dx = x[i] - x[i-1]
@@ -143,6 +141,8 @@ class MyTest(unittest.TestCase):
         self.assertEqual(interpolate_linear([1], [2], [3]), [])
         self.assertEqual(interpolate_linear([1], [2], [3, 4]), [])
         self.assertEqual(interpolate_linear([-10, -8], [10, 20], [-9]), [15])
+        self.assertEqual(interpolate_linear(
+            [2, 8, 9], [1, 7, 8], [3, 4, 5]), [2, 3, 4])
 
         with self.assertRaises(ValueError):
             interpolate_linear([3, 4], [6], [1])
