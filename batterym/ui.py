@@ -8,6 +8,7 @@ THEME = THEME_DARK
 
 
 def reset_theme():
+    global THEME
     THEME = THEME_DARK
 
 
@@ -38,4 +39,3 @@ class MyTest(unittest.TestCase):
 
         toggle_theme()
         self.assertEqual(get_theme(), THEME_DARK)
-
