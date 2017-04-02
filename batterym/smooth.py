@@ -181,7 +181,14 @@ class MyTest(unittest.TestCase):
         self.assertEqual(evaluate_array([5, 6, 7], [1, 2, 3], 0.5), [3, 4, 5])
         self.assertEqual(evaluate_array([5, 6, 7], [1, 2, 3], 1), [1, 2, 3])
 
+    def test_steps_filter(self):
+        self.assertEqual(steps_filter([], []), ([], []))
+        self.assertEqual(steps_filter([1], [2]), ([1], [2]))
+        self.assertEqual(steps_filter([1, 5], [2, 7]), ([1, 5], [2, 7]))
+        self.assertEqual(steps_filter(
+            [1, 2, 3], [1, 2, 3]), ([1, 2, 3], [1, 2, 3]))
+
 
 # if __name__ == '__main__':
-#     main()
+#     # main()
 #     unittest.main()
