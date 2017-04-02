@@ -69,7 +69,7 @@ def scale(a, k):
     return [x*k for x in a]
 
 
-def scale_dif(y1, y2, k):
+def evaluate_array(y1, y2, k):
     d = subtract(y1, y2)
     d = scale(d, k)
     return subtract(y1, d)
@@ -88,7 +88,7 @@ def steps_filter(x, y):
 
     y2 = interpolate_linear(x, y, x2)
     y3 = tangent_filter(y2, 10)
-    y4 = scale_dif(y2, y3, 0.5)
+    y4 = evaluate_array(y2, y3, 0.5)
 
     dx = 10.0 / 60.0
     x5 = linspace(xmin, xmax, dx)
@@ -146,6 +146,13 @@ class MyTest(unittest.TestCase):
         self.assertEqual(linspace(2, 5, 1), [2, 3, 4, 5])
         self.assertEqual(linspace(2, 5, 4), [])
 
+    def test_tangent_filter(self):
+        self.assertEqual(tangent_filter([], 1), [])
+        self.assertEqual(tangent_filter([5], 1), [5])
+        self.assertEqual(tangent_filter([1, 3, 3], 1), [1, 3, 3])
+        self.assertEqual(tangent_filter([1, 3, 3], 3), [1, 2, 3])
+        self.assertEqual(tangent_filter([1, 1, 3], 3), [1, 2, 3])
+
     def test_subtract(self):
         self.assertEqual(subtract([], []), [])
         self.assertEqual(subtract([1], [1]), [0])
@@ -157,6 +164,12 @@ class MyTest(unittest.TestCase):
         self.assertEqual(scale([2], 1), [2])
         self.assertEqual(scale([2], 0), [0])
         self.assertEqual(scale([1, 2, 3], 2), [2, 4, 6])
+
+    def test_evaluate_array(self):
+        self.assertEqual(evaluate_array([], [], 1), [])
+        self.assertEqual(evaluate_array([5, 6, 7], [1, 2, 3], 0), [5, 6, 7])
+        self.assertEqual(evaluate_array([5, 6, 7], [1, 2, 3], 0.5), [3, 4, 5])
+        self.assertEqual(evaluate_array([5, 6, 7], [1, 2, 3], 1), [1, 2, 3])
 
 
 if __name__ == '__main__':
