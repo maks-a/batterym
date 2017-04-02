@@ -59,10 +59,6 @@ def close_points(points):
     return res
 
 
-def tostr(point):
-    return '({0}, {1})'.format(point[0], point[1])
-
-
 class BoundingBox:
 
     def __init__(self, point=None):
@@ -419,5 +415,48 @@ class Chart:
 #     chart.render_to_svg('test.svg')
 
 
+class MyTest(unittest.TestCase):
+
+    def test_round_point(self):
+        self.assertEqual(round_point([2.1, 4.1]), [2, 4])
+        self.assertEqual(round_point([2.9, 4.9]), [2, 4])
+
+    def test_scale_point(self):
+        self.assertEqual(scale_point([2, 4], [1, 0]), [2, 0])
+        self.assertEqual(scale_point([2, 4], [0, 1]), [0, 4])
+        self.assertEqual(scale_point([2, 4], [2, 2]), [4, 8])
+        self.assertEqual(scale_point([2, 4], [-2, -2]), [-4, -8])
+
+    def test_shift_point(self):
+        self.assertEqual(shift_point([2, 4], [1, 0]), [3, 4])
+        self.assertEqual(shift_point([2, 4], [1, 1]), [3, 5])
+        self.assertEqual(shift_point([2, 4], [0, 1]), [2, 5])
+
+    def test_round_points(self):
+        self.assertEqual(round_points([[2.1, 4.1]]), [[2, 4]])
+        self.assertEqual(round_points([[2.9, 4.9]]), [[2, 4]])
+
+    def test_scale_points(self):
+        self.assertEqual(scale_points([[2, 4]], [1, 0]), [[2, 0]])
+        self.assertEqual(scale_points([[2, 4]], [0, 1]), [[0, 4]])
+        self.assertEqual(scale_points([[2, 4]], [2, 2]), [[4, 8]])
+        self.assertEqual(scale_points([[2, 4]], [-2, -2]), [[-4, -8]])
+
+    def test_shift_points(self):
+        self.assertEqual(shift_points([[2, 4]], [1, 0]), [[3, 4]])
+        self.assertEqual(shift_points([[2, 4]], [1, 1]), [[3, 5]])
+        self.assertEqual(shift_points([[2, 4]], [0, 1]), [[2, 5]])
+
+    def test_get_rectangular(self):
+        self.assertEqual(get_rectangular(1, 1), get_square())
+        self.assertEqual(get_rectangular(2, 1), 
+            [[0, 0], [2, 0], [2, 1], [0, 1], [0, 0]])
+
+    def test_get_color(self):
+        self.assertEqual(get_color('white'), '#fff')
+        self.assertEqual(get_color('black'), '#000')
+
+
 # if __name__ == '__main__':
-#     main()
+#     # main()
+#     unittest.main()
