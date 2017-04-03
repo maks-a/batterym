@@ -19,7 +19,8 @@ from gi.repository import AppIndicator3 as appindicator
 
 APPINDICATOR_ID = 'batteryindicator'
 CATEGORY = appindicator.IndicatorCategory.SYSTEM_SERVICES
-BATTERY_MONITOR_ICON = '/usr/share/icons/Humanity/devices/48/battery.svg'
+BATTERY_MONITOR_ICON = os.path.join(
+    resource.RESOURCES_DIRECTORY_PATH, 'img/battery.svg')
 CAPACITY_HISTORY_CHART = os.path.join(
     resource.RESOURCES_DIRECTORY_PATH, 'img/capacity_history_12h.svg')
 
