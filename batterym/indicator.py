@@ -108,7 +108,7 @@ class Indicator:
         if self.window is None:
             self.window = gtk.Window()
         if not self.window.props.visible:
-            self.window.set_title('Battery monitor')
+            self.window.set_title('Battery Monitor')
             self.window.set_border_width(10)
             self.window.set_size_request(700, 500)
             self.window.set_resizable(False)
