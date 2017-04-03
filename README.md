@@ -1,13 +1,22 @@
 # Battery Monitor
 
-## Requirements
+Battery Monitor is an application for Ubuntu laptops that provides timeline power usage and prediction graph.
 
+![Battery Monitor]
+(img/battery_monitor.jpg)
+
+![Battery Monitor]
+(img/battery_monitor2.png)
+
+## Dependencies
+
+- Python 2.7
 - `sudo apt-get install --reinstall python-gi`
 
-## Install
+## Installation
 
 - `sudo python setup.py install`
-- add `batterym` to Startup Applications
+- add `batterym` to `Startup Applications`
 
 ## Links
 
