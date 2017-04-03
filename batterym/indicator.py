@@ -17,7 +17,7 @@ from gi.repository import GObject as gobject
 from gi.repository import AppIndicator3 as appindicator
 
 
-APPINDICATOR_ID = 'batteryindicator'
+APPINDICATOR_ID = 'batterymonitor'
 CATEGORY = appindicator.IndicatorCategory.SYSTEM_SERVICES
 BATTERY_MONITOR_ICON = os.path.join(
     resource.RESOURCES_DIRECTORY_PATH, 'img/battery.svg')
