@@ -109,6 +109,7 @@ class Indicator:
         if self.window is None:
             self.window = gtk.Window()
         if not self.window.props.visible:
+            self.window.connect('delete-event', self.close_window)
             self.window.set_title('Battery Monitor')
             self.window.set_border_width(10)
             self.window.set_size_request(700, 500)
@@ -123,6 +124,10 @@ class Indicator:
             self.image.set_from_file(CAPACITY_HISTORY_CHART)
             self.window.vbox.pack_start(self.image, False, False, 0)
             self.window.show_all()
+
+    def close_window(self, arg1, arg2):
+        self.window.hide()
+        return True
 
     def toggle_theme(self, _):
         ui.toggle_theme()
