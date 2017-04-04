@@ -29,19 +29,29 @@ def toggle_theme():
 
 class MyTest(unittest.TestCase):
 
-    def test_reset_theme(self):
-        reset_theme()
+    def setUp(self):
+        self.theme = get_theme()
+
+    def tearDown(self):
+        set_theme(self.theme)
+
+    def test_set_and_get_theme(self):
+        set_theme(THEME_LIGHT)
+        self.assertEqual(get_theme(), THEME_LIGHT)
+
+        set_theme(THEME_DARK)
         self.assertEqual(get_theme(), THEME_DARK)
 
-        toggle_theme()
+    def test_reset_theme(self):
+        set_theme(THEME_LIGHT)
         reset_theme()
         self.assertEqual(get_theme(), THEME_DARK)
 
     def test_toggle_theme(self):
-        reset_theme()
-
+        set_theme(THEME_DARK)
         toggle_theme()
         self.assertEqual(get_theme(), THEME_LIGHT)
 
+        set_theme(THEME_LIGHT)
         toggle_theme()
         self.assertEqual(get_theme(), THEME_DARK)
