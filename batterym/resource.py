@@ -38,7 +38,6 @@ def icon_path(capacity, is_charging):
     return image_path(icon_filename(capacity, is_charging), ui.THEME)
 
 
-#####################################################################
 class MyTest(unittest.TestCase):
 
     def test_image_path(self):

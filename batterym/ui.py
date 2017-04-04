@@ -24,7 +24,6 @@ def get_theme():
     return THEME
 
 
-#####################################################################
 class MyTest(unittest.TestCase):
 
     def test_reset_theme(self):

@@ -48,7 +48,6 @@ def is_charging():
     return battery_status() == 'Charging'
 
 
-#####################################################################
 class MyTest(unittest.TestCase):
 
     def test_limit(self):

@@ -87,7 +87,6 @@ class Future:
         return median(slopes)
 
 
-#####################################################################
 class MyTest(unittest.TestCase):
 
     def test_median(self):

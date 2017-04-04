@@ -59,7 +59,6 @@ def get_battery():
     return filter(lambda line: line is not None, parse_log_lines(lines))
 
 
-#####################################################################
 class MyTest(unittest.TestCase):
 
     def test_parse_log_line(self):

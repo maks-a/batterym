@@ -23,7 +23,6 @@ class Observable(object):
             callback(message)
 
 
-#####################################################################
 class AnObserver(object):
 
     def __init__(self):

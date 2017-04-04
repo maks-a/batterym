@@ -101,7 +101,6 @@ def steps_filter(x, y):
     return x, y6
 
 
-########################################################################
 # def run_test(filename):
 #     x, y = np.loadtxt(filename, skiprows=0).T
 #     x = list([-e for e in x])
