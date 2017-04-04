@@ -1,0 +1,1 @@
+cat install_log.txt | xargs sudo rm -rf
