@@ -108,7 +108,6 @@ class Indicator:
     def battery_monitor(self, _):
         if self.window is None:
             self.window = gtk.Window()
-        if not self.window.props.visible:
             self.window.connect('delete-event', self.close_window)
             self.window.set_title('Battery Monitor')
             self.window.set_border_width(10)
@@ -123,6 +122,9 @@ class Indicator:
             self.image = gtk.Image()
             self.image.set_from_file(CAPACITY_HISTORY_CHART)
             self.window.vbox.pack_start(self.image, False, False, 0)
+        if not self.window.props.visible:
+            self.window.set_icon_from_file(BATTERY_MONITOR_ICON)
+            self.image.set_from_file(CAPACITY_HISTORY_CHART)
             self.window.show_all()
 
     def close_window(self, arg1, arg2):
