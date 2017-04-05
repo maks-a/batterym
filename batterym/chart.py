@@ -59,6 +59,17 @@ def close_points(points):
     return res
 
 
+def write_lines(lines, filepath):
+    with open(filepath, 'w') as f:
+        f.write('\n'.join(lines))
+
+
+def read_lines(filepath):
+    with open(filepath, 'r') as f:
+        return f.read().splitlines()
+    return []
+
+
 class BoundingBox:
 
     def __init__(self, point=None):
@@ -383,10 +394,7 @@ class Chart:
         return svg
 
     def render_to_svg(self, filepath):
-        with open(filepath, 'w') as f:
-            lines = self.render()
-            for line in lines:
-                f.write(line + '\n')
+        write_lines(self.render(), filepath)
 
 
 # def main():
@@ -449,13 +457,79 @@ class MyTest(unittest.TestCase):
 
     def test_get_rectangular(self):
         self.assertEqual(get_rectangular(1, 1), get_square())
-        self.assertEqual(get_rectangular(2, 1), 
-            [[0, 0], [2, 0], [2, 1], [0, 1], [0, 0]])
+        self.assertEqual(get_rectangular(2, 1),
+                         [[0, 0], [2, 0], [2, 1], [0, 1], [0, 0]])
 
     def test_get_color(self):
         self.assertEqual(get_color('white'), '#fff')
         self.assertEqual(get_color('black'), '#000')
 
+    def test_render1(self):
+        xlabels = []
+        ylabels = []
+        chart = Chart(xlabels=xlabels, ylabels=ylabels)
+        result = chart.render()
+        write_lines(result, 'test/chart/render1.svg')
+        expected = read_lines('test/chart/render1.svg')
+        self.assertEqual(result, expected)
+
+    def test_render2(self):
+        xlabels = [0, 2, 4, 6, 8, 10, '12 hours']
+        ylabels = ['0 %', '50 %', '100 %']
+        chart = Chart(xlabels=xlabels, ylabels=ylabels)
+        result = chart.render()
+        write_lines(result, 'test/chart/render2.svg')
+        expected = read_lines('test/chart/render2.svg')
+        self.assertEqual(result, expected)
+
+    def test_render3(self):
+        xlabels = [0, 2, 4, 6, 8, 10, '12 hours']
+        ylabels = ['0 %', '50 %', '100 %']
+        chart = Chart(xlabels=xlabels, ylabels=ylabels)
+        color = 'red'
+        ys = [10, 60, 60]
+        xs = [10, 20, 30]
+        chart.add(xs=xs, ys=ys, stroke=color, fill=color)
+        result = chart.render()
+        write_lines(result, 'test/chart/render3.svg')
+        expected = read_lines('test/chart/render3.svg')
+        self.assertEqual(result, expected)
+
+    def test_render4(self):
+        xlabels = [0, 2, 4, 6, 8, 10, '12 hours']
+        ylabels = ['0 %', '50 %', '100 %']
+        chart = Chart(xlabels=xlabels, ylabels=ylabels)
+        color = 'red'
+        ys = [10, 60, 60]
+        chart.add(ys=ys, stroke=color, fill=color)
+        result = chart.render()
+        write_lines(result, 'test/chart/render4.svg')
+        expected = read_lines('test/chart/render4.svg')
+        self.assertEqual(result, expected)
+
+    def test_render5(self):
+        xlabels = [0, 2, 4, 6, 8, 10, '12 hours']
+        ylabels = ['0 %', '50 %', '100 %']
+        chart = Chart(xlabels=xlabels, ylabels=ylabels)
+        color = 'red'
+        ys = [10, 60, 60]
+        chart.add(ys=ys, stroke=color, stroke_dash=True)
+        result = chart.render()
+        write_lines(result, 'test/chart/render5.svg')
+        expected = read_lines('test/chart/render5.svg')
+        self.assertEqual(result, expected)
+
+    def test_render6(self):
+        xlabels = [0, 2, 4, 6, 8, 10, '12 hours']
+        ylabels = ['0 %', '50 %', '100 %']
+        chart = Chart(xlabels=xlabels, ylabels=ylabels, inverseX=True)
+        color = 'red'
+        ys = [10, 60, 60]
+        chart.add(ys=ys, stroke=color, fill=color)
+        result = chart.render()
+        write_lines(result, 'test/chart/render6.svg')
+        expected = read_lines('test/chart/render6.svg')
+        self.assertEqual(result, expected)
 
 # if __name__ == '__main__':
 #     # main()

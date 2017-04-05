@@ -1,0 +1,211 @@
+<svg>
+<polyline
+	points="20,55 610,55 610,10 20,10 20,55"
+	fill="#fff"
+/>
+<polyline
+	points="20,55.0 610,55.0"
+	stroke="#ddd"
+	stroke-width="1"
+	fill="none"
+	shape-rendering="crispEdges"
+/>
+<polyline
+	points="20,32.5 610,32.5"
+	shape-rendering="crispEdges"
+	stroke="#ddd"
+	stroke-width="1"
+	fill="none"
+/>
+<polyline
+	points="20,10.0 610,10.0"
+	stroke="#ddd"
+	stroke-width="1"
+	fill="none"
+	shape-rendering="crispEdges"
+/>
+<polyline
+	points="20.0,55 20.0,10"
+	shape-rendering="crispEdges"
+	stroke="#ddd"
+	stroke-width="1"
+	fill="none"
+/>
+<polyline
+	points="118.333333333,55 118.333333333,10"
+	stroke="#ddd"
+	stroke-width="1"
+	fill="none"
+	shape-rendering="crispEdges"
+/>
+<polyline
+	points="216.666666667,55 216.666666667,10"
+	shape-rendering="crispEdges"
+	stroke="#ddd"
+	stroke-width="1"
+	fill="none"
+/>
+<polyline
+	points="315.0,55 315.0,10"
+	stroke="#ddd"
+	stroke-width="1"
+	fill="none"
+	shape-rendering="crispEdges"
+/>
+<polyline
+	points="413.333333333,55 413.333333333,10"
+	shape-rendering="crispEdges"
+	stroke="#ddd"
+	stroke-width="1"
+	fill="none"
+/>
+<polyline
+	points="511.666666667,55 511.666666667,10"
+	stroke="#ddd"
+	stroke-width="1"
+	fill="none"
+	shape-rendering="crispEdges"
+/>
+<polyline
+	points="610.0,55 610.0,10"
+	shape-rendering="crispEdges"
+	stroke="#ddd"
+	stroke-width="1"
+	fill="none"
+/>
+<polyline
+	points="17,10 610,10"
+	stroke="#999"
+	stroke-width="1"
+	fill="none"
+	shape-rendering="crispEdges"
+/>
+<polyline
+	points="17,55 610,55"
+	shape-rendering="crispEdges"
+	stroke="#999"
+	stroke-width="1"
+	fill="none"
+/>
+<polyline
+	points="20,58 20,10"
+	stroke="#999"
+	stroke-width="1"
+	fill="none"
+	shape-rendering="crispEdges"
+/>
+<polyline
+	points="610,58 610,10"
+	shape-rendering="crispEdges"
+	stroke="#999"
+	stroke-width="1"
+	fill="none"
+/>
+<polyline
+	points="20,48 315,10 610,10"
+	stroke="#f00"
+	stroke-width="1"
+	stroke-dasharray="10, 5"
+	fill="none"
+/>
+<text
+	font-size="10"
+	text-anchor="end"
+	y="58.0"
+	x="15"
+	font-family="Verdana"
+	fill="#777"
+>
+0 %
+</text>
+<text
+	font-size="10"
+	text-anchor="end"
+	y="35.5"
+	x="15"
+	font-family="Verdana"
+	fill="#777"
+>
+50 %
+</text>
+<text
+	font-size="10"
+	text-anchor="end"
+	y="13.0"
+	x="15"
+	font-family="Verdana"
+	fill="#777"
+>
+100 %
+</text>
+<text
+	font-size="10"
+	text-anchor="middle"
+	y="70"
+	x="20.0"
+	font-family="Verdana"
+	fill="#777"
+>
+0
+</text>
+<text
+	font-size="10"
+	text-anchor="middle"
+	y="70"
+	x="118.333333333"
+	font-family="Verdana"
+	fill="#777"
+>
+2
+</text>
+<text
+	font-size="10"
+	text-anchor="middle"
+	y="70"
+	x="216.666666667"
+	font-family="Verdana"
+	fill="#777"
+>
+4
+</text>
+<text
+	font-size="10"
+	text-anchor="middle"
+	y="70"
+	x="315.0"
+	font-family="Verdana"
+	fill="#777"
+>
+6
+</text>
+<text
+	font-size="10"
+	text-anchor="middle"
+	y="70"
+	x="413.333333333"
+	font-family="Verdana"
+	fill="#777"
+>
+8
+</text>
+<text
+	font-size="10"
+	text-anchor="middle"
+	y="70"
+	x="511.666666667"
+	font-family="Verdana"
+	fill="#777"
+>
+10
+</text>
+<text
+	font-size="10"
+	text-anchor="middle"
+	y="70"
+	x="610.0"
+	font-family="Verdana"
+	fill="#777"
+>
+12 hours
+</text>
+</svg>
