@@ -123,8 +123,6 @@ class Indicator:
             self.image.set_from_file(CAPACITY_HISTORY_CHART)
             self.window.vbox.pack_start(self.image, False, False, 0)
         if not self.window.props.visible:
-            self.window.set_icon_from_file(BATTERY_MONITOR_ICON)
-            self.image.set_from_file(CAPACITY_HISTORY_CHART)
             self.window.show_all()
 
     def close_window(self, arg1, arg2):
