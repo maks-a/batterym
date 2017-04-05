@@ -469,7 +469,6 @@ class MyTest(unittest.TestCase):
         ylabels = []
         chart = Chart(xlabels=xlabels, ylabels=ylabels)
         result = chart.render()
-        write_lines(result, 'test/chart/render1.svg')
         expected = read_lines('test/chart/render1.svg')
         self.assertEqual(result, expected)
 
@@ -478,7 +477,6 @@ class MyTest(unittest.TestCase):
         ylabels = ['0 %', '50 %', '100 %']
         chart = Chart(xlabels=xlabels, ylabels=ylabels)
         result = chart.render()
-        write_lines(result, 'test/chart/render2.svg')
         expected = read_lines('test/chart/render2.svg')
         self.assertEqual(result, expected)
 
@@ -491,7 +489,6 @@ class MyTest(unittest.TestCase):
         xs = [10, 20, 30]
         chart.add(xs=xs, ys=ys, stroke=color, fill=color)
         result = chart.render()
-        write_lines(result, 'test/chart/render3.svg')
         expected = read_lines('test/chart/render3.svg')
         self.assertEqual(result, expected)
 
@@ -503,7 +500,6 @@ class MyTest(unittest.TestCase):
         ys = [10, 60, 60]
         chart.add(ys=ys, stroke=color, fill=color)
         result = chart.render()
-        write_lines(result, 'test/chart/render4.svg')
         expected = read_lines('test/chart/render4.svg')
         self.assertEqual(result, expected)
 
@@ -515,7 +511,6 @@ class MyTest(unittest.TestCase):
         ys = [10, 60, 60]
         chart.add(ys=ys, stroke=color, stroke_dash=True)
         result = chart.render()
-        write_lines(result, 'test/chart/render5.svg')
         expected = read_lines('test/chart/render5.svg')
         self.assertEqual(result, expected)
 
@@ -527,7 +522,6 @@ class MyTest(unittest.TestCase):
         ys = [10, 60, 60]
         chart.add(ys=ys, stroke=color, fill=color)
         result = chart.render()
-        write_lines(result, 'test/chart/render6.svg')
         expected = read_lines('test/chart/render6.svg')
         self.assertEqual(result, expected)
 
