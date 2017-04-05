@@ -468,17 +468,13 @@ class MyTest(unittest.TestCase):
         xlabels = []
         ylabels = []
         chart = Chart(xlabels=xlabels, ylabels=ylabels)
-        result = chart.render()
-        expected = read_lines('test/chart/render1.svg')
-        self.assertEqual(result, expected)
+        self.assertEqual(chart.render(), read_lines('test/chart/render1.svg'))
 
     def test_render2(self):
         xlabels = [0, 2, 4, 6, 8, 10, '12 hours']
         ylabels = ['0 %', '50 %', '100 %']
         chart = Chart(xlabels=xlabels, ylabels=ylabels)
-        result = chart.render()
-        expected = read_lines('test/chart/render2.svg')
-        self.assertEqual(result, expected)
+        self.assertEqual(chart.render(), read_lines('test/chart/render2.svg'))
 
     def test_render3(self):
         xlabels = [0, 2, 4, 6, 8, 10, '12 hours']
@@ -488,9 +484,7 @@ class MyTest(unittest.TestCase):
         ys = [10, 60, 60]
         xs = [10, 20, 30]
         chart.add(xs=xs, ys=ys, stroke=color, fill=color)
-        result = chart.render()
-        expected = read_lines('test/chart/render3.svg')
-        self.assertEqual(result, expected)
+        self.assertEqual(chart.render(), read_lines('test/chart/render3.svg'))
 
     def test_render4(self):
         xlabels = [0, 2, 4, 6, 8, 10, '12 hours']
@@ -499,9 +493,7 @@ class MyTest(unittest.TestCase):
         color = 'red'
         ys = [10, 60, 60]
         chart.add(ys=ys, stroke=color, fill=color)
-        result = chart.render()
-        expected = read_lines('test/chart/render4.svg')
-        self.assertEqual(result, expected)
+        self.assertEqual(chart.render(), read_lines('test/chart/render4.svg'))
 
     def test_render5(self):
         xlabels = [0, 2, 4, 6, 8, 10, '12 hours']
@@ -510,9 +502,7 @@ class MyTest(unittest.TestCase):
         color = 'red'
         ys = [10, 60, 60]
         chart.add(ys=ys, stroke=color, stroke_dash=True)
-        result = chart.render()
-        expected = read_lines('test/chart/render5.svg')
-        self.assertEqual(result, expected)
+        self.assertEqual(chart.render(), read_lines('test/chart/render5.svg'))
 
     def test_render6(self):
         xlabels = [0, 2, 4, 6, 8, 10, '12 hours']
@@ -521,9 +511,7 @@ class MyTest(unittest.TestCase):
         color = 'red'
         ys = [10, 60, 60]
         chart.add(ys=ys, stroke=color, fill=color)
-        result = chart.render()
-        expected = read_lines('test/chart/render6.svg')
-        self.assertEqual(result, expected)
+        self.assertEqual(chart.render(), read_lines('test/chart/render6.svg'))
 
 # if __name__ == '__main__':
 #     # main()
