@@ -124,6 +124,7 @@ def steps_filter(x, y):
 #     run_test(folder + 'data3.txt')
 #     run_test(folder + 'data4.txt')
 #     run_test(folder + 'data5.txt')
+#     run_test(folder + 'data6.txt')
 
 
 class MyTest(unittest.TestCase):

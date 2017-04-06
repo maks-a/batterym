@@ -23,8 +23,8 @@ def add_virtual_time(samples, threshold_sec):
             t2 = curr['relative_time_sec']
             delta = t2 - t1
             is_overtime = delta >= threshold_sec
-            is_status_changed = curr['status'] != prev['status']
-            if not is_overtime and not is_status_changed:
+            is_new_sequence = curr['status'] != prev['status']
+            if not is_overtime and not is_new_sequence:
                 virtual_time += delta
             else:
                 sequence_id += 1
