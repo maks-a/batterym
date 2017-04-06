@@ -29,19 +29,22 @@ def battery_capacity():
             return _limit(int(m.group(1)), 0, 100)
 
 
-def battery_status():
+def battery_status_original():
     with open(status_file, 'r') as f:
         m = re.search('(\w+)', f.read())
         if m:
             return m.group(1)
 
 
+def battery_status():
+    status = battery_status_original()
+    if status == 'Charging' or status == 'Full':
+        return 'Charging'
+    return 'Discharging'
+
+
 def is_discharging():
     return battery_status() == 'Discharging'
-
-
-def is_full():
-    return battery_status() == 'Full'
 
 
 def is_charging():
