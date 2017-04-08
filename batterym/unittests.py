@@ -2,17 +2,18 @@
 import unittest
 
 testmodules = [
-    'smooth',
     'battery',
     'chart',
     'future',
     'history',
     'indicator',
     'log',
+    'misc',
     'observable',
     'osdata',
     'plotter',
     'resource',
+    'smooth',
     'ui',
     ]
 
