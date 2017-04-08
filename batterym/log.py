@@ -14,7 +14,7 @@ LOG_BATTERY_FILE = os.path.join(
 def battery(capacity, status):
     t = datetime.datetime.now().isoformat()
     line = '{0} {1}% {2}\n'.format(t, capacity, status)
-    misc.append_to_file(LOG_BATTERY_FILE, line)
+    misc.append_to_file(line, LOG_BATTERY_FILE)
 
 
 def parse_log_line(line, prog):

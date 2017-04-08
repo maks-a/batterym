@@ -40,7 +40,7 @@ class Indicator:
         self.window = None
 
         self.log_update_period = timedelta(minutes=5)
-        self.log_last_update = datetime.now()
+        self.log_last_update = datetime.now() - self.log_update_period
         self.update_battery()
         self.update_chart()
         sec = 1000

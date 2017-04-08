@@ -5,6 +5,8 @@ import unittest
 
 
 def add_relative_time(data):
+    if len(data) == 0:
+        return data
     t0 = max([e.get('time') for e in data])
     for e in data:
         e['relative_time_sec'] = float((t0 - e['time']).total_seconds())

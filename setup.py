@@ -33,11 +33,18 @@ setup(name='batterym',
       packages=['batterym'],
       data_files=[
           ('/usr/share/applications', ['batterym.desktop']),
+          (os.path.join(RESOURCES_DIRECTORY_PATH, 'logs'), []),
           (find_resources('img'))
       ],
       scripts=['bin/batterym']
       )
 
 create_missing_dirs(os.path.join(RESOURCES_DIRECTORY_PATH, 'logs'))
+
+capacity_log = os.path.join(RESOURCES_DIRECTORY_PATH, 'logs/capacity')
+if not os.path.isfile(capacity_log):
+    with open(capacity_log, 'w') as f:
+        f.write('')
+
 chmod(os.path.join(RESOURCES_DIRECTORY_PATH, 'logs'), 0777)
 chmod(os.path.join(RESOURCES_DIRECTORY_PATH, 'img'), 0777)
