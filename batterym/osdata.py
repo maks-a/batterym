@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import re
+import misc
 import unittest
 
 
@@ -23,17 +24,15 @@ def _limit(val, lo, hi):
 
 
 def battery_capacity():
-    with open(capacity_file, 'r') as f:
-        m = re.search('(\d+)', f.read())
-        if m:
-            return _limit(int(m.group(1)), 0, 100)
+    m = re.search('(\d+)', misc.read_from_file(capacity_file))
+    if m:
+        return _limit(int(m.group(1)), 0, 100)
 
 
 def battery_status_original():
-    with open(status_file, 'r') as f:
-        m = re.search('(\w+)', f.read())
-        if m:
-            return m.group(1)
+    m = re.search('(\w+)', misc.read_from_file(status_file))
+    if m:
+        return m.group(1)
 
 
 def battery_status():
