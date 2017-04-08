@@ -1,6 +1,7 @@
 #!/usr/bin/python
 import os
 from distutils.core import setup
+from batterym.misc import create_missing_dirs
 from batterym.resource import RESOURCES_DIRECTORY_PATH
 
 
@@ -32,12 +33,11 @@ setup(name='batterym',
       packages=['batterym'],
       data_files=[
           ('/usr/share/applications', ['batterym.desktop']),
-          (find_resources('logs')),
           (find_resources('img'))
       ],
       scripts=['bin/batterym']
       )
 
-
+create_missing_dirs(os.path.join(RESOURCES_DIRECTORY_PATH, 'logs'))
 chmod(os.path.join(RESOURCES_DIRECTORY_PATH, 'logs'), 0777)
 chmod(os.path.join(RESOURCES_DIRECTORY_PATH, 'img'), 0777)
