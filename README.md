@@ -5,6 +5,9 @@ Battery Monitor is an application for Ubuntu laptops that provides timeline powe
 ![Battery Monitor]
 (img/battery_monitor.png)
 
+![Battery Monitor]
+(img/battery_monitor2.png)
+
 ## Dependencies
 
 - Python 2.7
