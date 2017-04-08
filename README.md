@@ -25,6 +25,6 @@ Battery Monitor is an application for Ubuntu laptops that provides timeline powe
 
 ## TODO
 
-- [ ] Preserve history after reinstall
+- [x] Preserve history after reinstall
 - [ ] Add config
 - [ ] Remember theme selection after restart
