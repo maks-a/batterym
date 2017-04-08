@@ -1,8 +1,9 @@
 #!/usr/bin/python
-import re
 import os
-import resource
+import re
+import misc
 import datetime
+import resource
 import unittest
 
 
@@ -10,22 +11,10 @@ LOG_BATTERY_FILE = os.path.join(
     resource.RESOURCES_DIRECTORY_PATH, 'logs/capacity')
 
 
-def create_missing_dirs(filename):
-    basedir = os.path.dirname(filename)
-    if not os.path.exists(basedir):
-        os.makedirs(basedir)
-
-
-def append_to_file(filename, line):
-    create_missing_dirs(filename)
-    with open(filename, 'a') as f:
-        f.write(line)
-
-
 def battery(capacity, status):
     t = datetime.datetime.now().isoformat()
     line = '{0} {1}% {2}\n'.format(t, capacity, status)
-    append_to_file(LOG_BATTERY_FILE, line)
+    misc.append_to_file(LOG_BATTERY_FILE, line)
 
 
 def parse_log_line(line, prog):
@@ -40,12 +29,6 @@ def parse_log_line(line, prog):
         }
 
 
-def get_lines(fname):
-    with open(fname, 'r') as f:
-        lines = f.readlines()
-        return lines
-
-
 def parse_log_lines(lines):
     Ymd = '(?P<Y>\d+)-(?P<m>\d+)-(?P<d>\d+)'
     HMSus = '(?P<H>\d+):(?P<M>\d+):(?P<S>\d+)\.(?P<us>\d*)'
@@ -55,7 +38,7 @@ def parse_log_lines(lines):
 
 
 def get_battery():
-    lines = get_lines(LOG_BATTERY_FILE)
+    lines = misc.read_lines_from_file(LOG_BATTERY_FILE)
     return filter(lambda line: line is not None, parse_log_lines(lines))
 
 
