@@ -26,6 +26,10 @@ Battery Monitor is an application for Ubuntu laptops that provides timeline powe
 - http://askubuntu.com/questions/150970/how-can-i-change-the-application-indicator-label-after-delay
 - http://stackoverflow.com/questions/11132929/showing-a-gtk-calendar-in-a-menu
 
+## Licensing
+
+Apache License, Version 2.0. See LICENSE for the full license text.
+
 ## TODO
 
 - [x] Preserve history after reinstall
