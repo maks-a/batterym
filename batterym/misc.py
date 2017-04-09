@@ -24,8 +24,9 @@ def write_to_file(text, fname):
 
 
 def read_from_file(fname):
-    with open(fname, 'r') as f:
-        return f.read()
+    if os.path.isfile(fname):
+        with open(fname, 'r') as f:
+            return f.read()
     return ''
 
 

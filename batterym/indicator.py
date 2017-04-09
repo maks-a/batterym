@@ -16,13 +16,12 @@ from gi.repository import Gtk as gtk
 from gi.repository import GObject as gobject
 from gi.repository import AppIndicator3 as appindicator
 
+from paths import BATTERY_MONITOR_ICON
+from paths import CAPACITY_HISTORY_CHART
+
 
 APPINDICATOR_ID = 'batterym'
 CATEGORY = appindicator.IndicatorCategory.SYSTEM_SERVICES
-BATTERY_MONITOR_ICON = os.path.join(
-    resource.RESOURCES_DIRECTORY_PATH, 'img/battery.svg')
-CAPACITY_HISTORY_CHART = os.path.join(
-    resource.RESOURCES_DIRECTORY_PATH, 'img/capacity_history_12h.svg')
 
 
 class Indicator:

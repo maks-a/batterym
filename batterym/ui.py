@@ -1,19 +1,18 @@
 #!/usr/bin/python
+import config
 import unittest
+
 
 THEME_DARK = 'dark'
 THEME_LIGHT = 'light'
 
-THEME = THEME_DARK
-
 
 def set_theme(theme):
-    global THEME
-    THEME = theme
+    config.set_entry('theme', theme)
 
 
 def get_theme():
-    return THEME
+    return config.get_entry('theme')
 
 
 def reset_theme():

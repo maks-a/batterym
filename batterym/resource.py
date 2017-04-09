@@ -3,10 +3,7 @@ import os
 import ui
 import unittest
 
-
-IMAGE_FOLDER_PATTERN = '/usr/share/icons/ubuntu-mono-{0}/status/22'
-
-RESOURCES_DIRECTORY_PATH = '/usr/share/batterym'
+from paths import IMAGE_FOLDER_PATTERN
 
 
 def image_path(name, theme):
@@ -35,7 +32,7 @@ def icon_filename(capacity, is_charging):
 
 
 def icon_path(capacity, is_charging):
-    return image_path(icon_filename(capacity, is_charging), ui.THEME)
+    return image_path(icon_filename(capacity, is_charging), ui.get_theme())
 
 
 class MyTest(unittest.TestCase):
