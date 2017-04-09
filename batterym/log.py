@@ -6,9 +6,7 @@ import datetime
 import resource
 import unittest
 
-
-LOG_BATTERY_FILE = os.path.join(
-    resource.RESOURCES_DIRECTORY_PATH, 'logs/capacity')
+from paths import LOG_BATTERY_FILE
 
 
 def battery(capacity, status):

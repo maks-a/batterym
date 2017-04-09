@@ -2,7 +2,7 @@
 import os
 from distutils.core import setup
 from batterym.misc import create_missing_dirs
-from batterym.resource import RESOURCES_DIRECTORY_PATH
+from batterym.paths import RESOURCES_DIRECTORY_PATH
 
 
 def find_resources(resource_dir):

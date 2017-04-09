@@ -5,9 +5,7 @@ import misc
 import resource
 import unittest
 
-
-CONFIG_FILE = os.path.join(
-    resource.RESOURCES_DIRECTORY_PATH, 'config/config.json')
+from paths import CONFIG_FILE
 
 
 def write_json(data, fname):
