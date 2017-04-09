@@ -26,10 +26,9 @@ def chmod(folder, mod):
 setup(name='batterym',
       version='0.1.0',
       description='Battery Monitor for Ubuntu',
-      url='',
-      author='',
-      author_email='',
-      license='',
+      url='https://github.com/maks-a/batterym',
+      author='https://github.com/maks-a',
+      license='Apache License 2.0',
       packages=['batterym'],
       data_files=[
           ('/usr/share/applications', ['batterym.desktop']),
