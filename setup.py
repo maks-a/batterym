@@ -33,8 +33,9 @@ setup(name='batterym',
       packages=['batterym'],
       data_files=[
           ('/usr/share/applications', ['batterym.desktop']),
+          (find_resources('config')),
           (os.path.join(RESOURCES_DIRECTORY_PATH, 'logs'), []),
-          (find_resources('img'))
+          (find_resources('img')),
       ],
       scripts=['bin/batterym']
       )
@@ -46,5 +47,6 @@ if not os.path.isfile(capacity_log):
     with open(capacity_log, 'w') as f:
         f.write('')
 
+chmod(os.path.join(RESOURCES_DIRECTORY_PATH, 'config'), 0777)
 chmod(os.path.join(RESOURCES_DIRECTORY_PATH, 'logs'), 0777)
 chmod(os.path.join(RESOURCES_DIRECTORY_PATH, 'img'), 0777)
