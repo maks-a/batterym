@@ -11,7 +11,7 @@ CONFIG_FILE = os.path.join(
 
 
 def write_json(data, fname):
-    text = json.dumps(data)
+    text = json.dumps(data, indent=2)
     misc.write_to_file(text, fname)
 
 
