@@ -39,9 +39,9 @@ def set_entry(key, value, fname=None):
     write_config(data, fname)
 
 
-def get_entry(key, fname=None):
+def get_entry(key, fname=None, default_value=None):
     data = read_config(fname)
-    return data.get(key)
+    return data.get(key, default_value)
 
 
 class JsonTest(unittest.TestCase):
@@ -124,6 +124,12 @@ class ConfigTest(unittest.TestCase):
         write_config(src, self.fname)
         result = get_entry('aaa', self.fname)
         expected = None
+        self.assertEqual(result, expected)
+
+        src = {}
+        write_config(src, self.fname)
+        result = get_entry('aaa', self.fname, default_value=True)
+        expected = True
         self.assertEqual(result, expected)
 
         src = {
