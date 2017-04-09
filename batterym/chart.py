@@ -459,14 +459,14 @@ class MyTest(unittest.TestCase):
         ylabels = []
         chart = Chart(xlabels=xlabels, ylabels=ylabels)
         self.assertEqual(chart.render(), misc.read_lines_from_file(
-            'test/chart/render1.svg'))
+            'batterym/test/chart/render1.svg'))
 
     def test_render2(self):
         xlabels = [0, 2, 4, 6, 8, 10, '12 hours']
         ylabels = ['0 %', '50 %', '100 %']
         chart = Chart(xlabels=xlabels, ylabels=ylabels)
         self.assertEqual(chart.render(), misc.read_lines_from_file(
-            'test/chart/render2.svg'))
+            'batterym/test/chart/render2.svg'))
 
     def test_render3(self):
         xlabels = [0, 2, 4, 6, 8, 10, '12 hours']
@@ -477,7 +477,7 @@ class MyTest(unittest.TestCase):
         xs = [10, 20, 30]
         chart.add(xs=xs, ys=ys, stroke=color, fill=color)
         self.assertEqual(chart.render(), misc.read_lines_from_file(
-            'test/chart/render3.svg'))
+            'batterym/test/chart/render3.svg'))
 
     def test_render4(self):
         xlabels = [0, 2, 4, 6, 8, 10, '12 hours']
@@ -487,7 +487,7 @@ class MyTest(unittest.TestCase):
         ys = [10, 60, 60]
         chart.add(ys=ys, stroke=color, fill=color)
         self.assertEqual(chart.render(), misc.read_lines_from_file(
-            'test/chart/render4.svg'))
+            'batterym/test/chart/render4.svg'))
 
     def test_render5(self):
         xlabels = [0, 2, 4, 6, 8, 10, '12 hours']
@@ -497,7 +497,7 @@ class MyTest(unittest.TestCase):
         ys = [10, 60, 60]
         chart.add(ys=ys, stroke=color, stroke_dash=True)
         self.assertEqual(chart.render(), misc.read_lines_from_file(
-            'test/chart/render5.svg'))
+            'batterym/test/chart/render5.svg'))
 
     def test_render6(self):
         xlabels = [0, 2, 4, 6, 8, 10, '12 hours']
@@ -507,7 +507,7 @@ class MyTest(unittest.TestCase):
         ys = [10, 60, 60]
         chart.add(ys=ys, stroke=color, fill=color)
         self.assertEqual(chart.render(), misc.read_lines_from_file(
-            'test/chart/render6.svg'))
+            'batterym/test/chart/render6.svg'))
 
 # if __name__ == '__main__':
 #     # main()
