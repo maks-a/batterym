@@ -1,5 +1,6 @@
 #!/usr/bin/python
 import log
+import config
 import unittest
 
 from history import History
@@ -52,7 +53,8 @@ def create_chart(plot_data, image_path):
 
 
 def caluclate_chart(image_path):
-    history = History(log.get_battery(), smoothing=True)
+    smoothing = config.get_entry('smoothing', default_value=True)
+    history = History(log.get_battery(), smoothing=smoothing)
     future = Future(history)
     plot_data = extract_plot_data(history, future)
     # life_time = datetime.timedelta(
