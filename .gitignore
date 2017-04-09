@@ -3,3 +3,4 @@
 *.svg
 *.coverage
 htmlcov/
+build
