@@ -4,6 +4,7 @@ import unittest
 testmodules = [
     'battery',
     'chart',
+    'config',
     'future',
     'history',
     'indicator',
