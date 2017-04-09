@@ -101,6 +101,23 @@ def steps_filter(x, y):
     return x, y6
 
 
+# def running_mean(l, N):
+#     sum = 0
+#     result = [0 for x in l]
+
+#     k = len(l)
+#     N = min(k, N)
+#     for i in xrange(0, N):
+#         sum += l[i]
+#         result[i] = sum / (i+1)
+
+#     for i in range(N, k):
+#         sum = sum - l[i-N] + l[i]
+#         result[i] = sum / N
+
+#     return result
+
+
 # def run_test(filename):
 #     x, y = np.loadtxt(filename, skiprows=0).T
 #     x = list([-e for e in x])
@@ -108,12 +125,18 @@ def steps_filter(x, y):
 #     x.reverse()
 #     y.reverse()
 #     x5, y5 = steps_filter(x, y)
+#     y6 = scipy.ndimage.gaussian_filter(y, 5)
+#     y7 = running_mean(y, 5)
 
 #     fig, ax = plt.subplots()
-#     ax.plot(x, y, 'x:', color='red')
-#     ax.plot(x5, y5, '-o', color='blue')
+#     line1, = ax.plot(x, y, 'x:', color='red', label='input')
+#     line2, = ax.plot(x, y6, '-+', color='green', label='gaussian_filter')
+#     line3, = ax.plot(x, y7, '-+', color='pink', label='running_mean')
+#     line4, = ax.plot(x5, y5, '-o', color='blue', label='custom')
+
+#     plt.legend(handles=[line1, line2, line3, line4])
 #     mng = plt.get_current_fig_manager()
-#     mng.resize(*mng.window.maxsize())
+#     # mng.resize(*mng.window.maxsize())
 #     plt.show()
 
 
