@@ -8,8 +8,14 @@ Battery Monitor is an application for Ubuntu laptops that provides timeline powe
 
 ## Dependencies
 
+### Usage
+
 - Python 2.7
 - `sudo apt-get install --reinstall python-gi`
+
+### Build tools
+
+- `sudo pip install coverage`
 
 ## Installation
 
@@ -33,9 +39,9 @@ Apache License, Version 2.0. See LICENSE for the full license text.
 - [x] Preserve history after reinstall
 - [x] Add config (theme, smoothing, etc)
 - [x] Remember theme selection after restart
+- [x] Dependencies for build tools (e.g. coverage)
 - [ ] Limit log file size / logrotate
-- [ ] use python3
-- [ ] dependencies for build tools (e.g. coverage)
 - [ ] how to install as non root user?
-- [ ] pip / anaconda
 - [ ] use d-bus interface
+- [ ] pip / anaconda
+- [ ] use python3
