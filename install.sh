@@ -1,2 +1,2 @@
 #!/bin/sh
-python2 setup.py install --record install_log.txt "$@"
+python2 setup.py install --record install_log.txt --user "$@"

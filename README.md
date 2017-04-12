@@ -19,7 +19,7 @@ Battery Monitor is an application for Ubuntu laptops that provides timeline powe
 
 ## Installation
 
-- `sudo ./install.sh`
+- `./install.sh`, non-sudo installation
 - add `batterym` to `Startup Applications`
 
 ## Licensing
