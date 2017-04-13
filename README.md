@@ -41,8 +41,8 @@ Apache License, Version 2.0. See LICENSE for the full license text.
 - [x] Add config (theme, smoothing, etc)
 - [x] Remember theme selection after restart
 - [x] Dependencies for build tools (e.g. coverage)
+- [x] Install as non root user
 - [ ] Limit log file size / logrotate
-- [ ] how to install as non root user?
 - [ ] use d-bus interface
 - [ ] pip / anaconda
 - [ ] use python3
