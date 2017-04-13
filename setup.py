@@ -1,12 +1,19 @@
 #!/usr/bin/python
 import os
 from distutils.core import setup
+from batterym.misc import append_to_file
 from batterym.misc import create_missing_dirs
-from batterym.paths import RESOURCES_DIRECTORY_PATH
+
+from batterym.paths import SHARE_APP_DIR
+from batterym.paths import RESOURCES_DIR
+from batterym.paths import CONFIG_DIR
+from batterym.paths import LOGS_DIR
+from batterym.paths import IMAGE_DIR
+from batterym.paths import LOG_BATTERY_FILE
 
 
 def find_resources(resource_dir):
-    target_path = os.path.join(RESOURCES_DIRECTORY_PATH, resource_dir)
+    target_path = os.path.join(RESOURCES_DIR, resource_dir)
     resource_names = os.listdir(resource_dir)
     resource_list = [os.path.join(resource_dir, file_name)
                      for file_name in resource_names]
@@ -17,7 +24,7 @@ def chmod(folder, mod):
     files = os.listdir(folder)
     for fname in files:
         fname = os.path.join(folder, fname)
-        if not os.path.isfile(fname) :
+        if not os.path.isfile(fname):
             continue
         os.chmod(fname, mod)
         print 'changing mode of {0} to {1}'.format(fname, mod)
@@ -31,21 +38,17 @@ setup(name='batterym',
       license='Apache License 2.0',
       packages=['batterym'],
       data_files=[
-          ('/usr/share/applications', ['batterym.desktop']),
+          (SHARE_APP_DIR, ['batterym.desktop']),
           (find_resources('config')),
-          (os.path.join(RESOURCES_DIRECTORY_PATH, 'logs'), []),
+          (LOGS_DIR, []),
           (find_resources('img')),
       ],
       scripts=['bin/batterym']
       )
 
-create_missing_dirs(os.path.join(RESOURCES_DIRECTORY_PATH, 'logs'))
+create_missing_dirs(LOGS_DIR)
+append_to_file('', LOG_BATTERY_FILE)
 
-capacity_log = os.path.join(RESOURCES_DIRECTORY_PATH, 'logs/capacity')
-if not os.path.isfile(capacity_log):
-    with open(capacity_log, 'w') as f:
-        f.write('')
-
-chmod(os.path.join(RESOURCES_DIRECTORY_PATH, 'config'), 0777)
-chmod(os.path.join(RESOURCES_DIRECTORY_PATH, 'logs'), 0777)
-chmod(os.path.join(RESOURCES_DIRECTORY_PATH, 'img'), 0777)
+chmod(CONFIG_DIR, 0777)
+chmod(LOGS_DIR, 0777)
+chmod(IMAGE_DIR, 0777)

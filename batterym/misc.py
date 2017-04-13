@@ -8,7 +8,17 @@ def create_missing_dirs(path):
     if len(basedir) == 0:
         return
     if not os.path.exists(basedir):
+        print 'creating {0}'.format(basedir)
         os.makedirs(basedir)
+        if not os.path.exists(basedir):
+            raise FileNotFoundError
+
+
+def delete_dir_and_content(path):
+    print 'deleting {0}'.format(path)
+    os.removedirs(path)
+    if os.path.exists(path):
+        raise FileExistsError
 
 
 def append_to_file(text, fname):
@@ -72,3 +82,11 @@ class MyTest(unittest.TestCase):
         append_to_file(src, self.fname)
         result = read_from_file(self.fname)
         self.assertEqual(2*src, result)
+
+    def test_create_dirs(self):
+        folder = 'tmp_folder/'
+        create_missing_dirs(folder)
+        self.assertTrue(os.path.exists(folder))
+
+        delete_dir_and_content(folder)
+        self.assertFalse(os.path.exists(folder))

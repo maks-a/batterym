@@ -19,8 +19,17 @@ Battery Monitor is an application for Ubuntu laptops that provides timeline powe
 
 ## Installation
 
-- `sudo ./install.sh`
+Non-root, non-sudo user installation is supported. Application will be installed in `/home/{$USER}/.local/batterym/` folder. After installation the file `install_log.txt` should appear in the source folder.
+
+- run `./install.sh`
+- save `install_log.txt` for the later uninstallation
 - add `batterym` to `Startup Applications`
+
+## Uninstallation
+
+Make sure you have `install_log.txt` next to `uninstall.sh`.
+
+- run `./uninstall.sh`
 
 ## Licensing
 
