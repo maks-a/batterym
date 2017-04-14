@@ -1,10 +1,15 @@
 # Battery Monitor
-
+-------------
 Battery Monitor is an application for Ubuntu laptops that provides timeline power usage and prediction graph.
 
 ![Battery Monitor](img/battery_monitor.png)
 
 ![Battery Monitor](img/battery_monitor2.png)
+
+## Quick Links
+
+- [TODO](todo.md)
+- [Release Notes](release-notes.md)
 
 ## Dependencies
 
@@ -34,18 +39,6 @@ Make sure you have `install_log.txt` next to `uninstall.sh`.
 ## Licensing
 
 Apache License, Version 2.0. See LICENSE for the full license text.
-
-## TODO
-
-- [x] Preserve history after reinstall
-- [x] Add config (theme, smoothing, etc)
-- [x] Remember theme selection after restart
-- [x] Dependencies for build tools (e.g. coverage)
-- [x] Install as non root user
-- [x] Limit log file size / logrotate
-- [ ] use d-bus interface
-- [ ] pip / anaconda
-- [ ] use python3
 
 ## Links
 
