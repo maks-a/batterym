@@ -10,6 +10,7 @@ from batterym.paths import CONFIG_DIR
 from batterym.paths import LOGS_DIR
 from batterym.paths import IMAGE_DIR
 from batterym.paths import LOG_BATTERY_FILE
+from batterym.paths import LOG_BATTERY_ALL_FILE
 
 
 def find_resources(resource_dir):
@@ -48,6 +49,7 @@ setup(name='batterym',
 
 create_missing_dirs(LOGS_DIR)
 append_to_file('', LOG_BATTERY_FILE)
+append_to_file('', LOG_BATTERY_ALL_FILE)
 
 chmod(CONFIG_DIR, 0777)
 chmod(LOGS_DIR, 0777)

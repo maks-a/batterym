@@ -48,6 +48,13 @@ def read_lines_from_file(fname):
     return read_from_file(fname).splitlines()
 
 
+def remove_front_lines_if_too_many(fname, lines_threshold=None):
+    lines = read_lines_from_file(fname)
+    if lines_threshold is not None and lines_threshold < len(lines):
+        lines = lines[-lines_threshold:]
+        write_lines_to_file(lines, fname)
+
+
 class MyTest(unittest.TestCase):
 
     def setUp(self):
@@ -90,3 +97,46 @@ class MyTest(unittest.TestCase):
 
         delete_dir_and_content(folder)
         self.assertFalse(os.path.exists(folder))
+
+    def test_remove_front_lines_if_too_many(self):
+        src = [str(x) for x in range(0, 10)]
+        write_lines_to_file(src, self.fname)
+        remove_front_lines_if_too_many(self.fname, 3)
+        result = read_lines_from_file(self.fname)
+        expected = ['7', '8', '9']
+        self.assertEqual(result, expected)
+
+        src = [str(x) for x in range(0, 3)]
+        write_lines_to_file(src, self.fname)
+        remove_front_lines_if_too_many(self.fname, 10)
+        result = read_lines_from_file(self.fname)
+        expected = ['0', '1', '2']
+        self.assertEqual(result, expected)
+
+        src = [str(x) for x in range(0, 3)]
+        write_lines_to_file(src, self.fname)
+        remove_front_lines_if_too_many(self.fname, 3)
+        result = read_lines_from_file(self.fname)
+        expected = ['0', '1', '2']
+        self.assertEqual(result, expected)
+
+        src = [str(x) for x in range(0, 3)]
+        write_lines_to_file(src, self.fname)
+        remove_front_lines_if_too_many(self.fname, 2)
+        result = read_lines_from_file(self.fname)
+        expected = ['1', '2']
+        self.assertEqual(result, expected)
+
+        src = [str(x) for x in range(0, 3)]
+        write_lines_to_file(src, self.fname)
+        remove_front_lines_if_too_many(self.fname)
+        result = read_lines_from_file(self.fname)
+        expected = ['0', '1', '2']
+        self.assertEqual(result, expected)
+
+        src = [str(x) for x in range(0, 3)]
+        write_lines_to_file(src, self.fname)
+        remove_front_lines_if_too_many(self.fname, None)
+        result = read_lines_from_file(self.fname)
+        expected = ['0', '1', '2']
+        self.assertEqual(result, expected)

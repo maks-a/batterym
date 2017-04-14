@@ -14,6 +14,7 @@ IMAGE_DIR = join(RESOURCES_DIR, 'img')
 
 CONFIG_FILE = join(CONFIG_DIR, 'config.json')
 LOG_BATTERY_FILE = join(LOGS_DIR, 'capacity')
+LOG_BATTERY_ALL_FILE = join(LOGS_DIR, 'capacity_all')
 BATTERY_MONITOR_ICON = join(IMAGE_DIR, 'battery.svg')
 CAPACITY_HISTORY_CHART = join(IMAGE_DIR, 'capacity_history_12h.svg')
 
