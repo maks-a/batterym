@@ -1,5 +1,6 @@
-# Battery Monitor
+Battery Monitor
 -------------
+
 Battery Monitor is an application for Ubuntu laptops that provides timeline power usage and prediction graph.
 
 ![Battery Monitor](img/battery_monitor.png)
