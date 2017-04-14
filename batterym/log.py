@@ -2,17 +2,24 @@
 import os
 import re
 import misc
+import config
 import datetime
 import resource
 import unittest
 
 from paths import LOG_BATTERY_FILE
+from paths import LOG_BATTERY_ALL_FILE
 
 
 def battery(capacity, status):
     t = datetime.datetime.now().isoformat()
     line = '{0} {1}% {2}\n'.format(t, capacity, status)
+
+    misc.append_to_file(line, LOG_BATTERY_ALL_FILE)
     misc.append_to_file(line, LOG_BATTERY_FILE)
+
+    lines_threshold = config.get_entry('log_capacity_lines_limit', None)
+    misc.remove_front_lines_if_too_many(LOG_BATTERY_FILE, lines_threshold)
 
 
 def parse_log_line(line, prog):

@@ -42,7 +42,7 @@ Apache License, Version 2.0. See LICENSE for the full license text.
 - [x] Remember theme selection after restart
 - [x] Dependencies for build tools (e.g. coverage)
 - [x] Install as non root user
-- [ ] Limit log file size / logrotate
+- [x] Limit log file size / logrotate
 - [ ] use d-bus interface
 - [ ] pip / anaconda
 - [ ] use python3
