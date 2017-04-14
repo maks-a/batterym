@@ -2,5 +2,6 @@
   "config_version": 1.0, 
   "theme": "dark", 
   "smoothing": true,
-  "log_capacity_lines_limit": 1500
+  "log_capacity_lines_limit": 1500,
+  "version": "1.0.0"
 }
