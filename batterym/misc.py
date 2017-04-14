@@ -41,7 +41,8 @@ def read_from_file(fname):
 
 
 def write_lines_to_file(lines, fname):
-    write_to_file('\n'.join(lines), fname)
+    if len(lines) > 0:
+        write_to_file('\n'.join(lines) + '\n', fname)
 
 
 def read_lines_from_file(fname):
