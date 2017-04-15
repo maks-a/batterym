@@ -10,22 +10,20 @@ from matplotlib import pyplot as plt
 import sys
 sys.path.append('../batterym')
 import log
+import history
 
 
 # Emulates the aesthetics of ggplot (a popular plotting package for R).
 plt.style.use('ggplot')
 
 logs = log.get_battery('../logs/capacity_example')
-data = pd.DataFrame(logs)
+h = history.History(logs)
+
+data = pd.DataFrame(h.data())
 data = data.rename(columns={'time': 'timestamp'})
 data['date'] = pd.Series(data['timestamp'].dt.date)
 data['time'] = pd.Series(data['timestamp'].dt.time)
 data['weekday'] = pd.Series(data['timestamp'].dt.weekday)
-
-# Add relative time.
-most_recent_datetime = data['timestamp'].iloc[-1]
-print 'Most recent time: ', most_recent_datetime
-data['relative_time'] = pd.Series(most_recent_datetime - data['timestamp'])
 
 print data.head()
 
