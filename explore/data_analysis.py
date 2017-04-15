@@ -12,11 +12,28 @@ sys.path.append('../batterym')
 import log
 
 
+# Emulates the aesthetics of ggplot (a popular plotting package for R).
+plt.style.use('ggplot')
+
 logs = log.get_battery('../logs/capacity_example')
 data = pd.DataFrame(logs)
 data = data.rename(columns={'time': 'timestamp'})
 data['date'] = pd.Series(data['timestamp'].dt.date)
 data['time'] = pd.Series(data['timestamp'].dt.time)
-
+data['weekday'] = pd.Series(data['timestamp'].dt.weekday)
 
 print data.head()
+
+plt.figure()
+data['capacity'].plot()
+
+# plt.figure()
+# data['weekday'].hist(bins=7)
+
+# plt.figure()
+# data['capacity'].hist(bins=10)
+
+# plt.figure()
+# data['time'].hist(bins=24)
+
+plt.show()
