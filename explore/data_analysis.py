@@ -22,10 +22,16 @@ data['date'] = pd.Series(data['timestamp'].dt.date)
 data['time'] = pd.Series(data['timestamp'].dt.time)
 data['weekday'] = pd.Series(data['timestamp'].dt.weekday)
 
+# Add relative time.
+most_recent_datetime = data['timestamp'].iloc[-1]
+print 'Most recent time: ', most_recent_datetime
+data['relative_time'] = pd.Series(most_recent_datetime - data['timestamp'])
+
 print data.head()
 
-plt.figure()
-data['capacity'].plot()
+
+# plt.figure()
+# data['capacity'].plot()
 
 # plt.figure()
 # data['weekday'].hist(bins=7)
@@ -36,4 +42,4 @@ data['capacity'].plot()
 # plt.figure()
 # data['time'].hist(bins=24)
 
-plt.show()
+# plt.show()
