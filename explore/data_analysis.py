@@ -2,6 +2,7 @@
 import pandas as pd
 import numpy as np
 import matplotlib
+import datetime as dt
 
 from matplotlib import pyplot as plt
 
@@ -12,6 +13,10 @@ import log
 
 
 logs = log.get_battery('../logs/capacity_example')
-df = pd.DataFrame(logs)
+data = pd.DataFrame(logs)
+data = data.rename(columns={'time': 'timestamp'})
+data['date'] = pd.Series(data['timestamp'].dt.date)
+data['time'] = pd.Series(data['timestamp'].dt.time)
 
-print df
+
+print data.head()
