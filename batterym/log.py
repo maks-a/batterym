@@ -42,8 +42,10 @@ def parse_log_lines(lines):
     return [parse_log_line(lines, prog) for lines in lines]
 
 
-def get_battery():
-    lines = misc.read_lines_from_file(LOG_BATTERY_FILE)
+def get_battery(fname=None):
+    if fname is None:
+        fname = LOG_BATTERY_FILE
+    lines = misc.read_lines_from_file(fname)
     return filter(lambda line: line is not None, parse_log_lines(lines))
 
 
