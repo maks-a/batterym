@@ -33,10 +33,12 @@ def chmod(folder, mod):
         print 'changing mode of {0} to {1}'.format(fname, mod)
 
 
+version = get_entry('version', 'config/config.json')
+print 'batterym v{0}'.format(version)
 print 'installation path:', RESOURCES_DIR
 
 setup(name='batterym',
-      version=get_entry('version', 'config/config.json'),
+      version=version,
       description='Battery Monitor for Ubuntu',
       url='https://github.com/maks-a/batterym',
       author='https://github.com/maks-a',
