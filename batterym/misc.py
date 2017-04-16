@@ -56,6 +56,24 @@ def remove_front_lines_if_too_many(fname, lines_threshold=None):
         write_lines_to_file(lines, fname)
 
 
+def get_mod(path):
+    return os.stat(path).st_mode & 0777
+
+
+def change_mod(path, mod):
+    print 'changing mode of {0} to {1}'.format(path, oct(mod))
+    os.chmod(path, mod)
+    if mod != get_mod(path):
+        raise ValueError
+
+
+def change_mod_files(folder, mod):
+    for fname in os.listdir(folder):
+        path = os.path.join(folder, fname)
+        if os.path.isfile(path):
+            change_mod(path, mod)
+
+
 class MyTest(unittest.TestCase):
 
     def setUp(self):
@@ -67,14 +85,34 @@ class MyTest(unittest.TestCase):
         if os.path.isfile(self.fname):
             os.remove(self.fname)
 
+    def test_chmod(self):
+        src = 0775
+        change_mod(self.fname, src)
+        result = get_mod(self.fname)
+        self.assertEqual(src, result)
+
     def test_write_read(self):
         src = []
+        expected = '\n'
         write_lines_to_file(src, self.fname)
+        result = read_from_file(self.fname)
+        self.assertEqual(result, expected)
         result = read_lines_from_file(self.fname)
         self.assertEqual(src, result)
 
         src = ['abc']
+        expected = 'abc\n'
         write_lines_to_file(src, self.fname)
+        result = read_from_file(self.fname)
+        self.assertEqual(result, expected)
+        result = read_lines_from_file(self.fname)
+        self.assertEqual(src, result)
+
+        src = ['1', '2', '3']
+        expected = '1\n2\n3\n'
+        write_lines_to_file(src, self.fname)
+        result = read_from_file(self.fname)
+        self.assertEqual(result, expected)
         result = read_lines_from_file(self.fname)
         self.assertEqual(src, result)
 
