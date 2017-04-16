@@ -4,3 +4,4 @@
 *.coverage
 htmlcov/
 build
+install_log.txt
