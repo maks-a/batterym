@@ -86,6 +86,8 @@ class MyTest(unittest.TestCase):
             os.remove(self.fname)
 
     def test_chmod(self):
+        write_to_file('', self.fname)
+
         src = 0775
         change_mod(self.fname, src)
         result = get_mod(self.fname)
@@ -93,7 +95,7 @@ class MyTest(unittest.TestCase):
 
     def test_write_read(self):
         src = []
-        expected = '\n'
+        expected = ''
         write_lines_to_file(src, self.fname)
         result = read_from_file(self.fname)
         self.assertEqual(result, expected)
@@ -179,3 +181,6 @@ class MyTest(unittest.TestCase):
         result = read_lines_from_file(self.fname)
         expected = ['0', '1', '2']
         self.assertEqual(result, expected)
+
+if __name__ == '__main__':
+    unittest.main()
