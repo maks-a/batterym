@@ -14,12 +14,11 @@ from batterym.paths import LOG_BATTERY_FILE
 from batterym.paths import LOG_BATTERY_ALL_FILE
 
 
-def find_resources(resource_dir):
-    target_path = os.path.join(RESOURCES_DIR, resource_dir)
-    resource_names = os.listdir(resource_dir)
-    resource_list = [os.path.join(resource_dir, file_name)
-                     for file_name in resource_names]
-    return (target_path, resource_list)
+def find_resources(folder):
+    target_folder = os.path.join(RESOURCES_DIR, folder)
+    fnames = os.listdir(folder)
+    resources = [os.path.join(folder, x) for x in fnames]
+    return (target_folder, resources)
 
 
 version = get_entry('version', 'config/config.json')
@@ -35,8 +34,11 @@ setup(name='batterym',
       packages=['batterym'],
       data_files=[
           (SHARE_APP_DIR, ['batterym.desktop']),
+          (RESOURCES_DIR, []),
+          (CONFIG_DIR, []),
           (find_resources('config')),
           (LOGS_DIR, []),
+          (IMAGE_DIR, []),
           (find_resources('img')),
       ],
       scripts=['bin/batterym']
