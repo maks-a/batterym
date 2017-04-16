@@ -181,6 +181,3 @@ class MyTest(unittest.TestCase):
         result = read_lines_from_file(self.fname)
         expected = ['0', '1', '2']
         self.assertEqual(result, expected)
-
-if __name__ == '__main__':
-    unittest.main()
