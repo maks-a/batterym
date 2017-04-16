@@ -45,3 +45,5 @@ setup(name='batterym',
 create_missing_dirs(LOGS_DIR)
 append_to_file('', LOG_BATTERY_FILE)
 append_to_file('', LOG_BATTERY_ALL_FILE)
+
+print 'batterym is successfully installed.'
