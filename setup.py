@@ -1,6 +1,7 @@
 #!/usr/bin/python
 import os
 from distutils.core import setup
+from batterym.config import get_entry
 from batterym.misc import append_to_file
 from batterym.misc import change_mod_files
 from batterym.misc import create_missing_dirs
@@ -32,8 +33,10 @@ def chmod(folder, mod):
         print 'changing mode of {0} to {1}'.format(fname, mod)
 
 
+print 'installation path:', RESOURCES_DIR
+
 setup(name='batterym',
-      version='0.1.0',
+      version=get_entry('version', 'config/config.json'),
       description='Battery Monitor for Ubuntu',
       url='https://github.com/maks-a/batterym',
       author='https://github.com/maks-a',
