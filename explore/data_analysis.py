@@ -67,8 +67,10 @@ ax.fill_between(cap_raw_new.index, 0, cap_raw_new.values, facecolor='#cccccc')
 
 ax.plot(cap['capacity'], color='b')
 
-ax.plot(charging_old['capacity'], color='r', marker='o', linestyle='None')
-ax.plot(discharging_old['capacity'], color='b', marker='o', linestyle='None')
+ax.plot(charging_old['capacity'], color='#00FF00',
+        marker='o', linestyle='None')
+ax.plot(discharging_old['capacity'], color='#0000FF',
+        marker='o', linestyle='None')
 
 ax.plot([X_NOW, X_NOW], [Y_MIN, Y_MAX], color='r')
 ax.set_xlim(X_BEGIN, X_END)
