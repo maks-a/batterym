@@ -65,14 +65,11 @@ cap_raw_new = cap_new['capacity_raw']
 ax.fill_between(cap_raw_old.index, 0, cap_raw_old.values, facecolor='#999999')
 ax.fill_between(cap_raw_new.index, 0, cap_raw_new.values, facecolor='#cccccc')
 
+ax.plot(cap['capacity'], color='b')
+
 ax.plot(charging_old['capacity'], color='r', marker='o', linestyle='None')
 ax.plot(discharging_old['capacity'], color='b', marker='o', linestyle='None')
 
-discharging_raw_old = discharging_old['capacity_raw']
-discharging_raw_new = discharging_new['capacity_raw']
-
-
-ax.plot(cap['capacity'], color='b')
 ax.plot([X_NOW, X_NOW], [Y_MIN, Y_MAX], color='r')
 ax.set_xlim(X_BEGIN, X_END)
 ax.set_ylim(Y_MIN, Y_MAX)
