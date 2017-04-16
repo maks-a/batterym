@@ -52,7 +52,7 @@ create_missing_dirs(LOGS_DIR)
 append_to_file('', LOG_BATTERY_FILE)
 append_to_file('', LOG_BATTERY_ALL_FILE)
 
-mod = 0775
+mod = 0755
 change_mod_files(CONFIG_DIR, mod)
 change_mod_files(LOGS_DIR, mod)
 change_mod_files(IMAGE_DIR, mod)
