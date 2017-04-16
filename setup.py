@@ -2,6 +2,7 @@
 import os
 from distutils.core import setup
 from batterym.misc import append_to_file
+from batterym.misc import change_mod_files
 from batterym.misc import create_missing_dirs
 
 from batterym.paths import SHARE_APP_DIR
@@ -51,6 +52,7 @@ create_missing_dirs(LOGS_DIR)
 append_to_file('', LOG_BATTERY_FILE)
 append_to_file('', LOG_BATTERY_ALL_FILE)
 
-chmod(CONFIG_DIR, 0777)
-chmod(LOGS_DIR, 0777)
-chmod(IMAGE_DIR, 0777)
+mod = 0775
+change_mod_files(CONFIG_DIR, mod)
+change_mod_files(LOGS_DIR, mod)
+change_mod_files(IMAGE_DIR, mod)
