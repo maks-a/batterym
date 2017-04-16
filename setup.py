@@ -35,10 +35,8 @@ setup(name='batterym',
       data_files=[
           (SHARE_APP_DIR, ['batterym.desktop']),
           (RESOURCES_DIR, []),
-          (CONFIG_DIR, []),
           (find_resources('config')),
           (LOGS_DIR, []),
-          (IMAGE_DIR, []),
           (find_resources('img')),
       ],
       scripts=['bin/batterym']
