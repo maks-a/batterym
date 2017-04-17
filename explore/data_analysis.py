@@ -18,8 +18,10 @@ plt.style.use('ggplot')
 
 logs = log.get_battery('../logs/capacity_example')
 h = history.History(logs, smoothing=True)
+hdata = h.data()
+hdata = history.add_slope(hdata)
 
-data = pd.DataFrame(h.data())
+data = pd.DataFrame(hdata)
 data = data.rename(columns={'time': 'timestamp'})
 data['date'] = pd.Series(data['timestamp'].dt.date)
 data['time'] = pd.Series(data['timestamp'].dt.time)
@@ -32,8 +34,8 @@ print data.head()
 # Extract capacity time series.
 # Parameters
 X_NOW = 9
-X_BEGIN = X_NOW - 5.0
-X_END = X_NOW + 30.0
+X_BEGIN = X_NOW - 5
+X_END = X_NOW + 25.0
 Y_MAX = 101
 Y_MIN = 0
 blue = '#2e7eb3'
@@ -62,25 +64,30 @@ discharging_new = discharging[X_NOW:X_BEGIN]
 cap_raw_old = cap_old['capacity_raw']
 cap_raw_new = cap_new['capacity_raw']
 
-fig, ax = plt.subplots(3)
+fig, ax = plt.subplots(1)
 
-ax[0].fill_between(cap_raw_old.index, 0,
-                   cap_raw_old.values, facecolor='#999999')
-ax[0].fill_between(cap_raw_new.index, 0,
-                   cap_raw_new.values, facecolor='#cccccc')
-ax[0].plot(cap['capacity'], color='b')
-ax[0].plot(charging_old['capacity'], color='#00FF00',
-           marker='o', linestyle='None')
-ax[0].plot(discharging_old['capacity'], color='#0000FF',
-           marker='o', linestyle='None')
-ax[0].plot([X_NOW, X_NOW], [Y_MIN, Y_MAX], color='r')
-ax[0].set_xlim(X_BEGIN, X_END)
-ax[0].set_ylim(Y_MIN, Y_MAX)
-ax[0].invert_xaxis()
+# ax[0].fill_between(cap_raw_old.index, 0,
+#                    cap_raw_old.values, facecolor='#999999')
+# ax[0].fill_between(cap_raw_new.index, 0,
+#                    cap_raw_new.values, facecolor='#cccccc')
+# ax[0].plot(cap['capacity'], color='b')
+# ax[0].plot(charging_old['capacity'], color='#00FF00',
+#            marker='o', linestyle='None')
+# ax[0].plot(discharging_old['capacity'], color='#0000FF',
+#            marker='o', linestyle='None')
+# ax[0].plot([X_NOW, X_NOW], [Y_MIN, Y_MAX], color='r')
+# ax[0].set_xlim(X_BEGIN, X_END)
+# ax[0].set_ylim(Y_MIN, Y_MAX)
+# ax[0].invert_xaxis()
 
-ax[1].hist(cap['capacity'], bins=10)
+# ax[1].hist(cap['capacity'], bins=10)
 
-ax[2].hist(data['hour'], bins=24)
+# ax[2].hist(data['hour'], bins=24)
+
+x = data['capacity'].round()
+y = data['slope']
+ax.scatter(x, y)
+ax.set_xlim(0, 101)
 
 # Full screen plot window.
 mng = plt.get_current_fig_manager()

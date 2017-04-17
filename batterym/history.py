@@ -13,6 +13,22 @@ def add_relative_time(data):
     return data
 
 
+# TODO: remove copy-paste from future.py
+def is_zero(val, abs_tol=1e-3):
+    return abs(val) < abs_tol
+
+
+def add_slope(data):
+    n = len(data)
+    for i in xrange(1, n):
+        dy = data[i]['capacity'] - data[i-1]['capacity']
+        dx = data[i]['virtual_time_hour'] - data[i-1]['virtual_time_hour']
+        data[i-1]['slope'] = dy / dx if not is_zero(dx, 1.0/60.0) else 0
+    if 0 < n:
+        data[n-1]['slope'] = 0
+    return data
+
+
 def add_virtual_time(samples, threshold_sec):
     virtual_time = 0
     n = len(samples)
