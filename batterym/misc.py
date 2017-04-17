@@ -69,12 +69,26 @@ class MyTest(unittest.TestCase):
 
     def test_write_read(self):
         src = []
+        expected = ''
         write_lines_to_file(src, self.fname)
+        result = read_from_file(self.fname)
+        self.assertEqual(result, expected)
         result = read_lines_from_file(self.fname)
         self.assertEqual(src, result)
 
         src = ['abc']
+        expected = 'abc\n'
         write_lines_to_file(src, self.fname)
+        result = read_from_file(self.fname)
+        self.assertEqual(result, expected)
+        result = read_lines_from_file(self.fname)
+        self.assertEqual(src, result)
+
+        src = ['1', '2', '3']
+        expected = '1\n2\n3\n'
+        write_lines_to_file(src, self.fname)
+        result = read_from_file(self.fname)
+        self.assertEqual(result, expected)
         result = read_lines_from_file(self.fname)
         self.assertEqual(src, result)
 

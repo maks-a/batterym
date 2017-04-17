@@ -1,5 +1,7 @@
 Release Notes
 -------------
+#### v1.0.1 (2017-04-16)
+- Fix #16: File permission issue 
 
 #### v1.0.0 (2017-04-14)
 - Preserve history after reinstall
