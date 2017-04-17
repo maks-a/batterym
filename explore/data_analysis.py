@@ -23,6 +23,7 @@ data = pd.DataFrame(h.data())
 data = data.rename(columns={'time': 'timestamp'})
 data['date'] = pd.Series(data['timestamp'].dt.date)
 data['time'] = pd.Series(data['timestamp'].dt.time)
+data['hour'] = pd.Series(data['timestamp'].dt.hour)
 data['weekday'] = pd.Series(data['timestamp'].dt.weekday)
 data = data.sort_values(by='timestamp', ascending=True)
 
@@ -32,7 +33,7 @@ print data.head()
 # Parameters
 X_NOW = 9
 X_BEGIN = X_NOW - 5.0
-X_END = X_NOW + 5.0
+X_END = X_NOW + 30.0
 Y_MAX = 101
 Y_MIN = 0
 blue = '#2e7eb3'
@@ -61,7 +62,7 @@ discharging_new = discharging[X_NOW:X_BEGIN]
 cap_raw_old = cap_old['capacity_raw']
 cap_raw_new = cap_new['capacity_raw']
 
-fig, ax = plt.subplots(2)
+fig, ax = plt.subplots(3)
 
 ax[0].fill_between(cap_raw_old.index, 0,
                    cap_raw_old.values, facecolor='#999999')
@@ -77,7 +78,9 @@ ax[0].set_xlim(X_BEGIN, X_END)
 ax[0].set_ylim(Y_MIN, Y_MAX)
 ax[0].invert_xaxis()
 
-ax[1].hist(cap['capacity'], bins=100)
+ax[1].hist(cap['capacity'], bins=10)
+
+ax[2].hist(data['hour'], bins=24)
 
 # Full screen plot window.
 mng = plt.get_current_fig_manager()
