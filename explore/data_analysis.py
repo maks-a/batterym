@@ -58,24 +58,26 @@ charging_new = charging[X_NOW:X_BEGIN]
 discharging_old = discharging[X_END:X_NOW]
 discharging_new = discharging[X_NOW:X_BEGIN]
 
-fig, ax = plt.subplots(1, sharex=True)
-
 cap_raw_old = cap_old['capacity_raw']
 cap_raw_new = cap_new['capacity_raw']
-ax.fill_between(cap_raw_old.index, 0, cap_raw_old.values, facecolor='#999999')
-ax.fill_between(cap_raw_new.index, 0, cap_raw_new.values, facecolor='#cccccc')
 
-ax.plot(cap['capacity'], color='b')
+fig, ax = plt.subplots(2)
 
-ax.plot(charging_old['capacity'], color='#00FF00',
-        marker='o', linestyle='None')
-ax.plot(discharging_old['capacity'], color='#0000FF',
-        marker='o', linestyle='None')
+ax[0].fill_between(cap_raw_old.index, 0,
+                   cap_raw_old.values, facecolor='#999999')
+ax[0].fill_between(cap_raw_new.index, 0,
+                   cap_raw_new.values, facecolor='#cccccc')
+ax[0].plot(cap['capacity'], color='b')
+ax[0].plot(charging_old['capacity'], color='#00FF00',
+           marker='o', linestyle='None')
+ax[0].plot(discharging_old['capacity'], color='#0000FF',
+           marker='o', linestyle='None')
+ax[0].plot([X_NOW, X_NOW], [Y_MIN, Y_MAX], color='r')
+ax[0].set_xlim(X_BEGIN, X_END)
+ax[0].set_ylim(Y_MIN, Y_MAX)
+ax[0].invert_xaxis()
 
-ax.plot([X_NOW, X_NOW], [Y_MIN, Y_MAX], color='r')
-ax.set_xlim(X_BEGIN, X_END)
-ax.set_ylim(Y_MIN, Y_MAX)
-ax.invert_xaxis()
+ax[1].hist(cap['capacity'], bins=100)
 
 # Full screen plot window.
 mng = plt.get_current_fig_manager()
