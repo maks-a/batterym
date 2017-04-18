@@ -20,13 +20,11 @@ logs = log.get_battery('../logs/capacity_example')
 h = history.History(logs, smoothing=True)
 hdata = h.data()
 hdata = history.add_slope(hdata)
+hdata = history.add_capacity_round(hdata)
 
 data = pd.DataFrame(hdata)
 data = data.rename(columns={'time': 'timestamp'})
 data['date'] = pd.Series(data['timestamp'].dt.date)
-data['time'] = pd.Series(data['timestamp'].dt.time)
-data['hour'] = pd.Series(data['timestamp'].dt.hour)
-data['weekday'] = pd.Series(data['timestamp'].dt.weekday)
 data = data.sort_values(by='timestamp', ascending=True)
 
 print data.head()
@@ -82,12 +80,13 @@ fig, ax = plt.subplots(1)
 
 # ax[1].hist(cap['capacity'], bins=10)
 
-# ax[2].hist(data['hour'], bins=24)
-
-x = data['capacity'].round()
-y = data['slope']
+d = data[data['status'] == 'Charging']
+d = d[d['slope'] != 0]
+x = d['capacity_round']
+y = d['slope']
 ax.scatter(x, y)
 ax.set_xlim(0, 101)
+
 
 # Full screen plot window.
 mng = plt.get_current_fig_manager()
@@ -95,14 +94,3 @@ mng.resize(*mng.window.maxsize())
 
 # Show plot.
 plt.show()
-
-
-# SOME DEBUG CODE
-# plt.figure()
-# data['capacity'].plot()
-# plt.figure()
-# data['weekday'].hist(bins=7)
-# plt.figure()
-# data['capacity'].hist(bins=10)
-# plt.figure()
-# data['time'].hist(bins=24)

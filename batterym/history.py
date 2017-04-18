@@ -29,6 +29,12 @@ def add_slope(data):
     return data
 
 
+def add_capacity_round(data):
+    for e in data:
+        e['capacity_round'] = round(e['capacity'])
+    return data
+
+
 def add_virtual_time(samples, threshold_sec):
     virtual_time = 0
     n = len(samples)
