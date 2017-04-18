@@ -119,7 +119,7 @@ for i in xrange(1, len(y2)):
 # ax.plot(pd.Series(y1, index=x1), color='#FF0000', marker='o')
 # ax.set_xlim(0, 101)
 
-ax.plot(pd.Series(y2, index=x2), color='#FF0000', marker='o')
+ax.plot(pd.Series(y2, index=x2), color='#FF0000', marker='+')
 ax.set_ylim(0, 101)
 ax.invert_xaxis()
 
