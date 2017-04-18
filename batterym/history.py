@@ -35,6 +35,16 @@ def add_capacity_round(data):
     return data
 
 
+def get_capacity_bins(data):
+    bins = {}
+    for e in data:
+        v = e['slope']
+        if is_zero(v):
+            continue
+        bins.setdefault(e['capacity_round'], []).append(v)
+    return bins
+
+
 def add_virtual_time(samples, threshold_sec):
     virtual_time = 0
     n = len(samples)

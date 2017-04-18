@@ -80,12 +80,48 @@ fig, ax = plt.subplots(1)
 
 # ax[1].hist(cap['capacity'], bins=10)
 
-d = data[data['status'] == 'Charging']
-d = d[d['slope'] != 0]
-x = d['capacity_round']
-y = d['slope']
-ax.scatter(x, y)
-ax.set_xlim(0, 101)
+
+def percentile(lst, factor):
+    n = len(lst)
+    if n < 1:
+        return 0
+    lst = sorted(lst)
+    m = int(n*factor)
+    if n % 2 == 1:
+        return lst[m]
+    return (lst[m-1] + lst[m])/2
+
+status = 'Charging'
+
+charging_hdata = filter(lambda e: e['status']==status, hdata)
+charging_bins = history.get_capacity_bins(charging_hdata)
+x1 = charging_bins.keys()
+y1 = [percentile(charging_bins[x], 0.5) for x in x1]
+new_slopes = {}
+for i in xrange(0, len(x1)):
+    new_slopes[x1[i]] = y1[i]
+
+y2 = range(10, 101, 1)
+#y2 = range(100, 10, -1)
+x2 = [0]
+for i in xrange(1, len(y2)):
+    dy = y2[i] - y2[i-1]
+    sl = new_slopes[y2[i-1]]
+    dx = dy / sl
+    x = x2[i-1] + dx
+    x2.append(x)
+
+# d = data[data['status'] == status]
+# d = d[d['slope'] != 0]
+# x = d['capacity_round']
+# y = d['slope']
+# ax.scatter(x, y)
+# ax.plot(pd.Series(y1, index=x1), color='#FF0000', marker='o')
+# ax.set_xlim(0, 101)
+
+ax.plot(pd.Series(y2, index=x2), color='#FF0000', marker='o')
+ax.set_ylim(0, 101)
+ax.invert_xaxis()
 
 
 # Full screen plot window.
