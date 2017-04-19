@@ -2,7 +2,7 @@
 import os
 from distutils.core import setup
 
-import batterym.misc as misc
+import batterym.fileio as fileio
 import batterym.paths as paths
 import batterym.config as config
 
@@ -35,8 +35,8 @@ setup(name='batterym',
       scripts=['bin/batterym']
       )
 
-misc.create_missing_dirs(paths.LOGS_DIR)
-misc.append_to_file('', paths.LOG_BATTERY_FILE)
-misc.append_to_file('', paths.LOG_BATTERY_ALL_FILE)
+fileio.create_missing_dirs(paths.LOGS_DIR)
+fileio.append('', paths.LOG_BATTERY_FILE)
+fileio.append('', paths.LOG_BATTERY_ALL_FILE)
 
 print 'batterym is successfully installed.'

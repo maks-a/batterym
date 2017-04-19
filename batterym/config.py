@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import os
 import json
-import misc
+import fileio
 import resource
 import unittest
 
@@ -10,11 +10,11 @@ from paths import CONFIG_FILE
 
 def write_json(data, fname):
     text = json.dumps(data, indent=2)
-    misc.write_to_file(text, fname)
+    fileio.write(text, fname)
 
 
 def read_json(fname):
-    text = misc.read_from_file(fname)
+    text = fileio.read(fname)
     if len(text) > 0:
         return json.loads(text)
     return None

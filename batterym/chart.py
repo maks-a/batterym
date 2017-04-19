@@ -1,7 +1,7 @@
 #!/usr/bin/python
 from __future__ import division
 import copy
-import misc
+import fileio
 import unittest
 
 
@@ -384,7 +384,7 @@ class Chart:
         return svg
 
     def render_to_svg(self, filepath):
-        misc.write_lines_to_file(self.render(), filepath)
+        fileio.write_lines(self.render(), filepath)
 
 
 # def main():
@@ -458,14 +458,14 @@ class MyTest(unittest.TestCase):
         xlabels = []
         ylabels = []
         chart = Chart(xlabels=xlabels, ylabels=ylabels)
-        self.assertEqual(chart.render(), misc.read_lines_from_file(
+        self.assertEqual(chart.render(), fileio.read_lines(
             'batterym/test/chart/render1.svg'))
 
     def test_render2(self):
         xlabels = [0, 2, 4, 6, 8, 10, '12 hours']
         ylabels = ['0 %', '50 %', '100 %']
         chart = Chart(xlabels=xlabels, ylabels=ylabels)
-        self.assertEqual(chart.render(), misc.read_lines_from_file(
+        self.assertEqual(chart.render(), fileio.read_lines(
             'batterym/test/chart/render2.svg'))
 
     def test_render3(self):
@@ -476,7 +476,7 @@ class MyTest(unittest.TestCase):
         ys = [10, 60, 60]
         xs = [10, 20, 30]
         chart.add(xs=xs, ys=ys, stroke=color, fill=color)
-        self.assertEqual(chart.render(), misc.read_lines_from_file(
+        self.assertEqual(chart.render(), fileio.read_lines(
             'batterym/test/chart/render3.svg'))
 
     def test_render4(self):
@@ -486,7 +486,7 @@ class MyTest(unittest.TestCase):
         color = 'red'
         ys = [10, 60, 60]
         chart.add(ys=ys, stroke=color, fill=color)
-        self.assertEqual(chart.render(), misc.read_lines_from_file(
+        self.assertEqual(chart.render(), fileio.read_lines(
             'batterym/test/chart/render4.svg'))
 
     def test_render5(self):
@@ -496,7 +496,7 @@ class MyTest(unittest.TestCase):
         color = 'red'
         ys = [10, 60, 60]
         chart.add(ys=ys, stroke=color, stroke_dash=True)
-        self.assertEqual(chart.render(), misc.read_lines_from_file(
+        self.assertEqual(chart.render(), fileio.read_lines(
             'batterym/test/chart/render5.svg'))
 
     def test_render6(self):
@@ -506,7 +506,7 @@ class MyTest(unittest.TestCase):
         color = 'red'
         ys = [10, 60, 60]
         chart.add(ys=ys, stroke=color, fill=color)
-        self.assertEqual(chart.render(), misc.read_lines_from_file(
+        self.assertEqual(chart.render(), fileio.read_lines(
             'batterym/test/chart/render6.svg'))
 
 # if __name__ == '__main__':
