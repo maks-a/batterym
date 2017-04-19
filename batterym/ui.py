@@ -12,7 +12,7 @@ def set_theme(theme):
 
 
 def get_theme():
-    return config.get_entry('theme')
+    return config.get_entry('theme', default_value=THEME_DARK)
 
 
 def reset_theme():
