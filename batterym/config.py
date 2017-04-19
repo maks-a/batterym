@@ -51,10 +51,10 @@ def read_config(fname_default=None, fname_user=None):
 
 
 def set_entry(key, value, fname_default=None, fname_user=None):
-    fname_default, fname_user = _get_fnames(fname_default, fname_user)
-    data = read_config(fname_default, fname_user)
+    _, fname_user = _get_fnames(fname_default, fname_user)
+    data = read_config(fname_user, fname_user)
     data[key] = value
-    write_config(data, fname_default, fname_user)
+    write_config(data, fname_user, fname_user)
 
 
 def get_entry(key, default_value=None, fname_default=None, fname_user=None):
@@ -126,12 +126,12 @@ class ConfigTest(unittest.TestCase):
 
     def test_no_file(self):
         no_file = 'non-existing-file-name'
-        result = read_config(no_file)
+        result = read_config(no_file, no_file)
         self.assertEqual(result, {})
 
     def test_empty_file(self):
         empty_file = self.fname
-        result = read_config(empty_file)
+        result = read_config(empty_file, empty_file)
         self.assertEqual(result, {})
 
     def test_get_fnames(self):
