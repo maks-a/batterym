@@ -18,7 +18,8 @@ def battery(capacity, status):
     fileio.append(line, LOG_BATTERY_ALL_FILE)
     fileio.append(line, LOG_BATTERY_FILE)
 
-    lines_threshold = config.get_entry('log_capacity_lines_limit', None)
+    lines_threshold = config.get_entry(
+        'log_capacity_lines_limit', default_value=None)
     fileio.remove_front_lines_if_too_many(LOG_BATTERY_FILE, lines_threshold)
 
 

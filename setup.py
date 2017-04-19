@@ -14,7 +14,7 @@ def find_resources(folder):
     return (target_folder, resources)
 
 
-version = config.get_entry('version', 'config/config.json')
+version = config.get_entry('version', 'config/config_default.json')
 print 'batterym v{0}'.format(version)
 print 'installation path:', paths.RESOURCES_DIR
 
