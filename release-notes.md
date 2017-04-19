@@ -1,6 +1,7 @@
 Release Notes
 -------------
 #### v1.0.2rc
+- Fix #20: Preserve user config after reinstall
 - Fix #16: Remove changing file permissions
 - Add `install_log.txt` to `.gitignore`
 - Add `set -e` and verbose output to `(un)install.sh`
