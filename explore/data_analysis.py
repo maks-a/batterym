@@ -7,8 +7,9 @@ import datetime as dt
 from matplotlib import pyplot as plt
 
 # Import modules from /batterym/ folder.
+import os
 import sys
-sys.path.append('../batterym')
+sys.path.append(os.path.abspath('../batterym'))
 import log
 import history
 
