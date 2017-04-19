@@ -5,7 +5,7 @@ Release Notes
 - Add `install_log.txt` to `.gitignore`
 - Add `set -e` and verbose output to `(un)install.sh`
 - Update unit tests
-- Refactoring
+- Refactoring (reaname `misc` to `fileio`)
 
 #### v1.0.1 (2017-04-16)
 - Fix #16: File permission issue 
