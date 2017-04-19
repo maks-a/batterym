@@ -1,5 +1,12 @@
 Release Notes
 -------------
+#### v1.0.2rc
+- Fix #16: Remove changing file permissions
+- Add `install_log.txt` to `.gitignore`
+- Add `set -e` and verbose output to `(un)install.sh`
+- Update unit tests
+- Refactoring
+
 #### v1.0.1 (2017-04-16)
 - Fix #16: File permission issue 
 
