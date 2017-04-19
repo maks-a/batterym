@@ -1,7 +1,7 @@
 #!/usr/bin/python
 import os
 import re
-import misc
+import fileio
 import config
 import datetime
 import resource
@@ -15,11 +15,11 @@ def battery(capacity, status):
     t = datetime.datetime.now().isoformat()
     line = '{0} {1}% {2}\n'.format(t, capacity, status)
 
-    misc.append_to_file(line, LOG_BATTERY_ALL_FILE)
-    misc.append_to_file(line, LOG_BATTERY_FILE)
+    fileio.append(line, LOG_BATTERY_ALL_FILE)
+    fileio.append(line, LOG_BATTERY_FILE)
 
     lines_threshold = config.get_entry('log_capacity_lines_limit', None)
-    misc.remove_front_lines_if_too_many(LOG_BATTERY_FILE, lines_threshold)
+    fileio.remove_front_lines_if_too_many(LOG_BATTERY_FILE, lines_threshold)
 
 
 def parse_log_line(line, prog):
@@ -43,7 +43,7 @@ def parse_log_lines(lines):
 
 
 def get_battery():
-    lines = misc.read_lines_from_file(LOG_BATTERY_FILE)
+    lines = fileio.read_lines(LOG_BATTERY_FILE)
     return filter(lambda line: line is not None, parse_log_lines(lines))
 
 
