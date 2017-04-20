@@ -3,5 +3,5 @@
   "theme": "dark", 
   "smoothing": true,
   "log_capacity_lines_limit": 1500,
-  "version": "1.0.2rc"
+  "version": "1.0.2"
 }
