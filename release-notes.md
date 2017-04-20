@@ -1,5 +1,13 @@
 Release Notes
 -------------
+#### v1.0.2 (2017-04-20)
+- Fix #20: Preserve user config after reinstall
+- Fix #16: Remove changing file permissions
+- Add `install_log.txt` to `.gitignore`
+- Add `set -e` and verbose output to `(un)install.sh`
+- Update unit tests
+- Refactoring (reaname `misc` to `fileio`)
+
 #### v1.0.1 (2017-04-16)
 - Fix #16: File permission issue 
 
