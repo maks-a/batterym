@@ -1,5 +1,7 @@
 Release Notes
 -------------
+#### v1.0.3rc
+
 #### v1.0.2 (2017-04-20)
 - Fix #20: Preserve user config after reinstall
 - Fix #16: Remove changing file permissions
