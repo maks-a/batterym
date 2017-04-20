@@ -1,6 +1,7 @@
 #!/usr/bin/python
 import log
 import smooth
+import mathstat
 import unittest
 
 
@@ -13,35 +14,12 @@ def add_relative_time(data):
     return data
 
 
-# TODO: remove copy-paste from future.py
-def is_zero(val, abs_tol=1e-3):
-    return abs(val) < abs_tol
-
-
-def add_slope(data):
-    n = len(data)
-    for i in xrange(1, n):
-        dy = data[i]['capacity'] - data[i-1]['capacity']
-        dx = data[i]['virtual_time_hour'] - data[i-1]['virtual_time_hour']
-        data[i-1]['slope'] = dy / dx if not is_zero(dx, 1.0/60.0) else 0
-    if 0 < n:
-        data[n-1]['slope'] = 0
-    return data
-
-
-def add_capacity_round(data):
-    for e in data:
-        e['capacity_round'] = round(e['capacity'])
-    return data
-
-
-def get_capacity_bins(data):
+def get_capacity_round_bins(data):
     bins = {}
     for e in data:
         v = e['slope']
-        if is_zero(v):
-            continue
-        bins.setdefault(e['capacity_round'], []).append(v)
+        if not mathstat.is_zero(v):
+            bins.setdefault(e['capacity_round'], []).append(v)
     return bins
 
 
@@ -67,6 +45,18 @@ def add_virtual_time(samples, threshold_sec):
     return samples
 
 
+def add_slope(data):
+    n = len(data)
+    for i in xrange(1, n):
+        dy = data[i]['capacity'] - data[i-1]['capacity']
+        dx = data[i]['virtual_time_hour'] - data[i-1]['virtual_time_hour']
+        slope = dy / dx if not mathstat.is_zero(dx, 1.0/60.0) else 0
+        data[i-1]['slope'] = slope
+    if 0 < n:
+        data[n-1]['slope'] = 0
+    return data
+
+
 def smooth_virtual_time(samples):
     chunks = separate_by_sequence_id(samples)
     k = len(chunks)
@@ -83,6 +73,12 @@ def smooth_virtual_time(samples):
         chunks[j] = chunk
 
     return [item for sublist in chunks for item in sublist]
+
+
+def add_capacity_round(data):
+    for e in data:
+        e['capacity_round'] = round(e['capacity'])
+    return data
 
 
 def separate_by_sequence_id(samples):
@@ -119,8 +115,10 @@ class History:
         data = add_relative_time(log_data)
         data = sorted(data, key=lambda e: e['relative_time_sec'])
         data = add_virtual_time(data, threshold_sec)
+        data = add_slope(data)
         if smoothing:
             data = smooth_virtual_time(data)
+        data = add_capacity_round(data)
         self._data = data
         self._plot_data = []
         self._plot_xoffset = 0

@@ -12,6 +12,7 @@ import sys
 sys.path.append(os.path.abspath('../batterym'))
 import log
 import history
+import mathstat
 
 
 # Emulates the aesthetics of ggplot (a popular plotting package for R).
@@ -20,12 +21,9 @@ plt.style.use('ggplot')
 logs = log.get_battery('../logs/capacity_example')
 h = history.History(logs, smoothing=True)
 hdata = h.data()
-hdata = history.add_slope(hdata)
-hdata = history.add_capacity_round(hdata)
 
 data = pd.DataFrame(hdata)
 data = data.rename(columns={'time': 'timestamp'})
-data['date'] = pd.Series(data['timestamp'].dt.date)
 data = data.sort_values(by='timestamp', ascending=True)
 
 print data.head()
@@ -81,23 +79,12 @@ fig, ax = plt.subplots(1)
 
 # ax[1].hist(cap['capacity'], bins=10)
 
-
-def percentile(lst, factor):
-    n = len(lst)
-    if n < 1:
-        return 0
-    lst = sorted(lst)
-    m = int(n*factor)
-    if n % 2 == 1:
-        return lst[m]
-    return (lst[m-1] + lst[m])/2
-
 status = 'Charging'
 
 charging_hdata = filter(lambda e: e['status']==status, hdata)
-charging_bins = history.get_capacity_bins(charging_hdata)
+charging_bins = history.get_capacity_round_bins(charging_hdata)
 x1 = charging_bins.keys()
-y1 = [percentile(charging_bins[x], 0.5) for x in x1]
+y1 = [mathstat.percentile(charging_bins[x], 0.5) for x in x1]
 new_slopes = {}
 for i in xrange(0, len(x1)):
     new_slopes[x1[i]] = y1[i]
