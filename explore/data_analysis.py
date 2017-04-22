@@ -11,6 +11,7 @@ import os
 import sys
 sys.path.append(os.path.abspath('../batterym'))
 import log
+import model
 import history
 import mathstat
 
@@ -82,14 +83,10 @@ fig, ax = plt.subplots(1)
 status = 'Charging'
 
 charging_hdata = filter(lambda e: e['status']==status, hdata)
-charging_bins = history.get_capacity_round_bins(charging_hdata)
-x1 = charging_bins.keys()
+charging_bins = model.get_slopes_capacity_bins(charging_hdata)
 
-for i in [0.4, 0.5, 0.6]:
-    y1 = [mathstat.percentile(charging_bins[x], i) for x in x1]
-    new_slopes = {}
-    for i in xrange(0, len(x1)):
-        new_slopes[x1[i]] = y1[i]
+for i in [0.5]:
+    new_slopes = model.get_slopes_by_percentile(charging_bins, i)
 
     y2 = range(10, 101, 1)
     #y2 = range(100, 10, -1)
@@ -101,18 +98,20 @@ for i in [0.4, 0.5, 0.6]:
         x = x2[i-1] + dx
         x2.append(x)
 
-    # d = data[data['status'] == status]
-    # d = d[d['slope'] != 0]
-    # x = d['capacity_round']
-    # y = d['slope']
-    # ax.scatter(x, y)
-    # ax.plot(pd.Series(y1, index=x1), color='#FF0000', marker='o')
-    # ax.set_xlim(0, 101)
+    d = data[data['status'] == status]
+    d = d[d['slope'] != 0]
+    x = d['capacity_round']
+    y = d['slope']
+    ax.scatter(x, y)
+    x1 = new_slopes.keys()
+    y1 = new_slopes.values()
+    ax.plot(pd.Series(y1, index=x1), color='#FF0000', marker='o')
+    ax.set_xlim(0, 101)
 
-    ax.plot(pd.Series(y2, index=x2), color='#FF0000', marker='+')
+    # ax.plot(pd.Series(y2, index=x2), color='#FF0000', marker='+')
 
-ax.set_ylim(0, 101)
-ax.invert_xaxis()
+# ax.set_ylim(0, 101)
+# ax.invert_xaxis()
 
 
 # Full screen plot window.
