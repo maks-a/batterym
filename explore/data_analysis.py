@@ -85,25 +85,25 @@ status = 'Charging'
 charging_hdata = filter(lambda e: e['status']==status, hdata)
 charging_bins = model.get_slopes_capacity_bins(charging_hdata)
 
-for i in [0.5]:
+for i in [0.4, 0.5, 0.6]:
     new_slopes = model.get_slopes_by_percentile(charging_bins, i)
     timeline = model.reconstruct_timeline(new_slopes)
     x2, y2 = zip(*timeline)
 
-    d = data[data['status'] == status]
-    d = d[d['slope'] != 0]
-    x = d['capacity_round']
-    y = d['slope']
-    ax.scatter(x, y)
-    x1 = new_slopes.keys()
-    y1 = new_slopes.values()
-    ax.plot(pd.Series(y1, index=x1), color='#FF0000', marker='o')
-    ax.set_xlim(0, 101)
+    # d = data[data['status'] == status]
+    # d = d[d['slope'] != 0]
+    # x = d['capacity_round']
+    # y = d['slope']
+    # ax.scatter(x, y)
+    # x1 = new_slopes.keys()
+    # y1 = new_slopes.values()
+    # ax.plot(pd.Series(y1, index=x1), color='#FF0000', marker='o')
+    # ax.set_xlim(0, 101)
 
-    # ax.plot(pd.Series(y2, index=x2), color='#FF0000', marker='+')
+    ax.plot(pd.Series(y2, index=x2), color='#FF0000', marker='+')
 
-# ax.set_ylim(0, 101)
-# ax.invert_xaxis()
+ax.set_ylim(0, 101)
+ax.invert_xaxis()
 
 
 # Full screen plot window.
