@@ -87,16 +87,8 @@ charging_bins = model.get_slopes_capacity_bins(charging_hdata)
 
 for i in [0.5]:
     new_slopes = model.get_slopes_by_percentile(charging_bins, i)
-
-    y2 = range(10, 101, 1)
-    #y2 = range(100, 10, -1)
-    x2 = [0]
-    for i in xrange(1, len(y2)):
-        dy = y2[i] - y2[i-1]
-        sl = new_slopes[y2[i-1]]
-        dx = dy / sl
-        x = x2[i-1] + dx
-        x2.append(x)
+    timeline = model.reconstruct_timeline(new_slopes)
+    x2, y2 = zip(*timeline)
 
     d = data[data['status'] == status]
     d = d[d['slope'] != 0]
