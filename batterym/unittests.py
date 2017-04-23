@@ -11,6 +11,7 @@ testmodules = [
     'indicator',
     'log',
     'mathstat',
+    'model',
     'observable',
     'osdata',
     'plotter',
