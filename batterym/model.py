@@ -2,12 +2,6 @@
 import mathstat
 import unittest
 
-# statistic model
-# - split charge/discharge
-# - extract slopes by capacity bins
-# - pick up slopes curve (by percentile)
-# - reconstruct (dis)charging capacity timeline (start value)
-
 
 def get_slopes_capacity_bins(data):
     bins = {}
@@ -39,6 +33,46 @@ def reconstruct_timeline(slopes):
         x = t[-1] + dx
         t.append(x)
     return zip(t, capacity)
+
+
+class StatBateryModel:
+
+    def __init__(self, history):
+        self.history = history
+
+    def calulate(self):
+        # split charge/discharge
+        hdata = self.history.data()
+        charge = filter(lambda e: e['status'] == 'Charging', hdata)
+        discharge = filter(lambda e: e['status'] == 'Disharging', hdata)
+        # extract slopes by capacity bins
+        charge_bins = model.get_slopes_capacity_bins(charge)
+        discharge_bins = model.get_slopes_capacity_bins(discharge)
+        # pick up slopes curve (by percentile)
+        p = 0.5
+        charge_slopes = model.get_slopes_by_percentile(charge_bins, p)
+        discharge_slopes = model.get_slopes_by_percentile(discharge_bins, p)
+        # reconstruct (dis)charging capacity timeline
+        charge_timeline = model.reconstruct_timeline(charge_slopes)
+        discharge_timeline = model.reconstruct_timeline(discharge_slopes)
+        # store data
+        self.charge = charge
+        self.charge_bins = charge_bins
+        self.charge_slopes = charge_slopes
+        self.charge_timeline = charge_timeline
+        self.discharge = discharge
+        self.discharge_bins = discharge_bins
+        self.discharge_slopes = discharge_slopes
+        self.discharge_timeline = discharge_timeline
+
+    def plot_data(self, status):
+        if status == 'Charging':
+            x, y = zip(*self.charge_timeline)
+            return [{'status': 'Charging', 'xs': x, 'ys': y}]
+        if status == 'Discharging':
+            x, y = zip(*self.discharge_timeline)
+            return [{'status': 'Discharging', 'xs': x, 'ys': y}]
+        return []
 
 
 class MyTest(unittest.TestCase):
