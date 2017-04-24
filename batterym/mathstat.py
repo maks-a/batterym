@@ -55,6 +55,17 @@ def interpolate_linear(x, y, new_x):
     return new_y
 
 
+def interpolate_linear_evenly(x, y, steps=None, step=None):
+    if steps is None and step is None:
+        raise ValueError('Bad arguments: steps, step')        
+    lo = min(x)
+    hi = max(x)
+    step = float(hi - lo) / steps if steps is not None else step
+    new_x = linspace(lo, hi, step)
+    ys = interpolate_linear(x, y, new_x)
+    return zip(new_x, ys)
+
+
 def interpolate_point(segment_start, segment_end, p):
     return (1.0 - p) * segment_start + p * segment_end
 
