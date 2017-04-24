@@ -102,10 +102,10 @@ class StatBateryModel:
         self.discharge_timeline_total = discharge_timeline_total
 
     def plot_data(self, status):
-        if status == 'Charging':
+        if status == 'Charging' and len(self.charge_timeline) > 0:
             x, y = zip(*self.charge_timeline)
             return [{'status': 'Charging', 'xs': x, 'ys': y}]
-        if status == 'Discharging':
+        if status == 'Discharging' and len(self.discharge_timeline) > 0:
             x, y = zip(*self.discharge_timeline)
             return [{'status': 'Discharging', 'xs': x, 'ys': y}]
         return []

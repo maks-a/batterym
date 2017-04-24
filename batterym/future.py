@@ -49,7 +49,7 @@ class Future:
             y = int(round(data[0]['capacity']))
             bat_model.calculate(y)
             self._plot_data = bat_model.plot_data(status)
-        elif prediction_model == 'linear':
+        if prediction_model == 'linear' or len(self._plot_data) == 0:
             slope = self.calculate_slope(data)
             if slope is None or mathstat.is_zero(slope):
                 return
