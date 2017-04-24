@@ -59,7 +59,7 @@ class StatBateryModel:
         self.history = history
         self.percentile = 0.5
 
-    def calculate(self, start):
+    def calculate(self, start=None):
         # split charge/discharge
         hdata = self.history.data()
         charge = filter(lambda e: e['status'] == 'Charging', hdata)
@@ -74,19 +74,28 @@ class StatBateryModel:
         discharge_slopes = get_slopes_by_percentile(discharge_bins, p)
         discharge_slopes = extrapolate(discharge_slopes, 0, 100)
         # reconstruct (dis)charging capacity timeline
-        ys1 = range(100, start, -1)
-        charge_timeline = reconstruct_timeline(charge_slopes, ys1)
-        ys2 = range(0, start)
-        discharge_timeline = reconstruct_timeline(discharge_slopes, ys2)
+        ys1 = range(100, 0, -1)
+        charge_timeline_total = reconstruct_timeline(charge_slopes, ys1)
+        ys2 = range(0, 100)
+        discharge_timeline_total = reconstruct_timeline(discharge_slopes, ys2)
+
+        charge_timeline = discharge_timeline = []
+        if start is not None:
+            ys1 = range(100, start, -1)
+            charge_timeline = reconstruct_timeline(charge_slopes, ys1)
+            ys2 = range(0, start)
+            discharge_timeline = reconstruct_timeline(discharge_slopes, ys2)
         # store data
         self.charge = charge
         self.charge_bins = charge_bins
         self.charge_slopes = charge_slopes
         self.charge_timeline = charge_timeline
+        self.charge_timeline_total = charge_timeline_total
         self.discharge = discharge
         self.discharge_bins = discharge_bins
         self.discharge_slopes = discharge_slopes
         self.discharge_timeline = discharge_timeline
+        self.discharge_timeline_total = discharge_timeline_total
 
     def plot_data(self, status):
         if status == 'Charging':
@@ -231,8 +240,8 @@ class MyTest(unittest.TestCase):
         result = extrapolate(src, 4, 6)
         self.assertEqual(result, expected)
 
-        src = {5: 20, 7:40}
-        expected = {4: 20, 5: 20, 6: 30, 7:40, 8:40}
+        src = {5: 20, 7: 40}
+        expected = {4: 20, 5: 20, 6: 30, 7: 40, 8: 40}
         result = extrapolate(src, 4, 8)
         self.assertEqual(result, expected)
 

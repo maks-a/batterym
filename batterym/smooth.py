@@ -47,7 +47,7 @@ def steps_filter(x, y):
     x2 = mathstat.linspace(xmin, xmax, dx)
 
     y2 = mathstat.interpolate_linear(x, y, x2)
-    y3 = tangent_filter(y2, 10)
+    y3 = tangent_filter(y2, 30)
     y4 = evaluate_array(y2, y3, 0.5)
 
     dx = 10.0 / 60.0

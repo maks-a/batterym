@@ -80,31 +80,56 @@ fig, ax = plt.subplots(1)
 
 # ax[1].hist(cap['capacity'], bins=10)
 
-status = 'Charging'
 
-charging_hdata = filter(lambda e: e['status']==status, hdata)
-charging_bins = model.get_slopes_capacity_bins(charging_hdata)
-
+bat_model = model.StatBateryModel(h)
 for i in [0.4, 0.5, 0.6]:
-    new_slopes = model.get_slopes_by_percentile(charging_bins, i)
-    new_slopes = model.extrapolate(new_slopes, 0, 100)
-    timeline = model.reconstruct_timeline(new_slopes, range(0, 100))
-    x2, y2 = zip(*timeline)
+    bat_model.percentile = i
+    bat_model.calculate()
 
-    # d = data[data['status'] == status]
-    # d = d[d['slope'] != 0]
-    # x = d['capacity_round']
-    # y = d['slope']
-    # ax.scatter(x, y)
-    # x1 = new_slopes.keys()
-    # y1 = new_slopes.values()
-    # ax.plot(pd.Series(y1, index=x1), color='#FF0000', marker='o')
-    # ax.set_xlim(0, 101)
+    # x2, y2 = zip(*bat_model.charge_timeline_total)
+    # #x2, y2 = zip(*bat_model.discharge_timeline_total)
+    # ax.plot(pd.Series(y2, index=x2), color='#FF0000', marker='+')
 
-    ax.plot(pd.Series(y2, index=x2), color='#FF0000', marker='+')
+    bins = bat_model.charge_bins
+    xs = []
+    ys = []
+    for x in bins.keys():
+        for y in bins[x]:
+            xs.append(x)
+            ys.append(y)
+    ax.scatter(xs, ys)
 
-ax.set_ylim(0, 101)
-ax.invert_xaxis()
+    slopes = bat_model.charge_slopes
+    x1 = slopes.keys()
+    y1 = slopes.values()
+    ax.plot(pd.Series(y1, index=x1), color='#FF0000', marker='o')
+    ax.set_xlim(0, 101)
+
+
+# status = 'Charging'
+# charging_hdata = filter(lambda e: e['status']==status, hdata)
+# charging_bins = model.get_slopes_capacity_bins(charging_hdata)
+
+# for i in [0.4, 0.5, 0.6]:
+#     new_slopes = model.get_slopes_by_percentile(charging_bins, i)
+#     new_slopes = model.extrapolate(new_slopes, 0, 100)
+#     timeline = model.reconstruct_timeline(new_slopes, range(0, 100))
+#     x2, y2 = zip(*timeline)
+
+#     d = data[data['status'] == status]
+#     d = d[d['slope'] != 0]
+#     x = d['capacity_round']
+#     y = d['slope']
+#     ax.scatter(x, y)
+#     x1 = new_slopes.keys()
+#     y1 = new_slopes.values()
+#     ax.plot(pd.Series(y1, index=x1), color='#FF0000', marker='o')
+#     ax.set_xlim(0, 101)
+
+#     # ax.plot(pd.Series(y2, index=x2), color='#FF0000', marker='+')
+
+# ax.set_ylim(0, 101)
+# ax.invert_xaxis()
 
 
 # Full screen plot window.
