@@ -68,7 +68,7 @@ def smooth_virtual_time(samples):
 
 def add_capacity_round(data):
     for e in data:
-        e['capacity_round'] = round(e['capacity'])
+        e['capacity_round'] = int(round(e['capacity']))
     return data
 
 

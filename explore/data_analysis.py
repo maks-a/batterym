@@ -87,7 +87,8 @@ charging_bins = model.get_slopes_capacity_bins(charging_hdata)
 
 for i in [0.4, 0.5, 0.6]:
     new_slopes = model.get_slopes_by_percentile(charging_bins, i)
-    timeline = model.reconstruct_timeline(new_slopes)
+    new_slopes = model.extrapolate(new_slopes, 0, 100)
+    timeline = model.reconstruct_timeline(new_slopes, range(0, 100))
     x2, y2 = zip(*timeline)
 
     # d = data[data['status'] == status]

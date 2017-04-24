@@ -1,6 +1,8 @@
 #!/usr/bin/python
 from __future__ import division
 from history import separate_by_sequence_id
+import model
+import config
 import mathstat
 import unittest
 
@@ -38,12 +40,22 @@ class Future:
     def calculate_plot_data(self):
         self._plot_data = []
         data = self.current_status_data()
-        slope = self.calculate_slope(data)
-        if slope is None or mathstat.is_zero(slope):
-            return
-        self._battery_life = 100.0 / abs(slope)
-        y = data[0]['capacity']
-        self._plot_data = [line_plot_data(y, slope)]
+
+        prediction_model = config.get_entry(
+            'future_prediction_model', default_value='statistical')
+        if prediction_model == 'statistical':
+            status = data[0]['status']
+            bat_model = model.StatBateryModel(self._history)
+            y = int(round(data[0]['capacity']))
+            bat_model.calculate(y)
+            self._plot_data = bat_model.plot_data(status)
+        elif prediction_model == 'linear':
+            slope = self.calculate_slope(data)
+            if slope is None or mathstat.is_zero(slope):
+                return
+            self._battery_life = 100.0 / abs(slope)
+            y = data[0]['capacity']
+            self._plot_data = [line_plot_data(y, slope)]
 
     def remaining_time(self):
         x = 0

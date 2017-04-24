@@ -19,20 +19,38 @@ def get_slopes_by_percentile(bins, percentile_val):
     return dict(zip(x, y))
 
 
-def reconstruct_timeline(slopes):
+def extrapolate(data, lo=0, hi=100):
+    keys = data.keys()
+    if len(keys) == 0:
+        return data
+    mx = max(keys)
+    for k in xrange(mx+1, hi+1, 1):
+        data[k] = data[mx]
+    mn = min(keys)
+    for k in xrange(mn-1, lo-1, -1):
+        data[k] = data[mn]
+    keys = data.keys()
+    values = data.values()
+    for i in xrange(1, len(keys)):
+        for k in xrange(keys[i-1]+1, keys[i]):
+            data[k] = (values[i-1] + values[i]) / 2
+    return data
+
+
+def reconstruct_timeline(slopes, ys):
     capacity = slopes.keys()
     slope = slopes.values()
     n = len(slopes)
     if n < 2:
         return []
     t = [0]
-    for i in xrange(1, n):
-        dy = 1.0 * (capacity[i] - capacity[i-1])
-        slope = slopes[capacity[i-1]]
+    for i in xrange(1, len(ys)):
+        dy = float(ys[i] - ys[i-1])
+        slope = slopes[ys[i-1]]
         dx = dy / slope
         x = t[-1] + dx
         t.append(x)
-    return zip(t, capacity)
+    return zip(t, ys)
 
 
 class StatBateryModel:
@@ -40,21 +58,25 @@ class StatBateryModel:
     def __init__(self, history):
         self.history = history
 
-    def calulate(self):
+    def calculate(self, start):
         # split charge/discharge
         hdata = self.history.data()
         charge = filter(lambda e: e['status'] == 'Charging', hdata)
-        discharge = filter(lambda e: e['status'] == 'Disharging', hdata)
+        discharge = filter(lambda e: e['status'] == 'Discharging', hdata)
         # extract slopes by capacity bins
-        charge_bins = model.get_slopes_capacity_bins(charge)
-        discharge_bins = model.get_slopes_capacity_bins(discharge)
+        charge_bins = get_slopes_capacity_bins(charge)
+        discharge_bins = get_slopes_capacity_bins(discharge)
         # pick up slopes curve (by percentile)
         p = 0.5
-        charge_slopes = model.get_slopes_by_percentile(charge_bins, p)
-        discharge_slopes = model.get_slopes_by_percentile(discharge_bins, p)
+        charge_slopes = get_slopes_by_percentile(charge_bins, p)
+        charge_slopes = extrapolate(charge_slopes, 0, 100)
+        discharge_slopes = get_slopes_by_percentile(discharge_bins, p)
+        discharge_slopes = extrapolate(discharge_slopes, 0, 100)
         # reconstruct (dis)charging capacity timeline
-        charge_timeline = model.reconstruct_timeline(charge_slopes)
-        discharge_timeline = model.reconstruct_timeline(discharge_slopes)
+        ys1 = range(100, start, -1)
+        charge_timeline = reconstruct_timeline(charge_slopes, ys1)
+        ys2 = range(0, start)
+        discharge_timeline = reconstruct_timeline(discharge_slopes, ys2)
         # store data
         self.charge = charge
         self.charge_bins = charge_bins
@@ -131,28 +153,85 @@ class MyTest(unittest.TestCase):
         self.assertEqual(result, expected)
 
     def test_reconstruct_timeline(self):
-        src = {}
+        slopes = {}
+        ys = []
         expected = []
-        result = reconstruct_timeline(src)
+        result = reconstruct_timeline(slopes, ys)
         self.assertEqual(result, expected)
 
-        src = {82: 2}
+        slopes = {82: 2}
+        ys = []
         expected = []
-        result = reconstruct_timeline(src)
+        result = reconstruct_timeline(slopes, ys)
         self.assertEqual(result, expected)
 
-        src = {82: 1, 83: 1}
+        slopes = {82: 1, 83: 1}
+        ys = [82, 83]
         expected = [
             (0, 82),
             (1, 83),
         ]
-        result = reconstruct_timeline(src)
+        result = reconstruct_timeline(slopes, ys)
         self.assertEqual(result, expected)
 
-        src = {82: 0.1, 83: 0.1}
+        slopes = {82: 1, 83: 1}
+        ys = [83, 82]
+        expected = [
+            (0, 83),
+            (-1, 82),
+        ]
+        result = reconstruct_timeline(slopes, ys)
+        self.assertEqual(result, expected)
+
+        slopes = {82: 0.1, 83: 0.1}
+        ys = [82, 83]
         expected = [
             (0, 82),
             (10, 83),
         ]
-        result = reconstruct_timeline(src)
+        result = reconstruct_timeline(slopes, ys)
         self.assertEqual(result, expected)
+
+        slopes = {82: 0.1, 83: 0.1}
+        ys = [83, 82]
+        expected = [
+            (0, 83),
+            (-10, 82),
+        ]
+        result = reconstruct_timeline(slopes, ys)
+        self.assertEqual(result, expected)
+
+        slopes = {82: -1, 83: -1}
+        ys = [82, 83]
+        expected = [
+            (0, 82),
+            (-1, 83),
+        ]
+        result = reconstruct_timeline(slopes, ys)
+        self.assertEqual(result, expected)
+
+        slopes = {82: -1, 83: -1}
+        ys = [83, 82]
+        expected = [
+            (0, 83),
+            (1, 82),
+        ]
+        result = reconstruct_timeline(slopes, ys)
+        self.assertEqual(result, expected)
+
+    def test_extrapolate(self):
+        src = {}
+        expected = {}
+        result = extrapolate(src)
+        self.assertEqual(result, expected)
+
+        src = {5: 25}
+        expected = {4: 25, 5: 25, 6: 25}
+        result = extrapolate(src, 4, 6)
+        self.assertEqual(result, expected)
+
+        src = {5: 20, 7:40}
+        expected = {4: 20, 5: 20, 6: 30, 7:40, 8:40}
+        result = extrapolate(src, 4, 8)
+        self.assertEqual(result, expected)
+
