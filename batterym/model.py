@@ -57,6 +57,7 @@ class StatBateryModel:
 
     def __init__(self, history):
         self.history = history
+        self.percentile = 0.5
 
     def calculate(self, start):
         # split charge/discharge
@@ -67,7 +68,7 @@ class StatBateryModel:
         charge_bins = get_slopes_capacity_bins(charge)
         discharge_bins = get_slopes_capacity_bins(discharge)
         # pick up slopes curve (by percentile)
-        p = 0.5
+        p = self.percentile
         charge_slopes = get_slopes_by_percentile(charge_bins, p)
         charge_slopes = extrapolate(charge_slopes, 0, 100)
         discharge_slopes = get_slopes_by_percentile(discharge_bins, p)
