@@ -50,7 +50,7 @@ def reconstruct_timeline(slopes, ys):
         dx = dy / slope
         x = t[-1] + dx
         t.append(x)
-    return zip(t, ys)
+    return mathstat.interpolate_linear_evenly(t, ys, steps=100)
 
 
 class StatBateryModel:
