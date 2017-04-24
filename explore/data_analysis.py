@@ -84,6 +84,7 @@ fig, ax = plt.subplots(1)
 bat_model = model.StatBateryModel(h)
 for i in [0.4, 0.5, 0.6]:
     bat_model.percentile = i
+    bat_model.history_limit = 100.0
     bat_model.calculate()
 
     # x2, y2 = zip(*bat_model.charge_timeline_total)

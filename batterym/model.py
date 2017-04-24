@@ -57,11 +57,15 @@ class StatBateryModel:
 
     def __init__(self, history):
         self.history = history
+        self.hdata = history.data()
         self.percentile = 0.5
+        self.history_limit = 100.0
 
     def calculate(self, start=None):
         # split charge/discharge
-        hdata = self.history.data()
+        hdata = self.hdata
+        hdata = filter(lambda e: e['virtual_time_hour']
+                       < self.history_limit, hdata)
         charge = filter(lambda e: e['status'] == 'Charging', hdata)
         discharge = filter(lambda e: e['status'] == 'Discharging', hdata)
         # extract slopes by capacity bins
@@ -244,4 +248,3 @@ class MyTest(unittest.TestCase):
         expected = {4: 20, 5: 20, 6: 30, 7: 40, 8: 40}
         result = extrapolate(src, 4, 8)
         self.assertEqual(result, expected)
-
