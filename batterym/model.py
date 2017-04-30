@@ -46,7 +46,9 @@ def reconstruct_timeline(slopes, ys):
     t = [0]
     for i in xrange(1, len(ys)):
         dy = float(ys[i] - ys[i-1])
-        slope = slopes[ys[i-1]]
+        slope = slopes.get(ys[i-1])
+        if slope is None:
+            continue
         dx = dy / slope
         x = t[-1] + dx
         t.append(x)
