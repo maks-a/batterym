@@ -41,7 +41,7 @@ data = data[data['capacity_raw'] >= CAP_LOW]
 
 grouped = data.groupby('sequence_id')['capacity_raw'].count()
 grouped = grouped.sort_values(inplace=False, ascending=False)
-grouped = grouped[:3]
+grouped = grouped[:1]
 data = data[data.sequence_id.isin(grouped.index)]
 
 
@@ -64,7 +64,7 @@ for name, group in grouped:
     ax.plot(x2, y2, color='b', marker='o')
 
 #ax.set_ylim(0, 101)
-ax.set_xlim(0, 2)
+ax.set_xlim(0, 1.8)
 ax.set_ylim(CAP_LOW, 101)
 # Full screen plot window.
 mng = plt.get_current_fig_manager()
