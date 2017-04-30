@@ -33,21 +33,23 @@ grouped = data.groupby('sequence_id')['capacity_raw'].max()
 grouped = grouped[grouped.values >= 100]
 data = data[data.sequence_id.isin(grouped.index)]
 
+CAP_LOW = 80
 grouped = data.groupby('sequence_id')['capacity_raw'].min()
-grouped = grouped[grouped.values <= 80]
+grouped = grouped[grouped.values <= CAP_LOW]
 data = data[data.sequence_id.isin(grouped.index)]
+data = data[data['capacity_raw'] >= CAP_LOW]
 
-# grouped = data.groupby('sequence_id')['capacity_raw'].count()
-# grouped = grouped.sort_values(inplace=False, ascending=False)
-# grouped = grouped[:15]
-# data = data[data.sequence_id.isin(grouped.index)]
+grouped = data.groupby('sequence_id')['capacity_raw'].count()
+grouped = grouped.sort_values(inplace=False, ascending=False)
+grouped = grouped[:3]
+data = data[data.sequence_id.isin(grouped.index)]
 
 
 fig, ax = plt.subplots()
 
 grouped = data.groupby('sequence_id')
 for name, group in grouped:
-    pivot_time = group['timestamp'].max()
+    pivot_time = group['timestamp'].min()
     delta = group['timestamp'] - pivot_time
     seconds = abs(delta).dt.seconds
     hours = seconds / (60 * 60)
@@ -61,7 +63,9 @@ for name, group in grouped:
     x2, y2 = smooth.steps_filter(x, y)
     ax.plot(x2, y2, color='b', marker='o')
 
-ax.set_ylim(0, 101)
+#ax.set_ylim(0, 101)
+ax.set_xlim(0, 2)
+ax.set_ylim(CAP_LOW, 101)
 # Full screen plot window.
 mng = plt.get_current_fig_manager()
 mng.resize(*mng.window.maxsize())
