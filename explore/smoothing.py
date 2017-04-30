@@ -34,8 +34,24 @@ grouped = data.groupby('sequence_id')['capacity_raw'].size()
 grouped = grouped.sort_values(inplace=False, ascending=False)
 grouped = grouped[:3]
 data = data[data.sequence_id.isin(grouped.index)]
+grouped = data.groupby('sequence_id')
 
-print data
+fig, ax = plt.subplots()
+
+for name, group in grouped:
+    pivot_time = group['timestamp'].max()
+    a = abs(group['timestamp'] - pivot_time)
+    group['delta_time'] = a
+    group = group.sort_values(by='delta_time', ascending=True)
+    ax.plot(group['delta_time'], group['capacity_raw'], color='r', marker='x')
+
+ax.set_ylim(0, 101)
+# Full screen plot window.
+mng = plt.get_current_fig_manager()
+mng.resize(*mng.window.maxsize())
+# Show plot.
+plt.show()
+# break
 
 
 # def draw_round():
