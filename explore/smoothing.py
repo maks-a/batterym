@@ -74,21 +74,23 @@ plt.show()
 # break
 
 
-# def draw_round():
-#     x = np.linspace(0, 10, 500)
-#     y = 10 * np.sin(x)
-#     y2 = np.round(y)
+def draw_round():
+    x = np.linspace(0, 10, 200)
+    y = 10 * np.sin(x)
+    y2 = np.round(y)
 
-#     fig, ax = plt.subplots()
+    fig, ax = plt.subplots()
 
-#     ax.set_ylim(-11, 11)
-#     ax.plot(x, y, color='b', marker='+')
-#     ax.plot(x, y2, color='r', marker='o')
+    ax.set_ylim(-11, 11)
+    ax.plot(x, y, color='b', marker='+')
+    ax.plot(x, y2, color='r', marker='o')
 
-#     # Full screen plot window.
-#     mng = plt.get_current_fig_manager()
-#     mng.resize(*mng.window.maxsize())
+    # Full screen plot window.
+    mng = plt.get_current_fig_manager()
+    mng.resize(*mng.window.maxsize())
 
-#     # Show plot.
-#     plt.show()
+    # Show plot.
+    plt.show()
 
+
+# draw_round()
