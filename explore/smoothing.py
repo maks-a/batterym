@@ -62,7 +62,7 @@ for name, group in grouped:
     y = list(group['capacity_raw'])
 
     n = min(len(x), len(y))
-    for i in xrange(15, min(n-2, 30)):
+    for i in xrange(21, min(n-2, 25)):
         x2, y2 = smooth.steps_filter(x[:i], y[:i])
         ax.plot(x2, y2, color='b', marker='o')
 
