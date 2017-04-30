@@ -32,7 +32,7 @@ data = data[data['status'] == 'Charging']
 # and leave the longest sessions
 grouped = data.groupby('sequence_id')['capacity_raw'].size()
 grouped = grouped.sort_values(inplace=False, ascending=False)
-grouped = grouped[:3]
+grouped = grouped[:5]
 data = data[data.sequence_id.isin(grouped.index)]
 grouped = data.groupby('sequence_id')
 
@@ -40,10 +40,20 @@ fig, ax = plt.subplots()
 
 for name, group in grouped:
     pivot_time = group['timestamp'].max()
-    a = abs(group['timestamp'] - pivot_time)
-    group['delta_time'] = a
+    delta = group['timestamp'] - pivot_time
+    seconds = abs(delta).dt.seconds
+    hours = seconds / (60 * 60)
+    group['delta_time'] = hours
     group = group.sort_values(by='delta_time', ascending=True)
+
+    print group.head()
+
     ax.plot(group['delta_time'], group['capacity_raw'], color='r', marker='x')
+
+    x = list(group['delta_time'])
+    y = list(group['capacity_raw'])
+    x2, y2 = smooth.steps_filter(x, y)
+    ax.plot(x2, y2, color='b', marker='o')
 
 ax.set_ylim(0, 101)
 # Full screen plot window.
