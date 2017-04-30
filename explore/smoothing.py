@@ -33,7 +33,7 @@ grouped = data.groupby('sequence_id')['capacity_raw'].max()
 grouped = grouped[grouped.values >= 100]
 data = data[data.sequence_id.isin(grouped.index)]
 
-CAP_LOW = 80
+CAP_LOW = 40
 grouped = data.groupby('sequence_id')['capacity_raw'].min()
 grouped = grouped[grouped.values <= CAP_LOW]
 data = data[data.sequence_id.isin(grouped.index)]
@@ -41,7 +41,7 @@ data = data[data['capacity_raw'] >= CAP_LOW]
 
 grouped = data.groupby('sequence_id')['capacity_raw'].count()
 grouped = grouped.sort_values(inplace=False, ascending=False)
-grouped = grouped[:1]
+grouped = grouped[:10]
 data = data[data.sequence_id.isin(grouped.index)]
 
 
@@ -56,21 +56,22 @@ for name, group in grouped:
     group['delta_time'] = hours
     group = group.sort_values(by='delta_time', ascending=True)
 
-    ax.plot(group['delta_time'], group['capacity_raw'], color='r', marker='x')
+    # ax.plot(group['delta_time'], group['capacity_raw'], 
+    #     color='r', marker='+')
 
     x = list(group['delta_time'])
     y = list(group['capacity_raw'])
 
-    n = min(len(x), len(y))
-    for i in xrange(21, min(n-2, 25)):
-        x2, y2 = smooth.steps_filter(x[:i], y[:i])
-        ax.plot(x2, y2, color='b', marker='o')
+    # n = min(len(x), len(y))
+    # for i in xrange(21, min(n-2, 25)):
+    #     x2, y2 = smooth.steps_filter(x[:i], y[:i])
+    #     ax.plot(x2, y2, color='b', marker='o')
 
     x2, y2 = smooth.steps_filter(x, y)
-    ax.plot(x2, y2, color='b', marker='o')
+    ax.plot(x2, y2, color='b', marker='+')
 
 #ax.set_ylim(0, 101)
-ax.set_xlim(0, 1.8)
+#ax.set_xlim(0, 1.8)
 ax.set_ylim(CAP_LOW, 101)
 # Full screen plot window.
 mng = plt.get_current_fig_manager()
