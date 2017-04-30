@@ -11,6 +11,7 @@ import os
 import sys
 sys.path.append(os.path.abspath('../batterym'))
 import log
+import model
 import smooth
 import history
 
@@ -23,7 +24,7 @@ def get_data():
     hdata = h.data()
 
     data = pd.DataFrame(hdata)
-    data = data.rename(columns={'time': 'timestamp'})
+    data['timestamp'] = data['time']
     data = data.sort_values(by='timestamp', ascending=True)
 
     # Extract charging sessions
@@ -34,7 +35,7 @@ def get_data():
     grouped = grouped[grouped.values >= 100]
     data = data[data.sequence_id.isin(grouped.index)]
 
-    CAP_LOW = 40
+    CAP_LOW = 70
     grouped = data.groupby('sequence_id')['capacity_raw'].min()
     grouped = grouped[grouped.values <= CAP_LOW]
     data = data[data.sequence_id.isin(grouped.index)]
@@ -42,9 +43,59 @@ def get_data():
 
     grouped = data.groupby('sequence_id')['capacity_raw'].count()
     grouped = grouped.sort_values(inplace=False, ascending=False)
-    grouped = grouped[:10]
+    grouped = grouped[:30]
     data = data[data.sequence_id.isin(grouped.index)]
     return data
+
+
+def add_delta_time(group):
+    pivot_time = group['timestamp'].min()
+    delta = group['timestamp'] - pivot_time
+    seconds = abs(delta).dt.seconds
+    hours = seconds / (60 * 60)
+    group['delta_time'] = hours
+    group = group.sort_values(by='delta_time', ascending=True)
+    return group
+
+
+def plot_reconstruct(data):
+    logs = []
+    fig, ax = plt.subplots(2)
+
+    grouped = data.groupby('sequence_id')
+    for name, group in grouped:
+        group = add_delta_time(group)
+        group = group.sort_values(by='time', ascending=True)
+
+        logs += group.T.to_dict().values()
+
+    h = history.History(logs, smoothing=True)
+    hdata = h.data()
+    m = model.StatBateryModel(h)
+    m.calculate()
+
+    ax[0].set_ylim(top=101)
+    x, y = zip(*m.charge_timeline_total)
+    ax[0].plot(x, y, color='r', marker='+')
+
+    x2, y2 = smooth.steps_filter(x, y)
+    ax[0].plot(x2, y2, color='b', marker='+')
+
+    bins = m.charge_bins
+    xs = []
+    ys = []
+    for x in bins.keys():
+        for y in bins[x]:
+            xs.append(x)
+            ys.append(y)
+    ax[1].scatter(xs, ys)
+
+    # Full screen plot window.
+    mng = plt.get_current_fig_manager()
+    mng.resize(*mng.window.maxsize())
+    # Show plot.
+    plt.show()
+    # break
 
 
 def plot_grouped_charging(data):
@@ -52,12 +103,7 @@ def plot_grouped_charging(data):
 
     grouped = data.groupby('sequence_id')
     for name, group in grouped:
-        pivot_time = group['timestamp'].min()
-        delta = group['timestamp'] - pivot_time
-        seconds = abs(delta).dt.seconds
-        hours = seconds / (60 * 60)
-        group['delta_time'] = hours
-        group = group.sort_values(by='delta_time', ascending=True)
+        group = add_delta_time(group)
 
         # ax.plot(group['delta_time'], group['capacity_raw'],
         #     color='r', marker='+')
@@ -105,7 +151,8 @@ def draw_round():
 
 def main():
     data = get_data()
-    plot_grouped_charging(data)
+    plot_reconstruct(data)
+    #plot_grouped_charging(data)
     # draw_round()
 
 
