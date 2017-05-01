@@ -106,9 +106,9 @@ class History:
         data = add_relative_time(log_data)
         data = sorted(data, key=lambda e: e['relative_time_sec'])
         data = add_virtual_time(data, threshold_sec)
-        data = add_slope(data)
         if smoothing:
             data = smooth_virtual_time(data)
+        data = add_slope(data)
         data = add_capacity_round(data)
         self._data = data
         self._plot_data = []
