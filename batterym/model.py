@@ -44,6 +44,7 @@ def reconstruct_timeline(slopes, ys):
     if n < 2:
         return []
     xs = [0]
+    ys2 = [0]
     for i in xrange(1, len(ys)):
         dy = float(ys[i] - ys[i-1])
         slope = slopes.get(ys[i-1])
@@ -52,7 +53,10 @@ def reconstruct_timeline(slopes, ys):
         dx = dy / slope
         x = xs[-1] + dx
         xs.append(x)
-    new_x, new_y = mathstat.interpolate_linear_evenly(xs, ys, n=n)
+        if i == 1:
+            ys2[0] = ys[i-1]
+        ys2.append(ys[i])
+    new_x, new_y = mathstat.interpolate_linear_evenly(xs, ys2, n=n)
     return zip(new_x, new_y)
 
 
