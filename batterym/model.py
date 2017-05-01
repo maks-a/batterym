@@ -43,16 +43,17 @@ def reconstruct_timeline(slopes, ys):
     n = len(slopes)
     if n < 2:
         return []
-    t = [0]
+    xs = [0]
     for i in xrange(1, len(ys)):
         dy = float(ys[i] - ys[i-1])
         slope = slopes.get(ys[i-1])
         if slope is None:
             continue
         dx = dy / slope
-        x = t[-1] + dx
-        t.append(x)
-    return mathstat.interpolate_linear_evenly(t, ys, steps=100)
+        x = xs[-1] + dx
+        xs.append(x)
+    new_x, new_y = mathstat.interpolate_linear_evenly(xs, ys, n=n)
+    return zip(new_x, new_y)
 
 
 class StatBateryModel:

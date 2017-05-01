@@ -36,26 +36,23 @@ def evaluate_array(y1, y2, k):
 
 
 def steps_filter(x, y):
-    xn = len(x)
-    yn = len(y)
-    if xn < 3 or yn < 3:
+    nx = len(x)
+    ny = len(y)
+    if nx != ny or nx < 3:
         return x, y
-    xmin = min(x)
-    xmax = max(x)
 
     dx = 1.0 / 60.0
-    x2 = mathstat.linspace(xmin, xmax, dx)
+    x2, y2 = mathstat.interpolate_linear_evenly(x, y, dx=dx)
 
-    y2 = mathstat.interpolate_linear(x, y, x2)
-    y3 = tangent_filter(y2, 30)
+    y3 = tangent_filter(y2, 10.0)
     y4 = evaluate_array(y2, y3, 0.5)
 
     dx = 10.0 / 60.0
-    x5 = mathstat.linspace(xmin, xmax, dx)
-    y5 = mathstat.interpolate_linear(x2, y4, x5)
+    x5, y5 = mathstat.interpolate_linear_evenly(x2, y4, dx=dx)
+
     y6 = mathstat.interpolate_linear(x5, y5, x)
-    if yn != len(y6):
-        return x, y
+    if nx != len(y6):
+        raise ValueError('Calculation error')        
     return x, y6
 
 

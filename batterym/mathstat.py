@@ -27,6 +27,20 @@ def median(lst):
     return percentile(lst, 0.5)
 
 
+def is_ascending_order(arr):
+    for i in xrange(1, len(arr)):
+        if arr[i-1] > arr[i]:
+            return False
+    return True
+
+
+def is_descending_order(arr):
+    for i in xrange(1, len(arr)):
+        if arr[i-1] < arr[i]:
+            return False
+    return True
+
+
 def interpolate_linear(x, y, new_x):
     n = len(x)
     new_n = len(new_x)
@@ -36,6 +50,12 @@ def interpolate_linear(x, y, new_x):
         raise ValueError('A value in x_new is below the interpolation')
     if max(x) < max(new_x):
         raise ValueError('A value in x_new is above the interpolation')
+    is_ascending = is_ascending_order(x)
+    if not is_ascending and not is_descending_order(x):
+        raise ValueError('Input x-array must be ascending or desceding')
+    if not is_ascending:
+        x = list(reversed(x))
+        y = list(reversed(y))
     new_y = [None] * new_n
     j = 0
     for i in xrange(1, n):
@@ -55,15 +75,29 @@ def interpolate_linear(x, y, new_x):
     return new_y
 
 
-def interpolate_linear_evenly(x, y, steps=None, step=None):
-    if steps is None and step is None:
-        raise ValueError('Bad arguments: steps, step')        
-    lo = min(x)
-    hi = max(x)
-    step = float(hi - lo) / steps if steps is not None else step
-    new_x = linspace(lo, hi, step)
-    ys = interpolate_linear(x, y, new_x)
-    return zip(new_x, ys)
+def interpolate_linear_evenly(x, y, n=None, dx=None):
+    nx = len(x)
+    ny = len(y)
+    if nx != ny:
+        raise ValueError('Arguments x, y must have same size')
+    if nx < 2:
+        return x, y
+    if n is None and dx is None:
+        raise ValueError('Bad arguments: n, dx')
+    if n is not None and n < 2:
+        raise ValueError('Bad argument: n must be more than 1')
+    lo, hi = x[0], x[-1]
+    if dx is not None and (hi-lo) < 0:
+        dx *= -1
+    if n is not None and dx is None:
+        dx = float(hi - lo) / (n - 1)
+    if abs(hi-lo) < abs(dx):
+        dx = hi - lo
+    new_x = linspace(lo, hi, dx)
+    new_y = interpolate_linear(x, y, new_x)
+    if len(new_x) != len(new_y):
+        raise ValueError('ouch!')
+    return new_x, new_y
 
 
 def interpolate_point(segment_start, segment_end, p):
@@ -126,7 +160,55 @@ class MyTest(unittest.TestCase):
         self.assertAlmostEqual(median([1, 3]), 2)
         self.assertAlmostEqual(median([1, 3, 4]), 3)
 
+    def test_linspace(self):
+        self.assertEqual(linspace(2, 5, 3), [2, 5])
+        self.assertEqual(linspace(2, 5, 1.5), [2, 3.5, 5])
+        self.assertEqual(linspace(2, 5, 1), [2, 3, 4, 5])
+        self.assertEqual(linspace(2, 5, 4), [])
+
+        self.assertEqual(linspace(5, 2, -3), [5, 2])
+        self.assertEqual(linspace(5, 2, -1.5), [5, 3.5, 2])
+        self.assertEqual(linspace(5, 2, -1), [5, 4.000000000000001, 3, 2])
+        self.assertEqual(linspace(5, 2, -4), [])
+
+        self.assertEqual(linspace(4, 2, -2), [4, 2])
+
+    def test_is_ascending_order(self):
+        self.assertAlmostEqual(is_ascending_order([]), True)
+        self.assertAlmostEqual(is_ascending_order([1]), True)
+        self.assertAlmostEqual(is_ascending_order([1, 1]), True)
+        self.assertAlmostEqual(is_ascending_order([1, 2]), True)
+        self.assertAlmostEqual(is_ascending_order([3, 2]), False)
+
+    def test_is_descending_order(self):
+        self.assertAlmostEqual(is_descending_order([]), True)
+        self.assertAlmostEqual(is_descending_order([1]), True)
+        self.assertAlmostEqual(is_descending_order([1, 1]), True)
+        self.assertAlmostEqual(is_descending_order([2, 1]), True)
+        self.assertAlmostEqual(is_descending_order([2, 3]), False)
+
     def test_interpolate_linear(self):
+        with self.assertRaises(ValueError):
+            interpolate_linear([3, 4], [6], [1])
+
+        with self.assertRaises(ValueError):
+            interpolate_linear([3, 4], [6], [7])
+
+        with self.assertRaises(ValueError):
+            interpolate_linear([3, 5, 4], [1, 2, 3], [1])
+
+        self.assertEqual(interpolate_linear([4, 2], [2, 5], []), [])
+        self.assertEqual(interpolate_linear([4, 2], [2, 5], [3]), [3.5])
+        self.assertEqual(interpolate_linear([4, 2], [5, 2], [4, 2]), [5, 2])
+        self.assertEqual(interpolate_linear(
+            [4, 2], [2, 5], [2, 3, 4]), [5, 3.5, 2])
+        self.assertEqual(interpolate_linear(
+            [-8, -10], [10, 20], [-9]), [15])
+        self.assertEqual(interpolate_linear(
+            [2, 4, 6], [3, 6, 9], [3, 4, 5]), [4.5, 6, 7.5])
+        self.assertEqual(interpolate_linear(
+            [6, 4, 2], [3, 6, 9], [3, 4, 5]), [7.5, 6, 4.5])
+
         self.assertEqual(interpolate_linear([2, 4], [2, 5], []), [])
         self.assertEqual(interpolate_linear([2, 4], [2, 5], [3]), [3.5])
         self.assertEqual(interpolate_linear(
@@ -141,15 +223,57 @@ class MyTest(unittest.TestCase):
         self.assertEqual(interpolate_linear(
             [2, 8, 9], [1, 7, 8], [3, 4, 5]), [2, 3, 4])
 
-        with self.assertRaises(ValueError):
-            interpolate_linear([3, 4], [6], [1])
+    def test_interpolate_linear_evenly(self):
+        x, y = [2, 4], [2, 5]
 
-        with self.assertRaises(ValueError):
-            interpolate_linear([3, 4], [6], [7])
+        result = interpolate_linear_evenly(x, y, n=2)
+        expected = [2, 4], [2, 5]
+        self.assertEqual(result, expected)
 
-    def test_linspace(self):
-        self.assertEqual(linspace(2, 5, 3), [2, 5])
-        self.assertEqual(linspace(2, 5, 1.5), [2, 3.5, 5])
-        self.assertEqual(linspace(2, 5, 1), [2, 3, 4, 5])
-        self.assertEqual(linspace(2, 5, 4), [])
+        result = interpolate_linear_evenly(x, y, n=3)
+        expected = [2, 3, 4], [2, 3.5, 5]
+        self.assertEqual(result, expected)
 
+        result = interpolate_linear_evenly(x, y, dx=2)
+        expected = [2, 4], [2, 5]
+        self.assertEqual(result, expected)
+
+        result = interpolate_linear_evenly(x, y, dx=1)
+        expected = [2, 3, 4], [2, 3.5, 5]
+        self.assertEqual(result, expected)
+
+        x, y = [2, 4], [5, 2]
+
+        result = interpolate_linear_evenly(x, y, n=2)
+        expected = [2, 4], [5, 2]
+        self.assertEqual(result, expected)
+
+        result = interpolate_linear_evenly(x, y, n=3)
+        expected = [2, 3, 4], [5, 3.5, 2]
+        self.assertEqual(result, expected)
+
+        result = interpolate_linear_evenly(x, y, dx=2)
+        expected = [2, 4], [5, 2]
+        self.assertEqual(result, expected)
+
+        result = interpolate_linear_evenly(x, y, dx=1)
+        expected = [2, 3, 4], [5, 3.5, 2]
+        self.assertEqual(result, expected)
+
+        x, y = [4, 2], [5, 2]
+
+        result = interpolate_linear_evenly(x, y, n=2)
+        expected = [4, 2], [5, 2]
+        self.assertEqual(result, expected)
+
+        result = interpolate_linear_evenly(x, y, n=3)
+        expected = [4, 3, 2], [5, 3.5, 2]
+        self.assertEqual(result, expected)
+
+        result = interpolate_linear_evenly(x, y, dx=2)
+        expected = [4, 2], [5, 2]
+        self.assertEqual(result, expected)
+
+        result = interpolate_linear_evenly(x, y, dx=1)
+        expected = [4, 3, 2], [5, 3.5, 2]
+        self.assertEqual(result, expected)
