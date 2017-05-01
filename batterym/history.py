@@ -41,7 +41,8 @@ def add_slope(data):
     for i in xrange(1, n):
         dy = data[i]['capacity'] - data[i-1]['capacity']
         dx = data[i]['virtual_time_hour'] - data[i-1]['virtual_time_hour']
-        slope = dy / dx if not mathstat.is_zero(dx, 1.0/60.0) else 0
+        tol = 1.0/(60.0 * 60.0)  # one second
+        slope = dy / dx if not mathstat.is_zero(dx, tol) else 0
         data[i-1]['slope'] = slope
     if 0 < n:
         data[n-1]['slope'] = 0
