@@ -19,7 +19,8 @@ import mathstat
 # Emulates the aesthetics of ggplot (a popular plotting package for R).
 plt.style.use('ggplot')
 
-logs = log.get_battery('../logs/capacity_example')
+#logs = log.get_battery('../logs/capacity_example')
+logs = log.get_battery()
 h = history.History(logs, smoothing=True)
 hdata = h.data()
 
@@ -62,7 +63,7 @@ discharging_new = discharging[X_NOW:X_BEGIN]
 cap_raw_old = cap_old['capacity_raw']
 cap_raw_new = cap_new['capacity_raw']
 
-fig, ax = plt.subplots(4)
+fig, ax = plt.subplots(2)
 
 # ax[0].fill_between(cap_raw_old.index, 0,
 #                    cap_raw_old.values, facecolor='#999999')
@@ -86,54 +87,56 @@ fig, ax = plt.subplots(4)
 # print 'len logs:', len(logs)
 # h = history.History(logs, smoothing=True)
 
+status = 'Charging'
 
-for i in [0.4, 0.5, 0.6]:
+for i in [0.1, 0.5, 0.9]:
     color = 'r'
-    # if i == 1:
-    #     color = 'b'
-    #     hdata = h.data()
-    #     print 'len hdata:', len(hdata)
-    #     logs = filter(lambda e: e['virtual_time_hour'] < 2.0, hdata)
-    #     print 'len logs:', len(logs)
-    #     h = history.History(logs, smoothing=True)
 
     bat_model = model.StatBateryModel(h)
     bat_model.percentile = i
-    bat_model.history_limit = 100.0
+    bat_model.history_limit = 1000.0
     bat_model.calculate()
 
-    ch = bat_model.charge
-    data = pd.DataFrame(ch)
-    x = data['time'].values
-    y = data['capacity'].values
-    ax[0].plot(pd.Series(y, index=x), color=color, marker='o')
-    ax[0].set_ylim(top=102)
+    if status == 'Charging':
+        capacity = bat_model.charge
+        bins = bat_model.charge_bins
+        slopes = bat_model.charge_slopes
+        timeline_total = bat_model.charge_timeline_total
+    if status == 'Discharging':
+        capacity = bat_model.discharge
+        bins = bat_model.discharge_bins
+        slopes = bat_model.discharge_slopes
+        timeline_total = bat_model.discharge_timeline_total
 
-    y = data['slope'].values
-    ax[1].plot(pd.Series(y, index=x), color=color, marker='o')
-    ax[1].set_ylim(top=5)
+    # data = pd.DataFrame(capacity)
+    # x = data['time'].values
+    # y = data['capacity'].values
+    # ax[3].plot(pd.Series(y, index=x), color=color, marker='o')
+    # ax[3].set_ylim(top=102)
 
-    bins = bat_model.charge_bins
+    # y = data['slope'].values
+    # ax[4].plot(pd.Series(y, index=x), color=color, marker='o')
+    # ax[4].set_ylim(top=5)
+
     xs = []
     ys = []
     for x in bins.keys():
         for y in bins[x]:
             xs.append(x)
             ys.append(y)
-    ax[2].scatter(xs, ys)
+    ax[0].scatter(xs, ys)
 
-    slopes = bat_model.charge_slopes
     x1 = slopes.keys()
     y1 = slopes.values()
-    ax[2].plot(pd.Series(y1, index=x1), color=color, marker='o')
-    ax[2].set_xlim(0, 101)
+    ax[0].plot(pd.Series(y1, index=x1), color=color, marker='o')
+    ax[0].set_xlim(0, 101)
 
-    x2, y2 = zip(*bat_model.charge_timeline_total)
+    x2, y2 = zip(*timeline_total)
     x2 = list(reversed(x2))
     #y2 = list(reversed(y2))
     #x2, y2 = zip(*bat_model.discharge_timeline_total)
-    ax[3].plot(pd.Series(y2, index=x2), color=color)
-    ax[3].set_ylim(top=105)
+    ax[1].plot(pd.Series(y2, index=x2), color=color)
+    ax[1].set_ylim(top=105)
 
 # status = 'Charging'
 # charging_hdata = filter(lambda e: e['status']==status, hdata)
