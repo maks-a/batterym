@@ -63,7 +63,7 @@ discharging_new = discharging[X_NOW:X_BEGIN]
 cap_raw_old = cap_old['capacity_raw']
 cap_raw_new = cap_new['capacity_raw']
 
-fig, ax = plt.subplots(4)
+fig, ax = plt.subplots(2, 2)
 
 # ax[0].fill_between(cap_raw_old.index, 0,
 #                    cap_raw_old.values, facecolor='#999999')
@@ -121,27 +121,25 @@ for j in [0, 1]:
         # ax[4].plot(pd.Series(y, index=x), color=color, marker='o')
         # ax[4].set_ylim(top=5)
 
-        offset = 2*j
-
         xs = []
         ys = []
         for x in bins.keys():
             for y in bins[x]:
                 xs.append(x)
                 ys.append(y)
-        ax[offset+0].scatter(xs, ys)
+        ax[j][0].scatter(xs, ys)
 
         x1 = slopes.keys()
         y1 = slopes.values()
-        ax[offset+0].plot(pd.Series(y1, index=x1), color=color, marker='o')
-        ax[offset+0].set_xlim(0, 101)
+        ax[j][0].plot(pd.Series(y1, index=x1), color=color, marker='+')
+        ax[j][0].set_xlim(0, 101)
 
         x2, y2 = zip(*timeline_total)
         x2 = list(reversed(x2))
         #y2 = list(reversed(y2))
         #x2, y2 = zip(*bat_model.discharge_timeline_total)
-        ax[offset+1].plot(pd.Series(y2, index=x2), color=color)
-        ax[offset+1].set_ylim(top=105)
+        ax[j][1].plot(pd.Series(y2, index=x2), color=color)
+        ax[j][1].set_ylim(top=105)
 
 # status = 'Charging'
 # charging_hdata = filter(lambda e: e['status']==status, hdata)
