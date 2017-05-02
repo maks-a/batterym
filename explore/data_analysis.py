@@ -63,7 +63,7 @@ discharging_new = discharging[X_NOW:X_BEGIN]
 cap_raw_old = cap_old['capacity_raw']
 cap_raw_new = cap_new['capacity_raw']
 
-fig, ax = plt.subplots(2)
+fig, ax = plt.subplots(4)
 
 # ax[0].fill_between(cap_raw_old.index, 0,
 #                    cap_raw_old.values, facecolor='#999999')
@@ -87,56 +87,61 @@ fig, ax = plt.subplots(2)
 # print 'len logs:', len(logs)
 # h = history.History(logs, smoothing=True)
 
-status = 'Charging'
+statuses = ['Charging', 'Discharging']
 
-for i in [0.1, 0.5, 0.9]:
-    color = 'r'
+for j in [0, 1]:
+    for i in [0.1, 0.5, 0.9]:
+        status = statuses[j]
+        color = 'r'
 
-    bat_model = model.StatBateryModel(h)
-    bat_model.percentile = i
-    bat_model.history_limit = 1000.0
-    bat_model.calculate()
+        bat_model = model.StatBateryModel(h)
+        bat_model.percentile = i
+        bat_model.history_limit = 1000.0
+        bat_model.calculate()
 
-    if status == 'Charging':
-        capacity = bat_model.charge
-        bins = bat_model.charge_bins
-        slopes = bat_model.charge_slopes
-        timeline_total = bat_model.charge_timeline_total
-    if status == 'Discharging':
-        capacity = bat_model.discharge
-        bins = bat_model.discharge_bins
-        slopes = bat_model.discharge_slopes
-        timeline_total = bat_model.discharge_timeline_total
+        if status == 'Charging':
+            capacity = bat_model.charge
+            bins = bat_model.charge_bins
+            slopes = bat_model.charge_slopes
+            timeline_total = bat_model.charge_timeline_total
 
-    # data = pd.DataFrame(capacity)
-    # x = data['time'].values
-    # y = data['capacity'].values
-    # ax[3].plot(pd.Series(y, index=x), color=color, marker='o')
-    # ax[3].set_ylim(top=102)
+        if status == 'Discharging':
+            capacity = bat_model.discharge
+            bins = bat_model.discharge_bins
+            slopes = bat_model.discharge_slopes
+            timeline_total = bat_model.discharge_timeline_total
 
-    # y = data['slope'].values
-    # ax[4].plot(pd.Series(y, index=x), color=color, marker='o')
-    # ax[4].set_ylim(top=5)
+        # data = pd.DataFrame(capacity)
+        # x = data['time'].values
+        # y = data['capacity'].values
+        # ax[3].plot(pd.Series(y, index=x), color=color, marker='o')
+        # ax[3].set_ylim(top=102)
 
-    xs = []
-    ys = []
-    for x in bins.keys():
-        for y in bins[x]:
-            xs.append(x)
-            ys.append(y)
-    ax[0].scatter(xs, ys)
+        # y = data['slope'].values
+        # ax[4].plot(pd.Series(y, index=x), color=color, marker='o')
+        # ax[4].set_ylim(top=5)
 
-    x1 = slopes.keys()
-    y1 = slopes.values()
-    ax[0].plot(pd.Series(y1, index=x1), color=color, marker='o')
-    ax[0].set_xlim(0, 101)
+        offset = 2*j
 
-    x2, y2 = zip(*timeline_total)
-    x2 = list(reversed(x2))
-    #y2 = list(reversed(y2))
-    #x2, y2 = zip(*bat_model.discharge_timeline_total)
-    ax[1].plot(pd.Series(y2, index=x2), color=color)
-    ax[1].set_ylim(top=105)
+        xs = []
+        ys = []
+        for x in bins.keys():
+            for y in bins[x]:
+                xs.append(x)
+                ys.append(y)
+        ax[offset+0].scatter(xs, ys)
+
+        x1 = slopes.keys()
+        y1 = slopes.values()
+        ax[offset+0].plot(pd.Series(y1, index=x1), color=color, marker='o')
+        ax[offset+0].set_xlim(0, 101)
+
+        x2, y2 = zip(*timeline_total)
+        x2 = list(reversed(x2))
+        #y2 = list(reversed(y2))
+        #x2, y2 = zip(*bat_model.discharge_timeline_total)
+        ax[offset+1].plot(pd.Series(y2, index=x2), color=color)
+        ax[offset+1].set_ylim(top=105)
 
 # status = 'Charging'
 # charging_hdata = filter(lambda e: e['status']==status, hdata)
