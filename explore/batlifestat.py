@@ -49,8 +49,11 @@ def get_data():
     return data.T.to_dict().values()
 
 
-def get_capacity_slopes(data):
+def get_capacity_slopes(data, default_slopes=None):
     d = {}
+    if default_slopes is not None:
+        x, y = default_slopes
+        d = dict(zip(x, y))
     for e in data:
         key = e.get('capacity_round')
         val = e.get('slope', 0)
@@ -150,7 +153,7 @@ def is_within(val, lo, hi):
 def battery_life_statistic(data):
     h = history.History(data, smoothing=True)
     vt_min = 0.0
-    vt_max = 10.0
+    vt_max = 1000.0
     hdata = h.data()
     hdata = filter(
         lambda e: is_within(e['virtual_time_hour'], vt_min, vt_max),
@@ -168,7 +171,7 @@ def battery_life_statistic(data):
     ax[0].set_ylim(0, 105)
     ax[0].invert_xaxis()
     ax[0].set_title('timeline')
-    ax[0].set_xlabel('reversed virtual time, hour')
+    ax[0].set_xlabel('past virtual time, hour')
     ax[0].set_ylabel('capacity, %')
 
     # Slope vs capacity, original and extended.
