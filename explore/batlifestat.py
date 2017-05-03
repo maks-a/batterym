@@ -81,6 +81,24 @@ def reconstruct_timeline(slopes, ys):
     return zip(*res)
 
 
+def get_battery_life(data, ys):
+    data = sorted(data, key=lambda e: e['relative_time_hour'])
+    slopes = None
+    prev_id = None
+    chunk = []
+    for e in data:
+        if prev_id != e['sequence_id']:
+
+            slopes = get_capacity_slopes(chunk, slopes)
+            extended = extrapolate(slopes)
+            reconstructed = reconstruct_timeline(extended, ys)
+            x_min = min(reconstructed[0])
+            x_max = max(reconstructed[0])
+            t = x_max - x_min
+            e['battery_life_hour'] = t
+    return data
+
+
 def calculate(hdata):
     percentile = 0.5
     history_limit = 1000.0
@@ -116,21 +134,9 @@ def calculate(hdata):
     c = filter(lambda e: is_within(e[1], y_min, y_max), c)
     discharge_reconstructed = zip(*c)
 
-    # # extract slopes by capacity bins
-    # charge_bins = model.get_slopes_capacity_bins(charge)
-    # discharge_bins = model.get_slopes_capacity_bins(discharge)
-    # # pick up slopes curve (by percentile)
-    # p = percentile
-    # charge_slopes = model.get_slopes_by_percentile(charge_bins, p)
-    # charge_slopes = model.extrapolate(charge_slopes, 0, 100)
-    # discharge_slopes = model.get_slopes_by_percentile(discharge_bins, p)
-    # discharge_slopes = model.extrapolate(discharge_slopes, 0, 100)
-    # # reconstruct (dis)charging capacity timeline
-    # ys1 = range(100, 0, -1)
-    # charge_timeline_total = model.reconstruct_timeline(charge_slopes, ys1)
-    # ys2 = range(0, 100)
-    # discharge_timeline_total = model.reconstruct_timeline(
-    #     discharge_slopes, ys2)
+    # charge = get_battery_life(charge, ys1)
+    # discharge = get_battery_life(discharge, ys2)
+
     return {
         # 'charge': charge,
         # 'charge_cap_slopes': charge_cap_slopes,
@@ -153,7 +159,7 @@ def is_within(val, lo, hi):
 def battery_life_statistic(data):
     h = history.History(data, smoothing=True)
     vt_min = 0.0
-    vt_max = 1000.0
+    vt_max = 200.0
     hdata = h.data()
     hdata = filter(
         lambda e: is_within(e['virtual_time_hour'], vt_min, vt_max),
