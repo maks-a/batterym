@@ -94,15 +94,24 @@ def calculate(hdata):
     discharge_cap_slopes_ext = extrapolate(discharge_cap_slopes)
 
     ys1 = range(100, 0, -1)
-    charge_reconstructed = reconstruct_timeline(charge_cap_slopes, ys1)
     charge_reconstructed_ext = reconstruct_timeline(
         charge_cap_slopes_ext, ys1)
+    y_min = min(charge_cap_slopes[0])
+    y_max = max(charge_cap_slopes[0])
+    x, y = charge_reconstructed_ext
+    c = zip(x, y)
+    c = filter(lambda e: is_within(e[1], y_min, y_max), c)
+    charge_reconstructed = zip(*c)
 
     ys2 = range(0, 100, 1)
-    discharge_reconstructed = reconstruct_timeline(
-        discharge_cap_slopes, ys2)
     discharge_reconstructed_ext = reconstruct_timeline(
         discharge_cap_slopes_ext, ys2)
+    y_min = min(discharge_cap_slopes[0])
+    y_max = max(discharge_cap_slopes[0])
+    x, y = discharge_reconstructed_ext
+    c = zip(x, y)
+    c = filter(lambda e: is_within(e[1], y_min, y_max), c)
+    discharge_reconstructed = zip(*c)
 
     # # extract slopes by capacity bins
     # charge_bins = model.get_slopes_capacity_bins(charge)
@@ -141,7 +150,7 @@ def is_within(val, lo, hi):
 def battery_life_statistic(data):
     h = history.History(data, smoothing=True)
     vt_min = 0.0
-    vt_max = 100.0
+    vt_max = 10.0
     hdata = h.data()
     hdata = filter(
         lambda e: is_within(e['virtual_time_hour'], vt_min, vt_max),
@@ -174,8 +183,8 @@ def battery_life_statistic(data):
     # Reconstructed timeline, original and extended.
     x, y = d['discharge_reconstructed_ext']
     ax[2].plot(x, y, color='r', marker='x', label='extended')
-    # x, y = d['charge_reconstructed']
-    # ax[2].plot(x, y, color='b', marker='o', label='original')
+    x, y = d['discharge_reconstructed']
+    ax[2].plot(x, y, color='b', marker='o', label='original')
     ax[2].set_ylim(0, 101)
     ax[2].set_title('reconstructed timeline')
     ax[2].set_xlabel('time, hour')
@@ -183,6 +192,8 @@ def battery_life_statistic(data):
     ax[2].invert_xaxis()
 
     # Battery life timeline.
+    x, y = [], []
+    ax[3].plot(x, y, color='r', marker='x')
     ax[3].set_title('battery life timeline')
     ax[3].set_xlabel('reversed virtual time, hour')
     ax[3].set_ylabel('capacity, %')
