@@ -18,7 +18,30 @@ import history
 
 def battery_life_statistic():
     plt.style.use('ggplot')
-    fig, ax = plt.subplots()
+    fig, ax = plt.subplots(3)
+
+    # Capacity timeline chart.
+    x = [0, 0.3, 0.6, 1]
+    y = [65, 60, 50, 20]
+    ax[0].plot(x, y, color='r', marker='o', label='timeline')
+    ax[0].set_ylim(0, 101)
+
+    # Slope bins, original and extended.
+    x = [50, 60, 40, 30, 70, 80]
+    y = [10, 20, 10, 10, 20, 20]
+    ax[1].scatter(x, y, color='r', label='extended')
+    x = [50, 60]
+    y = [10, 20]
+    ax[1].scatter(x, y, color='b', label='original')
+
+    # Reconstructed timeline, original and extended
+    x = [0, 0.3, 0.6, 1]
+    y = [65, 60, 50, 20]
+    ax[2].plot(x, y, color='r', marker='x', label='extended')
+    x = [0.3, 0.6]
+    y = [60, 50]
+    ax[2].plot(x, y, color='b', marker='o', label='original')
+    ax[2].set_ylim(0, 101)
 
     # Full screen plot window.
     mng = plt.get_current_fig_manager()
