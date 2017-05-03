@@ -71,6 +71,13 @@ def extrapolate(data):
     return [], []
 
 
+def reconstruct_timeline(slopes, ys):
+    x, y = slopes
+    d = dict(zip(x, y))
+    res = model.reconstruct_timeline(d, ys)
+    return zip(*res)
+
+
 def calculate(hdata):
     percentile = 0.5
     history_limit = 1000.0
@@ -82,34 +89,39 @@ def calculate(hdata):
     # extract capacity slopes
     charge_cap_slopes = get_capacity_slopes(charge)
     discharge_cap_slopes = get_capacity_slopes(discharge)
+
     charge_cap_slopes_ext = extrapolate(charge_cap_slopes)
     discharge_cap_slopes_ext = extrapolate(discharge_cap_slopes)
-    # extract slopes by capacity bins
-    charge_bins = model.get_slopes_capacity_bins(charge)
-    discharge_bins = model.get_slopes_capacity_bins(discharge)
-    # pick up slopes curve (by percentile)
-    p = percentile
-    charge_slopes = model.get_slopes_by_percentile(charge_bins, p)
-    charge_slopes = model.extrapolate(charge_slopes, 0, 100)
-    discharge_slopes = model.get_slopes_by_percentile(discharge_bins, p)
-    discharge_slopes = model.extrapolate(discharge_slopes, 0, 100)
-    # reconstruct (dis)charging capacity timeline
+
     ys1 = range(100, 0, -1)
-    charge_timeline_total = model.reconstruct_timeline(charge_slopes, ys1)
-    ys2 = range(0, 100)
-    discharge_timeline_total = model.reconstruct_timeline(
-        discharge_slopes, ys2)
+    charge_reconstructed = reconstruct_timeline(charge_cap_slopes, ys1)
+    charge_reconstructed_ext = reconstruct_timeline(
+        charge_cap_slopes_ext, ys1)
+
+    # # extract slopes by capacity bins
+    # charge_bins = model.get_slopes_capacity_bins(charge)
+    # discharge_bins = model.get_slopes_capacity_bins(discharge)
+    # # pick up slopes curve (by percentile)
+    # p = percentile
+    # charge_slopes = model.get_slopes_by_percentile(charge_bins, p)
+    # charge_slopes = model.extrapolate(charge_slopes, 0, 100)
+    # discharge_slopes = model.get_slopes_by_percentile(discharge_bins, p)
+    # discharge_slopes = model.extrapolate(discharge_slopes, 0, 100)
+    # # reconstruct (dis)charging capacity timeline
+    # ys1 = range(100, 0, -1)
+    # charge_timeline_total = model.reconstruct_timeline(charge_slopes, ys1)
+    # ys2 = range(0, 100)
+    # discharge_timeline_total = model.reconstruct_timeline(
+    #     discharge_slopes, ys2)
     return {
         'charge': charge,
-        'discharge': discharge,
-
-        'charge_bins': charge_bins,
-        'discharge_bins': discharge_bins,
-
         'charge_cap_slopes': charge_cap_slopes,
-        'discharge_cap_slopes': discharge_cap_slopes,
-
         'charge_cap_slopes_ext': charge_cap_slopes_ext,
+        'charge_reconstructed': charge_reconstructed,
+        'charge_reconstructed_ext': charge_reconstructed_ext,
+
+        'discharge': discharge,
+        'discharge_cap_slopes': discharge_cap_slopes,
         'discharge_cap_slopes_ext': discharge_cap_slopes_ext,
     }
 
@@ -152,12 +164,10 @@ def battery_life_statistic(data):
     ax[1].set_ylabel('slope')
 
     # Reconstructed timeline, original and extended.
-    x = [0, 0.3, 0.6, 1]
-    y = [65, 60, 50, 20]
+    x, y = d['charge_reconstructed_ext']
     ax[2].plot(x, y, color='r', marker='x', label='extended')
-    x = [0.3, 0.6]
-    y = [60, 50]
-    ax[2].plot(x, y, color='b', marker='o', label='original')
+    # x, y = d['charge_reconstructed']
+    # ax[2].plot(x, y, color='b', marker='o', label='original')
     ax[2].set_ylim(0, 101)
     ax[2].set_title('reconstructed timeline')
     ax[2].set_xlabel('time, hour')
