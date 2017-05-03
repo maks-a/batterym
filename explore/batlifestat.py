@@ -149,7 +149,7 @@ def battery_life_statistic(data):
     d = calculate(hdata)
 
     plt.style.use('ggplot')
-    fig, ax = plt.subplots(3)
+    fig, ax = plt.subplots(4)
 
     # Capacity timeline chart.
     df = pd.DataFrame(d['discharge'])
@@ -158,7 +158,7 @@ def battery_life_statistic(data):
     line1 = ax[0].plot(x, y, color='r', marker='o')
     ax[0].set_ylim(0, 105)
     ax[0].invert_xaxis()
-    ax[0].set_title('timeline', ha='left')
+    ax[0].set_title('timeline')
     ax[0].set_xlabel('reversed virtual time, hour')
     ax[0].set_ylabel('capacity, %')
 
@@ -181,6 +181,11 @@ def battery_life_statistic(data):
     ax[2].set_xlabel('time, hour')
     ax[2].set_ylabel('capacity, %')
     ax[2].invert_xaxis()
+
+    # Battery life timeline.
+    ax[3].set_title('battery life timeline')
+    ax[3].set_xlabel('reversed virtual time, hour')
+    ax[3].set_ylabel('capacity, %')
 
     # Legend.
     fig.tight_layout()
