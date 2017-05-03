@@ -14,6 +14,7 @@ import log
 import model
 import smooth
 import history
+import mathstat
 
 
 def get_data():
@@ -27,7 +28,7 @@ def get_data():
     data = data.sort_values(by='timestamp', ascending=True)
 
     # Extract charging sessions
-    data = data[data['status'] == 'Discharging']
+    # data = data[data['status'] == 'Discharging']
 
     # Group by sequence_id
     # grouped = data.groupby('sequence_id')['capacity_raw'].max()
@@ -48,6 +49,28 @@ def get_data():
     return data.T.to_dict().values()
 
 
+def get_capacity_slopes(data):
+    d = {}
+    for e in data:
+        key = e.get('capacity_round')
+        val = e.get('slope', 0)
+        if key is not None and not mathstat.is_zero(val):
+            d[key] = val
+    x = d.keys()
+    y = d.values()
+    return x, y
+
+
+def extrapolate(data):
+    x, y = data
+    res = model.extrapolate(dict(zip(x, y)))
+    if len(res) > 0:
+        x = res.keys()
+        y = res.values()
+        return x, y
+    return [], []
+
+
 def calculate(hdata):
     percentile = 0.5
     history_limit = 1000.0
@@ -56,6 +79,11 @@ def calculate(hdata):
     hdata = filter(lambda e: e['virtual_time_hour'] < history_limit, hdata)
     charge = filter(lambda e: e['status'] == 'Charging', hdata)
     discharge = filter(lambda e: e['status'] == 'Discharging', hdata)
+    # extract capacity slopes
+    charge_cap_slopes = get_capacity_slopes(charge)
+    discharge_cap_slopes = get_capacity_slopes(discharge)
+    charge_cap_slopes_ext = extrapolate(charge_cap_slopes)
+    discharge_cap_slopes_ext = extrapolate(discharge_cap_slopes)
     # extract slopes by capacity bins
     charge_bins = model.get_slopes_capacity_bins(charge)
     discharge_bins = model.get_slopes_capacity_bins(discharge)
@@ -69,31 +97,61 @@ def calculate(hdata):
     ys1 = range(100, 0, -1)
     charge_timeline_total = model.reconstruct_timeline(charge_slopes, ys1)
     ys2 = range(0, 100)
-    discharge_timeline_total = model.reconstruct_timeline(discharge_slopes, ys2)
+    discharge_timeline_total = model.reconstruct_timeline(
+        discharge_slopes, ys2)
+    return {
+        'charge': charge,
+        'discharge': discharge,
+
+        'charge_bins': charge_bins,
+        'discharge_bins': discharge_bins,
+
+        'charge_cap_slopes': charge_cap_slopes,
+        'discharge_cap_slopes': discharge_cap_slopes,
+
+        'charge_cap_slopes_ext': charge_cap_slopes_ext,
+        'discharge_cap_slopes_ext': discharge_cap_slopes_ext,
+    }
+
+
+def is_within(val, lo, hi):
+    return lo <= val and val <= hi
 
 
 def battery_life_statistic(data):
     h = history.History(data, smoothing=True)
-    calculate(h.data())
+    vt_min = 22.0
+    vt_max = 29.0
+    hdata = h.data()
+    hdata = filter(
+        lambda e: is_within(e['virtual_time_hour'], vt_min, vt_max),
+        hdata)
+    d = calculate(hdata)
 
     plt.style.use('ggplot')
     fig, ax = plt.subplots(3)
 
     # Capacity timeline chart.
-    x = [0, 0.3, 0.6, 1]
-    y = [65, 60, 50, 20]
-    ax[0].plot(x, y, color='r', marker='o', label='timeline')
-    ax[0].set_ylim(0, 101)
+    df = pd.DataFrame(d['discharge'])
+    x = df['virtual_time_hour'].values
+    y = df['capacity'].values
+    line1 = ax[0].plot(x, y, color='r', marker='o')
+    ax[0].set_ylim(0, 105)
+    ax[0].invert_xaxis()
+    ax[0].set_title('timeline', ha='left')
+    ax[0].set_xlabel('virtual time, hour')
+    ax[0].set_ylabel('capacity, %')
 
-    # Slope bins, original and extended.
-    x = [50, 60, 40, 30, 70, 80]
-    y = [10, 20, 10, 10, 20, 20]
-    ax[1].scatter(x, y, color='r', label='extended')
-    x = [50, 60]
-    y = [10, 20]
-    ax[1].scatter(x, y, color='b', label='original')
+    # Slope vs capacity, original and extended.
+    x, y = d['discharge_cap_slopes_ext']
+    line2 = ax[1].plot(x, y, color='r', marker='x', label='extended')
+    x, y = d['discharge_cap_slopes']
+    line3 = ax[1].plot(x, y, color='b', marker='o', label='original')
+    ax[1].set_title('slope vs capacity')
+    ax[1].set_xlabel('capacity, %')
+    ax[1].set_ylabel('slope')
 
-    # Reconstructed timeline, original and extended
+    # Reconstructed timeline, original and extended.
     x = [0, 0.3, 0.6, 1]
     y = [65, 60, 50, 20]
     ax[2].plot(x, y, color='r', marker='x', label='extended')
@@ -101,13 +159,17 @@ def battery_life_statistic(data):
     y = [60, 50]
     ax[2].plot(x, y, color='b', marker='o', label='original')
     ax[2].set_ylim(0, 101)
+    ax[2].set_title('reconstructed timeline')
+    ax[2].set_xlabel('time, hour')
+    ax[2].set_ylabel('capacity, %')
 
+    # Legend.
+    fig.tight_layout()
     # Full screen plot window.
     mng = plt.get_current_fig_manager()
     mng.resize(*mng.window.maxsize())
     # Show plot.
     plt.show()
-    # break
 
 
 def main():
