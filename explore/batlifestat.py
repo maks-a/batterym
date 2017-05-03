@@ -98,6 +98,12 @@ def calculate(hdata):
     charge_reconstructed_ext = reconstruct_timeline(
         charge_cap_slopes_ext, ys1)
 
+    ys2 = range(0, 100, 1)
+    discharge_reconstructed = reconstruct_timeline(
+        discharge_cap_slopes, ys2)
+    discharge_reconstructed_ext = reconstruct_timeline(
+        discharge_cap_slopes_ext, ys2)
+
     # # extract slopes by capacity bins
     # charge_bins = model.get_slopes_capacity_bins(charge)
     # discharge_bins = model.get_slopes_capacity_bins(discharge)
@@ -114,15 +120,17 @@ def calculate(hdata):
     # discharge_timeline_total = model.reconstruct_timeline(
     #     discharge_slopes, ys2)
     return {
-        'charge': charge,
-        'charge_cap_slopes': charge_cap_slopes,
-        'charge_cap_slopes_ext': charge_cap_slopes_ext,
-        'charge_reconstructed': charge_reconstructed,
-        'charge_reconstructed_ext': charge_reconstructed_ext,
+        # 'charge': charge,
+        # 'charge_cap_slopes': charge_cap_slopes,
+        # 'charge_cap_slopes_ext': charge_cap_slopes_ext,
+        # 'charge_reconstructed': charge_reconstructed,
+        # 'charge_reconstructed_ext': charge_reconstructed_ext,
 
         'discharge': discharge,
         'discharge_cap_slopes': discharge_cap_slopes,
         'discharge_cap_slopes_ext': discharge_cap_slopes_ext,
+        'discharge_reconstructed': discharge_reconstructed,
+        'discharge_reconstructed_ext': discharge_reconstructed_ext,
     }
 
 
@@ -132,8 +140,8 @@ def is_within(val, lo, hi):
 
 def battery_life_statistic(data):
     h = history.History(data, smoothing=True)
-    vt_min = 22.0
-    vt_max = 29.0
+    vt_min = 0.0
+    vt_max = 100.0
     hdata = h.data()
     hdata = filter(
         lambda e: is_within(e['virtual_time_hour'], vt_min, vt_max),
@@ -151,7 +159,7 @@ def battery_life_statistic(data):
     ax[0].set_ylim(0, 105)
     ax[0].invert_xaxis()
     ax[0].set_title('timeline', ha='left')
-    ax[0].set_xlabel('virtual time, hour')
+    ax[0].set_xlabel('reversed virtual time, hour')
     ax[0].set_ylabel('capacity, %')
 
     # Slope vs capacity, original and extended.
@@ -164,7 +172,7 @@ def battery_life_statistic(data):
     ax[1].set_ylabel('slope')
 
     # Reconstructed timeline, original and extended.
-    x, y = d['charge_reconstructed_ext']
+    x, y = d['discharge_reconstructed_ext']
     ax[2].plot(x, y, color='r', marker='x', label='extended')
     # x, y = d['charge_reconstructed']
     # ax[2].plot(x, y, color='b', marker='o', label='original')
@@ -172,6 +180,7 @@ def battery_life_statistic(data):
     ax[2].set_title('reconstructed timeline')
     ax[2].set_xlabel('time, hour')
     ax[2].set_ylabel('capacity, %')
+    ax[2].invert_xaxis()
 
     # Legend.
     fig.tight_layout()
