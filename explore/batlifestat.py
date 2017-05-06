@@ -11,6 +11,7 @@ import os
 import sys
 sys.path.append(os.path.abspath('../batterym'))
 import log
+import paths
 import model
 import smooth
 import history
@@ -18,8 +19,8 @@ import mathstat
 
 
 def get_data():
-    # logs = log.get_battery()
-    logs = log.get_battery('../logs/capacity_example')
+    logs = log.get_battery(paths.LOG_BATTERY_ALL_FILE)
+    # logs = log.get_battery('../logs/capacity_example')
     h = history.History(logs, smoothing=True)
     hdata = h.data()
 
@@ -165,7 +166,7 @@ def is_within(val, lo, hi):
 def battery_life_statistic(data):
     h = history.History(data, smoothing=True)
     vt_min = 0.0
-    vt_max = 170.0
+    vt_max = 1000.0
     hdata = h.data()
     hdata = filter(
         lambda e: is_within(e['virtual_time_hour'], vt_min, vt_max),
@@ -218,7 +219,7 @@ def battery_life_statistic(data):
     # Battery life timeline histogram.
     y = df['battery_life_hour'].values
     y = [e for e in y if 0 < e]
-    ax[2][0].hist(y, bins=100)
+    ax[2][0].hist(y, bins=50)
     ax[2][0].set_title('battery life timeline')
     ax[2][0].set_xlabel('reversed virtual time, hour')
     ax[2][0].set_ylabel('capacity, %')
