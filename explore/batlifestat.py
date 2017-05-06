@@ -157,7 +157,7 @@ def is_within(val, lo, hi):
 def battery_life_statistic(data):
     h = history.History(data, smoothing=True)
     vt_min = 0.0
-    vt_max = 200.0
+    vt_max = 50.0
     hdata = h.data()
     hdata = filter(
         lambda e: is_within(e['virtual_time_hour'], vt_min, vt_max),
@@ -165,46 +165,47 @@ def battery_life_statistic(data):
     d = calculate(hdata)
 
     plt.style.use('ggplot')
-    fig, ax = plt.subplots(4)
+    fig, ax = plt.subplots(2, 2)
 
     # Capacity timeline chart.
     df = pd.DataFrame(d['discharge'])
     x = df['virtual_time_hour'].values
     y = df['capacity'].values
-    line1 = ax[0].plot(x, y, color='r', marker='o')
-    ax[0].set_ylim(0, 105)
-    ax[0].invert_xaxis()
-    ax[0].set_title('timeline')
-    ax[0].set_xlabel('past virtual time, hour')
-    ax[0].set_ylabel('capacity, %')
+    line1 = ax[0][0].plot(x, y, color='r', marker='o')
+    ax[0][0].set_ylim(0, 105)
+    ax[0][0].invert_xaxis()
+    ax[0][0].set_title('timeline')
+    ax[0][0].set_xlabel('past virtual time, hour')
+    ax[0][0].set_ylabel('capacity, %')
 
     # Slope vs capacity, original and extended.
     x, y = d['discharge_cap_slopes_ext']
-    line2 = ax[1].plot(x, y, color='r', marker='x', label='extended')
+    line2 = ax[0][1].plot(x, y, color='r', marker='x', label='extended')
     x, y = d['discharge_cap_slopes']
-    line3 = ax[1].plot(x, y, color='b', marker='o', label='original')
-    ax[1].set_title('slope vs capacity')
-    ax[1].set_xlabel('capacity, %')
-    ax[1].set_ylabel('slope')
+    line3 = ax[0][1].plot(x, y, color='b', marker='o', label='original')
+    ax[0][1].set_title('slope vs capacity')
+    ax[0][1].set_xlabel('capacity, %')
+    ax[0][1].set_ylabel('slope')
 
     # Reconstructed timeline, original and extended.
     x, y = d['discharge_reconstructed_ext']
-    ax[2].plot(x, y, color='r', marker='x', label='extended')
+    ax[1][1].plot(x, y, color='r', marker='x', label='extended')
     x, y = d['discharge_reconstructed']
-    ax[2].plot(x, y, color='b', marker='o', label='original')
-    ax[2].set_ylim(0, 101)
-    ax[2].set_title('reconstructed timeline')
-    ax[2].set_xlabel('time, hour')
-    ax[2].set_ylabel('capacity, %')
-    ax[2].invert_xaxis()
+    ax[1][1].plot(x, y, color='b', marker='o', label='original')
+    ax[1][1].set_ylim(0, 101)
+    ax[1][1].set_title('reconstructed timeline')
+    ax[1][1].set_xlabel('time, hour')
+    ax[1][1].set_ylabel('capacity, %')
+    ax[1][1].invert_xaxis()
 
     # Battery life timeline.
     x = df['virtual_time_hour'].values
     y = df['battery_life_hour'].values
-    ax[3].plot(x, y, color='r')
-    ax[3].set_title('battery life timeline')
-    ax[3].set_xlabel('reversed virtual time, hour')
-    ax[3].set_ylabel('capacity, %')
+    ax[1][0].plot(x, y, color='r', marker='+')
+    ax[1][0].set_title('battery life timeline')
+    ax[1][0].set_xlabel('reversed virtual time, hour')
+    ax[1][0].set_ylabel('capacity, %')
+    ax[1][0].invert_xaxis()
 
     # Legend.
     fig.tight_layout()
