@@ -82,20 +82,18 @@ def reconstruct_timeline(slopes, ys):
 
 
 def get_battery_life(data, ys):
-    data = sorted(data, key=lambda e: e['relative_time_hour'])
+    data = sorted(data, key=lambda e: e['virtual_time_hour'])
     slopes = None
     prev_id = None
     chunk = []
     for e in data:
-        if prev_id != e['sequence_id']:
-
-            slopes = get_capacity_slopes(chunk, slopes)
-            extended = extrapolate(slopes)
-            reconstructed = reconstruct_timeline(extended, ys)
-            x_min = min(reconstructed[0])
-            x_max = max(reconstructed[0])
-            t = x_max - x_min
-            e['battery_life_hour'] = t
+        slopes = get_capacity_slopes([e], slopes)
+        extended = extrapolate(slopes)
+        reconstructed = reconstruct_timeline(extended, ys)
+        x_min = min(reconstructed[0])
+        x_max = max(reconstructed[0])
+        t = x_max - x_min
+        e['battery_life_hour'] = t
     return data
 
 
@@ -134,8 +132,8 @@ def calculate(hdata):
     c = filter(lambda e: is_within(e[1], y_min, y_max), c)
     discharge_reconstructed = zip(*c)
 
-    # charge = get_battery_life(charge, ys1)
-    # discharge = get_battery_life(discharge, ys2)
+    charge = get_battery_life(charge, ys1)
+    discharge = get_battery_life(discharge, ys2)
 
     return {
         # 'charge': charge,
@@ -201,8 +199,9 @@ def battery_life_statistic(data):
     ax[2].invert_xaxis()
 
     # Battery life timeline.
-    x, y = [], []
-    ax[3].plot(x, y, color='r', marker='x')
+    x = df['virtual_time_hour'].values
+    y = df['battery_life_hour'].values
+    ax[3].plot(x, y, color='r')
     ax[3].set_title('battery life timeline')
     ax[3].set_xlabel('reversed virtual time, hour')
     ax[3].set_ylabel('capacity, %')
