@@ -78,21 +78,29 @@ def reconstruct_timeline(slopes, ys):
     x, y = slopes
     d = dict(zip(x, y))
     res = model.reconstruct_timeline(d, ys)
-    return zip(*res)
+    x2 = y2 = []
+    if 0 < len(res):
+        x2, y2 = zip(*res)
+    return x2, y2
 
 
 def get_battery_life(data, ys):
-    data = sorted(data, key=lambda e: e['virtual_time_hour'])
+    data = sorted(data, key=lambda e: e['timestamp'])
     slopes = None
-    prev_id = None
-    chunk = []
+    i = -1
     for e in data:
+        i += 1
         slopes = get_capacity_slopes([e], slopes)
         extended = extrapolate(slopes)
         reconstructed = reconstruct_timeline(extended, ys)
-        x_min = min(reconstructed[0])
-        x_max = max(reconstructed[0])
-        t = x_max - x_min
+        t = None
+        xs = reconstructed[0]
+        if 2 < len(xs):
+            x_min = min(reconstructed[0])
+            x_max = max(reconstructed[0])
+            dx = x_max - x_min
+            if 0 < dx:
+                t = dx
         e['battery_life_hour'] = t
     return data
 
@@ -157,7 +165,7 @@ def is_within(val, lo, hi):
 def battery_life_statistic(data):
     h = history.History(data, smoothing=True)
     vt_min = 0.0
-    vt_max = 200.0
+    vt_max = 170.0
     hdata = h.data()
     hdata = filter(
         lambda e: is_within(e['virtual_time_hour'], vt_min, vt_max),
@@ -209,7 +217,8 @@ def battery_life_statistic(data):
 
     # Battery life timeline histogram.
     y = df['battery_life_hour'].values
-    ax[2][0].hist(y, bins=50)
+    y = [e for e in y if 0 < e]
+    ax[2][0].hist(y, bins=100)
     ax[2][0].set_title('battery life timeline')
     ax[2][0].set_xlabel('reversed virtual time, hour')
     ax[2][0].set_ylabel('capacity, %')
