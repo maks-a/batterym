@@ -124,22 +124,26 @@ def calculate(hdata):
     ys1 = range(100, 0, -1)
     charge_reconstructed_ext = reconstruct_timeline(
         charge_cap_slopes_ext, ys1)
-    y_min = min(charge_cap_slopes[0])
-    y_max = max(charge_cap_slopes[0])
-    x, y = charge_reconstructed_ext
-    c = zip(x, y)
-    c = filter(lambda e: is_within(e[1], y_min, y_max), c)
-    charge_reconstructed = zip(*c)
+    ys = charge_cap_slopes[0]
+    if 0 < len(ys):
+        y_min = min(ys)
+        y_max = max(ys)
+        x, y = charge_reconstructed_ext
+        c = zip(x, y)
+        c = filter(lambda e: is_within(e[1], y_min, y_max), c)
+        charge_reconstructed = zip(*c)
 
     ys2 = range(0, 100, 1)
     discharge_reconstructed_ext = reconstruct_timeline(
         discharge_cap_slopes_ext, ys2)
-    y_min = min(discharge_cap_slopes[0])
-    y_max = max(discharge_cap_slopes[0])
-    x, y = discharge_reconstructed_ext
-    c = zip(x, y)
-    c = filter(lambda e: is_within(e[1], y_min, y_max), c)
-    discharge_reconstructed = zip(*c)
+    ys = discharge_cap_slopes[0]
+    if 0 < len(ys):
+        y_min = min(discharge_cap_slopes[0])
+        y_max = max(discharge_cap_slopes[0])
+        x, y = discharge_reconstructed_ext
+        c = zip(x, y)
+        c = filter(lambda e: is_within(e[1], y_min, y_max), c)
+        discharge_reconstructed = zip(*c)
 
     charge = get_battery_life(charge, ys1)
     discharge = get_battery_life(discharge, ys2)
@@ -180,7 +184,7 @@ def battery_life_statistic(data):
     df = pd.DataFrame(d['discharge'])
     x = df['virtual_time_hour'].values
     y = df['capacity'].values
-    line1 = ax[0][0].plot(x, y, color='r', marker='o')
+    line1 = ax[0][0].plot(x, y, color='r', marker='x')
     ax[0][0].set_ylim(0, 105)
     ax[0][0].invert_xaxis()
     ax[0][0].set_title('timeline')
@@ -219,7 +223,12 @@ def battery_life_statistic(data):
     # Battery life timeline histogram.
     y = df['battery_life_hour'].values
     y = [e for e in y if 0 < e]
-    ax[2][0].hist(y, bins=50)
+    # y2 = sorted(y)
+    # n = len(y2)
+    # k = int(0.1 * n)
+    # y2 = y2[k:-k]
+    ax[2][0].hist(y, bins=50, normed=1, color='r')
+    #ax[2][0].hist(y2, bins=50, normed=1, color='b')
     ax[2][0].set_title('battery life timeline')
     ax[2][0].set_xlabel('reversed virtual time, hour')
     ax[2][0].set_ylabel('capacity, %')
