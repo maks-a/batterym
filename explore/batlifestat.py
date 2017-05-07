@@ -85,9 +85,21 @@ def reconstruct_timeline(slopes, ys):
     return x2, y2
 
 
+def get_slopes_init(life_hours):
+    slope_init = 100.0 / life_hours
+    x = range(5, 95)
+    n = len(x)
+    y = n * [slope_init]
+    slopes = x, y
+    return slopes
+
+
 def get_battery_life(data, ys):
     data = sorted(data, key=lambda e: e['timestamp'])
-    slopes = None
+    is_ascending = mathstat.is_ascending_order(ys)
+    sign = 1 if is_ascending else -1
+    life = 6.0 * sign
+    slopes = get_slopes_init(life)
     i = -1
     for e in data:
         i += 1
@@ -242,9 +254,28 @@ def battery_life_statistic(data):
     plt.show()
 
 
-def main():
+def profile_case():
     data = get_data()
     battery_life_statistic(data)
+
+
+def profile():
+    import cProfile
+    cProfile.run('profile_case()', 'stats')
+
+
+def prof_report():
+    import pstats
+    p = pstats.Stats('stats')
+    p.sort_stats('tottime')
+    p.print_stats()
+
+
+def main():
+    # prof_report()
+    data = get_data()
+    battery_life_statistic(data)
+
 
 if __name__ == '__main__':
     main()
