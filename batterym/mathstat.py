@@ -195,7 +195,7 @@ class MyTest(unittest.TestCase):
             interpolate_linear([3, 4], [6], [7])
 
         with self.assertRaises(ValueError):
-            interpolate_linear([3, 5, 4], [1, 2, 3], [1])
+            interpolate_linear([3, 5, 4], [1, 2, 3], [4])
 
         self.assertEqual(interpolate_linear([4, 2], [2, 5], []), [])
         self.assertEqual(interpolate_linear([4, 2], [2, 5], [3]), [3.5])
