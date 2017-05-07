@@ -1,6 +1,7 @@
 #!/usr/bin/python
 import log
 import smooth
+import mathstat
 import unittest
 
 
@@ -35,6 +36,19 @@ def add_virtual_time(samples, threshold_sec):
     return samples
 
 
+def add_slope(data):
+    n = len(data)
+    for i in xrange(1, n):
+        dy = data[i]['capacity'] - data[i-1]['capacity']
+        dx = data[i]['virtual_time_hour'] - data[i-1]['virtual_time_hour']
+        tol = 1.0/(60.0 * 60.0)  # one second
+        slope = dy / dx if not mathstat.is_zero(dx, tol) else 0
+        data[i-1]['slope'] = slope
+    if 0 < n:
+        data[n-1]['slope'] = 0
+    return data
+
+
 def smooth_virtual_time(samples):
     chunks = separate_by_sequence_id(samples)
     k = len(chunks)
@@ -51,6 +65,12 @@ def smooth_virtual_time(samples):
         chunks[j] = chunk
 
     return [item for sublist in chunks for item in sublist]
+
+
+def add_capacity_round(data):
+    for e in data:
+        e['capacity_round'] = int(round(e['capacity']))
+    return data
 
 
 def separate_by_sequence_id(samples):
@@ -89,6 +109,8 @@ class History:
         data = add_virtual_time(data, threshold_sec)
         if smoothing:
             data = smooth_virtual_time(data)
+        data = add_slope(data)
+        data = add_capacity_round(data)
         self._data = data
         self._plot_data = []
         self._plot_xoffset = 0
