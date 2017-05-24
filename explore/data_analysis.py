@@ -11,6 +11,7 @@ import os
 import sys
 sys.path.append(os.path.abspath('../batterym'))
 import log
+import paths
 import model
 import history
 import mathstat
@@ -20,7 +21,8 @@ import mathstat
 plt.style.use('ggplot')
 
 #logs = log.get_battery('../logs/capacity_example')
-logs = log.get_battery()
+#logs = log.get_battery()
+logs = log.get_battery(paths.LOG_BATTERY_ALL_FILE)
 h = history.History(logs, smoothing=True)
 hdata = h.data()
 
