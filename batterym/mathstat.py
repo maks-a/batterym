@@ -111,7 +111,50 @@ def linspace(lo, hi, step):
     return [interpolate_point(lo, hi, 1.0*i/sz) for i in xrange(0, sz+1)]
 
 
+def round_pattern(val, pattern):
+    tol = 1
+    for key in sorted(pattern.keys(), reverse=True):
+        if key <= val:
+            tol = pattern[key]
+            break
+    result = val - val % tol
+    return result
+
+
 class MyTest(unittest.TestCase):
+
+    def test_round_pattern(self):
+        pattern = {100: 5}
+        self.assertEqual(round_pattern(-10, pattern), -10)
+        self.assertEqual(round_pattern(0, pattern), 0)
+        self.assertEqual(round_pattern(15, pattern), 15)
+        self.assertEqual(round_pattern(100, pattern), 100)
+        self.assertEqual(round_pattern(101, pattern), 100)
+        self.assertEqual(round_pattern(102, pattern), 100)
+        self.assertEqual(round_pattern(103, pattern), 100)
+        self.assertEqual(round_pattern(104, pattern), 100)
+        self.assertEqual(round_pattern(105, pattern), 105)
+        self.assertEqual(round_pattern(106, pattern), 105)
+
+        pattern = {100: 5, 0: 2}
+        self.assertEqual(round_pattern(15, pattern), 14)
+        self.assertEqual(round_pattern(100, pattern), 100)
+        self.assertEqual(round_pattern(101, pattern), 100)
+        self.assertEqual(round_pattern(102, pattern), 100)
+        self.assertEqual(round_pattern(103, pattern), 100)
+        self.assertEqual(round_pattern(104, pattern), 100)
+        self.assertEqual(round_pattern(105, pattern), 105)
+        self.assertEqual(round_pattern(106, pattern), 105)
+
+        pattern = {0: 4, 100: 5}
+        self.assertEqual(round_pattern(15, pattern), 12)
+        self.assertEqual(round_pattern(100, pattern), 100)
+        self.assertEqual(round_pattern(101, pattern), 100)
+        self.assertEqual(round_pattern(102, pattern), 100)
+        self.assertEqual(round_pattern(103, pattern), 100)
+        self.assertEqual(round_pattern(104, pattern), 100)
+        self.assertEqual(round_pattern(105, pattern), 105)
+        self.assertEqual(round_pattern(106, pattern), 105)
 
     def test_is_zero(self):
         self.assertEqual(is_zero(1e-7, abs_tol=1e-3), True)
