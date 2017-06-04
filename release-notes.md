@@ -3,6 +3,7 @@ Release Notes
 #### v1.0.3rc
 - Add statistical prediction
 - Refactoring (move code to mathstat)
+- Improve history-future contact point on chart
 
 #### v1.0.2 (2017-04-20)
 - Fix #20: Preserve user config after reinstall

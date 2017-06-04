@@ -92,9 +92,9 @@ class StatBateryModel:
 
         charge_timeline = discharge_timeline = []
         if start is not None:
-            ys1 = range(100, start, -1)
+            ys1 = range(100, start-1, -1)
             charge_timeline = reconstruct_timeline(charge_slopes, ys1)
-            ys2 = range(0, start)
+            ys2 = range(0, start+1)
             discharge_timeline = reconstruct_timeline(discharge_slopes, ys2)
         # store data
         self.charge = charge
