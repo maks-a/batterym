@@ -1,7 +1,8 @@
 {
+  "version": "1.0.3rc",
   "config_version": 1.0, 
   "theme": "dark", 
   "smoothing": true,
   "log_capacity_lines_limit": 1500,
-  "version": "1.0.2"
+  "future_prediction_model": "statistical"
 }

@@ -1,22 +1,10 @@
 #!/usr/bin/python
 from __future__ import division
 from history import separate_by_sequence_id
+import model
+import config
+import mathstat
 import unittest
-
-
-def median(lst):
-    n = len(lst)
-    if n < 1:
-        return 0
-    lst = sorted(lst)
-    m = int(n/2)
-    if n % 2 == 1:
-        return lst[m]
-    return (lst[m-1] + lst[m])/2
-
-
-def is_zero(val, abs_tol=1e-9):
-    return abs(val) < abs_tol
 
 
 def line_plot_data(y, slope):
@@ -52,12 +40,22 @@ class Future:
     def calculate_plot_data(self):
         self._plot_data = []
         data = self.current_status_data()
-        slope = self.calculate_slope(data)
-        if slope is None or is_zero(slope):
-            return
-        self._battery_life = 100.0 / abs(slope)
-        y = data[0]['capacity']
-        self._plot_data = [line_plot_data(y, slope)]
+
+        prediction_model = config.get_entry(
+            'future_prediction_model', default_value='statistical')
+        if prediction_model == 'statistical':
+            status = data[0]['status']
+            bat_model = model.StatBateryModel(self._history)
+            y = int(round(data[0]['capacity']))
+            bat_model.calculate(y)
+            self._plot_data = bat_model.plot_data(status)
+        if prediction_model == 'linear' or len(self._plot_data) == 0:
+            slope = self.calculate_slope(data)
+            if slope is None or mathstat.is_zero(slope):
+                return
+            self._battery_life = 100.0 / abs(slope)
+            y = data[0]['capacity']
+            self._plot_data = [line_plot_data(y, slope)]
 
     def remaining_time(self):
         x = 0
@@ -82,22 +80,12 @@ class Future:
         for i in xrange(1, len(data)):
             dy = data[i]['capacity'] - data[0]['capacity']
             dx = data[i]['virtual_time_hour'] - data[0]['virtual_time_hour']
-            if not is_zero(dx):
+            if not mathstat.is_zero(dx):
                 slopes.append(dy / dx)
-        return median(slopes)
+        return mathstat.median(slopes)
 
 
 class MyTest(unittest.TestCase):
-
-    def test_median(self):
-        self.assertEqual(median([]), 0)
-        self.assertEqual(median([1]), 1)
-        self.assertEqual(median([1, 3]), 2)
-        self.assertEqual(median([1, 3, 4]), 3)
-
-    def test_is_zero(self):
-        self.assertEqual(is_zero(1e-7, abs_tol=1e-3), True)
-        self.assertEqual(is_zero(1e-3, abs_tol=1e-7), False)
 
     def test_line_plot_data(self):
         self.assertEqual(line_plot_data(42, 100.0/10),
