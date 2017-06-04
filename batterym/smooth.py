@@ -44,7 +44,7 @@ def steps_filter(x, y):
     dx = 1.0 / 60.0
     x2, y2 = mathstat.interpolate_linear_evenly(x, y, dx=dx)
 
-    y3 = tangent_filter(y2, 10)
+    y3 = tangent_filter(y2, 10.0)
     y4 = evaluate_array(y2, y3, 0.5)
 
     dx = 10.0 / 60.0

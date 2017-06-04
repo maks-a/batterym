@@ -42,7 +42,7 @@ class Future:
         data = self.current_status_data()
 
         prediction_model = config.get_entry(
-            'future_prediction_model', default_value='linear')
+            'future_prediction_model', default_value='statistical')
         if prediction_model == 'statistical':
             status = data[0]['status']
             bat_model = model.StatBateryModel(self._history)

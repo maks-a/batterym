@@ -195,7 +195,7 @@ class MyTest(unittest.TestCase):
             interpolate_linear([3, 4], [6], [7])
 
         with self.assertRaises(ValueError):
-            interpolate_linear([3, 5, 4], [1, 2, 3], [1])
+            interpolate_linear([3, 5, 4], [1, 2, 3], [4])
 
         self.assertEqual(interpolate_linear([4, 2], [2, 5], []), [])
         self.assertEqual(interpolate_linear([4, 2], [2, 5], [3]), [3.5])
@@ -224,6 +224,21 @@ class MyTest(unittest.TestCase):
             [2, 8, 9], [1, 7, 8], [3, 4, 5]), [2, 3, 4])
 
     def test_interpolate_linear_evenly(self):
+        with self.assertRaises(ValueError):
+            interpolate_linear_evenly([1, 2], [1, 2, 3], n=2)
+
+        with self.assertRaises(ValueError):
+            interpolate_linear_evenly([1, 2], [1, 2])
+
+        with self.assertRaises(ValueError):
+            interpolate_linear_evenly([1, 2], [1, 2], n=1)
+
+        x, y = [1], [1]
+
+        result = interpolate_linear_evenly(x, y, n=2)
+        expected = [1], [1]
+        self.assertEqual(result, expected)
+
         x, y = [2, 4], [2, 5]
 
         result = interpolate_linear_evenly(x, y, n=2)
@@ -232,6 +247,10 @@ class MyTest(unittest.TestCase):
 
         result = interpolate_linear_evenly(x, y, n=3)
         expected = [2, 3, 4], [2, 3.5, 5]
+        self.assertEqual(result, expected)
+
+        result = interpolate_linear_evenly(x, y, dx=30)
+        expected = [2, 4], [2, 5]
         self.assertEqual(result, expected)
 
         result = interpolate_linear_evenly(x, y, dx=2)
@@ -252,6 +271,10 @@ class MyTest(unittest.TestCase):
         expected = [2, 3, 4], [5, 3.5, 2]
         self.assertEqual(result, expected)
 
+        result = interpolate_linear_evenly(x, y, dx=30)
+        expected = [2, 4], [5, 2]
+        self.assertEqual(result, expected)
+
         result = interpolate_linear_evenly(x, y, dx=2)
         expected = [2, 4], [5, 2]
         self.assertEqual(result, expected)
@@ -268,6 +291,10 @@ class MyTest(unittest.TestCase):
 
         result = interpolate_linear_evenly(x, y, n=3)
         expected = [4, 3, 2], [5, 3.5, 2]
+        self.assertEqual(result, expected)
+
+        result = interpolate_linear_evenly(x, y, dx=30)
+        expected = [4, 2], [5, 2]
         self.assertEqual(result, expected)
 
         result = interpolate_linear_evenly(x, y, dx=2)
