@@ -2,6 +2,7 @@ Release Notes
 -------------
 #### v1.0.3rc
 - Add statistical prediction
+- Add prediction time to tray
 - Refactoring (move code to mathstat)
 - Fix history-future contact point on chart
 

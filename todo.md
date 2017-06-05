@@ -3,7 +3,6 @@ TODO
 
 Features:
 
-- Add prediction time to tray
 - Add auto-theme detection
 
 Bugs:
