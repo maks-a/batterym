@@ -1,14 +1,14 @@
 <!-- MarkdownTOC -->
 
-- [Battery Monitor][battery-monitor]
-- [Quick Links][quick-links]
-- [Dependencies][dependencies]
-	- [Usage][usage]
-	- [Build Tools][build-tools]
-- [Installation][installation]
-- [Uninstallation][uninstallation]
-- [Licensing][licensing]
-- [Reference Links][reference-links]
+- [Battery Monitor](#battery-monitor)
+- [Quick Links](#quick-links)
+- [Dependencies](#dependencies)
+	- [Usage](#usage)
+	- [Build Tools](#build-tools)
+- [Installation](#installation)
+- [Uninstallation](#uninstallation)
+- [Licensing](#licensing)
+- [Reference Links](#reference-links)
 
 <!-- /MarkdownTOC -->
 
