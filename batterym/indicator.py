@@ -90,7 +90,6 @@ class Indicator:
         return True
 
     def get_time_to_end(self):
-        print 'get_time_to_end()'
         if self.battery_data is None:
             self.battery_data = plotter.BatteryData()
         t = self.battery_data.get_remaining_time_to_end()
@@ -98,18 +97,12 @@ class Indicator:
         if seconds < 60:
             return None
         minutes = int(seconds / 60)
-        print 'total minutes: {0}m, {1}'.format(
-            minutes, to_hhmm(minutes))
         pattern = {
             0: 1,
             120: 5,
             240: 10
         }
         round_min = mathstat.round_pattern(minutes, pattern)
-        print 'round seconds: {0}m, {1}'.format(
-            round_min, to_hhmm(round_min))
-        err = int(100*abs(minutes-round_min)/minutes)
-        print 'error: {0}%'.format(err)
         return to_hhmm(round_min)
 
     def get_icon(self):
