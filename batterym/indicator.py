@@ -7,6 +7,7 @@ import resource
 import plotter
 from datetime import datetime, timedelta
 import unittest
+import mathstat
 
 import gi
 gi.require_version('Gtk', '3.0')
@@ -22,6 +23,16 @@ from paths import CAPACITY_HISTORY_CHART
 
 APPINDICATOR_ID = 'batterym'
 CATEGORY = appindicator.IndicatorCategory.SYSTEM_SERVICES
+
+
+def to_hhmm(minutes):
+    h = minutes / 60
+    m = minutes % 60
+    if h == 0:
+        return '{0}m'.format(m)
+    if m == 0:
+        return '{0}h'.format(h)
+    return '{0}h{1}m'.format(h, m)
 
 
 class Indicator:
@@ -40,6 +51,7 @@ class Indicator:
 
         self.log_update_period = timedelta(minutes=5)
         self.log_last_update = datetime.now() - self.log_update_period
+        self.battery_data = None
         self.update_battery()
         self.update_chart()
         sec = 1000
@@ -70,10 +82,35 @@ class Indicator:
         return True
 
     def update_chart(self):
-        plotter.caluclate_chart(CAPACITY_HISTORY_CHART)
+        self.battery_data = plotter.BatteryData()
+        plotter.caluclate_chart(
+            CAPACITY_HISTORY_CHART, self.battery_data)
         if self.window and self.window.props.visible:
             self.image.set_from_file(CAPACITY_HISTORY_CHART)
         return True
+
+    def get_time_to_end(self):
+        print 'get_time_to_end()'
+        if self.battery_data is None:
+            self.battery_data = plotter.BatteryData()
+        t = self.battery_data.get_remaining_time_to_end()
+        seconds = t.total_seconds()
+        if seconds < 60:
+            return None
+        minutes = int(seconds / 60)
+        print 'total minutes: {0}m, {1}'.format(
+            minutes, to_hhmm(minutes))
+        pattern = {
+            0: 1,
+            120: 5,
+            240: 10
+        }
+        round_min = mathstat.round_pattern(minutes, pattern)
+        print 'round seconds: {0}m, {1}'.format(
+            round_min, to_hhmm(round_min))
+        err = int(100*abs(minutes-round_min)/minutes)
+        print 'error: {0}%'.format(err)
+        return to_hhmm(round_min)
 
     def get_icon(self):
         return resource.icon_path(
@@ -84,6 +121,9 @@ class Indicator:
 
     def set_label(self):
         text = '{0}%'.format(self.battery.capacity())
+        time_to_end = self.get_time_to_end()
+        if time_to_end is not None:
+            text += ' {0}'.format(time_to_end)
         self.indicator.set_label(text, '')
 
     def build_menu(self):

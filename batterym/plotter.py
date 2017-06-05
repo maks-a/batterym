@@ -2,12 +2,11 @@
 import log
 import config
 import unittest
+import datetime
 
 from history import History
 from future import Future
 from chart import Chart
-
-#import datetime  # TMP
 
 
 def extract_plot_data(history, future):
@@ -52,21 +51,33 @@ def create_chart(plot_data, image_path):
     plot.render_to_svg(image_path)
 
 
-def caluclate_chart(image_path):
-    smoothing = config.get_entry('smoothing', default_value=True)
-    history = History(log.get_battery(), smoothing=smoothing)
-    future = Future(history)
-    plot_data = extract_plot_data(history, future)
-    # life_time = datetime.timedelta(
-    #     seconds=future.battery_life()*60*60)
-    # remaining_life_time = datetime.timedelta(
-    #     seconds=future.remaining_time()*60*60)
-    # print life_time, remaining_life_time
+class BatteryData:
+
+    def __init__(self):
+        smoothing = config.get_entry('smoothing', default_value=True)
+        self.history = History(log.get_battery(), smoothing=smoothing)
+        self.future = Future(self.history)
+
+    def get_total_time_to_end(self):
+        t = datetime.timedelta(
+            seconds=self.future.battery_life()*60*60)
+        return t
+
+    def get_remaining_time_to_end(self):
+        t = datetime.timedelta(
+            seconds=self.future.remaining_time()*60*60)
+        return t
+
+
+def caluclate_chart(image_path, battery_data):
+    plot_data = extract_plot_data(
+        battery_data.history, battery_data.future)
     create_chart(plot_data, image_path)
 
 
 # def main():
-#     caluclate_chart('capacity_history_12h.svg')
+#     battery_data = BatteryData()
+#     caluclate_chart('capacity_history_12h.svg', battery_data)
 
 
 # if __name__ == '__main__':
