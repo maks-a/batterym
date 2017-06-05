@@ -65,10 +65,10 @@ class Indicator:
     def update_battery(self):
         self.battery.update()
         if self.battery.new_params is not None:
-            self.set_icon()
-            self.set_label()
             self.update_log(is_new_data=True)
             self.update_chart()
+            self.set_icon()
+            self.set_label()
         self.battery.new_params = None
         return True
 
