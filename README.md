@@ -1,11 +1,45 @@
 Battery Monitor
 -------------
 
-Battery Monitor is an application for Ubuntu laptops that provides timeline power usage and prediction graph.
+Battery Monitor is an application for Ubuntu laptops that tracks battery capacity history and provides time-to-end prediction. It has a simple user interface that gives just enough information to answer the following questions:
 
-![Battery Monitor](img/battery_monitor.png)
+- what is current capacity?
+- what is predicted time to full charge/discharge (time-to-end)?
+- what is recent capacity history?
+- what is predicted capacity trend?
 
-![Battery Monitor](img/battery_monitor2.png)
+
+## Screenshots
+
+### Example 1
+
+![Battery Monitor](img/batterym_1.png)
+
+How to read this information:
+
+- 13% current capacity
+- predicted remaining 53 minutes till full discharge
+- it took ~9.5 hours to fully discharge from 100%
+- predicted discharging trend is linear
+
+### Example 2
+
+![Battery Monitor](img/batterym_2.png)
+
+How to read this information:
+
+- 4% current capacity
+- predicted 2 hours 35 minutes till full charge
+- predicted charging trend is exponential
+
+### Example 3
+
+![Battery Monitor](img/batterym_3.png)
+
+How to read this information:
+
+- 100% current capacity
+- it took ~2.5 hours to fully charge (almost as predicted!!!)
 
 ## Quick Links
 
