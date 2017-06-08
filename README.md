@@ -13,7 +13,7 @@ Battery Monitor is an application for Ubuntu laptops that tracks battery capacit
 
 ### Example 1
 
-![Battery Monitor](img/batterym_1.png)
+<div style="text-align:center"><img src ="img/batterym_1.png" /></div>
 
 How to read this information:
 
@@ -24,7 +24,7 @@ How to read this information:
 
 ### Example 2
 
-![Battery Monitor](img/batterym_2.png)
+<div style="text-align:center"><img src ="img/batterym_2.png" /></div>
 
 How to read this information:
 
@@ -34,7 +34,7 @@ How to read this information:
 
 ### Example 3
 
-![Battery Monitor](img/batterym_3.png)
+<div style="text-align:center"><img src ="img/batterym_3.png" /></div>
 
 How to read this information:
 
@@ -45,7 +45,7 @@ How to read this information:
 
 Given capacity history logs it's possible to calculate slopes in every point. Collect all the slopes and put them in buckets according to capacity percentage (blue dots). Then calculate slopes for different percentiles (10%, 50%, 90%) and connect the dots (red lines).
 
-![Battery Monitor](img/slopes_charge.png)
+<div style="text-align:center"><img src ="img/slopes_charge.png" /></div>
 
 When you have slopes for every capacity value it's possible to reconstruct a capacity timeline. 
 
@@ -55,12 +55,12 @@ There are three charging timelines for different percentiles (10%, 50%, 90%). Ho
 - 50% of chargings managed to charge from 0% to 100% in less than ~2.8 hours
 - 90% of chargings managed to charge from 0% to 100% in less than ~4 hours
 
-![Battery Monitor](img/reconstructed_charge.png)
+<div style="text-align:center"><img src ="img/reconstructed_charge.png" /></div>
 
 The same applies for discharging. The only difference is the shape of slope and timeline charts. Unlike to exponential shape for charging it's close to linear for discharging.
 
 Slopes:
-![Battery Monitor](img/slopes_discharge.png)
+<div style="text-align:center"><img src ="img/slopes_discharge.png" /></div>
 
 Timelines:
 
@@ -68,7 +68,7 @@ Timelines:
 - 50% of dischargings managed to discharge from 100% to 0% in less than ~7.5 hours
 - 90% of dischargings managed to discharge from 100% to 0% in less than ~11 hours
 
-![Battery Monitor](img/reconstructed_discharge.png)
+<div style="text-align:center"><img src ="img/reconstructed_discharge.png" /></div>
 
 ## Quick Links
 
