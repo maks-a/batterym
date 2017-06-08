@@ -49,7 +49,7 @@ How to read this information:
 - discharging, current capacity is 51%
 - predicted time to full discharge is 4 hours 50 minutes
 - it is going to be about 9 hours to fully discharge from 100%
-- predicted discharging trend is roughly linear
+- predicted discharging trend is roughly linear (depends on previous statistics)
 
 <a name="example-2"></a>
 ### Example #2
