@@ -41,6 +41,35 @@ How to read this information:
 - 100% current capacity
 - it took ~2.5 hours to fully charge (almost as predicted!!!)
 
+## Prediction Algorithm
+
+Given capacity history logs it's possible to calculate slopes in every point. Collect all the slopes and put them in buckets according to capacity percentage (blue dots). Then calculate slopes for different percentiles (10%, 50%, 90%) and connect the dots (red lines).
+
+![Battery Monitor](img/slopes_charge.png)
+
+When you have slopes for every capacity value it's possible to reconstruct a capacity timeline. 
+
+There are three charging timelines for different percentiles (10%, 50%, 90%). How to read this information:
+
+- 10% of chargings managed to charge from 0% to 100% in less than ~2.3 hours
+- 50% of chargings managed to charge from 0% to 100% in less than ~2.8 hours
+- 90% of chargings managed to charge from 0% to 100% in less than ~4 hours
+
+![Battery Monitor](img/reconstructed_charge.png)
+
+The same applies for discharging. The only difference is the shape of slope and timeline charts. Unlike to exponential shape for charging it's close to linear for discharging.
+
+Slopes:
+![Battery Monitor](img/slopes_discharge.png)
+
+Timelines:
+
+- 10% of dischargings managed to discharge from 100% to 0% in less than ~5.5 hours
+- 50% of dischargings managed to discharge from 100% to 0% in less than ~7.5 hours
+- 90% of dischargings managed to discharge from 100% to 0% in less than ~11 hours
+
+![Battery Monitor](img/reconstructed_discharge.png)
+
 ## Quick Links
 
 - [TODO](todo.md)
