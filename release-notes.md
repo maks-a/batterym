@@ -1,5 +1,7 @@
 Release Notes
 -------------
+#### v1.0.4rc
+
 #### v1.0.3 (2017-06-08)
 - Add statistical prediction
 - Add time-to-end prediction to tray
