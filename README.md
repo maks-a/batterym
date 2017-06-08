@@ -1,11 +1,74 @@
 Battery Monitor
 -------------
 
-Battery Monitor is an application for Ubuntu laptops that provides timeline power usage and prediction graph.
+Battery Monitor is an application for Ubuntu laptops that tracks battery capacity history and provides time-to-end prediction. It has a simple user interface that gives just enough information to answer the following questions:
 
-![Battery Monitor](img/battery_monitor.png)
+- what is current capacity?
+- what is predicted time to full charge/discharge (time-to-end)?
+- what is recent capacity history?
+- what is predicted capacity trend?
 
-![Battery Monitor](img/battery_monitor2.png)
+
+## Screenshots
+
+### Example 1
+
+<div style="text-align:center"><img src ="img/batterym_1.png" /></div>
+
+How to read this information:
+
+- 13% current capacity
+- predicted remaining 53 minutes till full discharge
+- it took ~9.5 hours to fully discharge from 100%
+- predicted discharging trend is linear
+
+### Example 2
+
+<div style="text-align:center"><img src ="img/batterym_2.png" /></div>
+
+How to read this information:
+
+- 4% current capacity
+- predicted 2 hours 35 minutes till full charge
+- predicted charging trend is exponential
+
+### Example 3
+
+<div style="text-align:center"><img src ="img/batterym_3.png" /></div>
+
+How to read this information:
+
+- 100% current capacity
+- it took ~2.5 hours to fully charge (almost as predicted!!!)
+
+## Prediction Algorithm
+
+Given capacity history logs it's possible to calculate slopes in every point. Collect all the slopes and put them in buckets according to capacity percentage (blue dots). Then calculate slopes for different percentiles (10%, 50%, 90%) and connect the dots (red lines).
+
+<div style="text-align:center"><img src ="img/slopes_charge.png" /></div>
+
+When you have slopes for every capacity value it's possible to reconstruct a capacity timeline. 
+
+There are three charging timelines for different percentiles (10%, 50%, 90%). How to read this information:
+
+- 10% of chargings managed to charge from 0% to 100% in less than ~2.3 hours
+- 50% of chargings managed to charge from 0% to 100% in less than ~2.8 hours
+- 90% of chargings managed to charge from 0% to 100% in less than ~4 hours
+
+<div style="text-align:center"><img src ="img/reconstructed_charge.png" /></div>
+
+The same applies for discharging. The only difference is the shape of slope and timeline charts. Unlike to exponential shape for charging it's close to linear for discharging.
+
+Slopes:
+<div style="text-align:center"><img src ="img/slopes_discharge.png" /></div>
+
+Timelines:
+
+- 10% of dischargings managed to discharge from 100% to 0% in less than ~5.5 hours
+- 50% of dischargings managed to discharge from 100% to 0% in less than ~7.5 hours
+- 90% of dischargings managed to discharge from 100% to 0% in less than ~11 hours
+
+<div style="text-align:center"><img src ="img/reconstructed_discharge.png" /></div>
 
 ## Quick Links
 
