@@ -7,6 +7,7 @@
 	- [Example #1](#example-1)
 	- [Example #2](#example-2)
 	- [Example #3](#example-3)
+	- [Example #4](#example-4)
 - [Prediction Algorithm](#prediction-algorithm)
 - [Quick Links](#quick-links)
 - [Dependencies](#dependencies)
@@ -29,6 +30,11 @@ Battery Monitor is an application for Ubuntu laptops that tracks battery capacit
 - what is recent capacity history?
 - what is predicted capacity trend?
 
+Predicted time-to-end is a rough estimation. In order not to give a false feeling of high precision the result is rounded (~4.2% error):
+
+- up to 1 minute for the values within range [0-2] hours
+- up to 5 minutes for the valueswithin range [2-4] hours
+- up to 10 minutes for everything that is higher than 4 hours
 
 <a name="screenshots"></a>
 ## Screenshots
@@ -36,35 +42,47 @@ Battery Monitor is an application for Ubuntu laptops that tracks battery capacit
 <a name="example-1"></a>
 ### Example #1
 
+<div style="text-align:center"><img src ="img/batterym_4.png" /></div>
+
+How to read this information:
+
+- discharging, current capacity is 51%
+- predicted time to full discharge is 4 hours 50 minutes
+- it is going to be about 9 hours to fully discharge from 100%
+- predicted discharging trend is roughly linear
+
+<a name="example-2"></a>
+### Example #2
+
 <div style="text-align:center"><img src ="img/batterym_1.png" /></div>
 
 How to read this information:
 
-- 13% current capacity
-- predicted remaining 53 minutes till full discharge
-- it took ~9.5 hours to fully discharge from 100%
+- discharging, current capacity is 13%
+- predicted time to full discharge is 53 minutes
+- it is going to be about 9.5 hours to fully discharge from 100%
 - predicted discharging trend is linear
 
-<a name="example-2"></a>
-### Example #2
+<a name="example-3"></a>
+### Example #3
 
 <div style="text-align:center"><img src ="img/batterym_2.png" /></div>
 
 How to read this information:
 
-- 4% current capacity
-- predicted 2 hours 35 minutes till full charge
+- charging, current capacity is 4%, almost discharged
+- predicted time to full charge is 2 hours 35 minutes
 - predicted charging trend is exponential
 
-<a name="example-3"></a>
-### Example #3
+<a name="example-4"></a>
+### Example #4
 
 <div style="text-align:center"><img src ="img/batterym_3.png" /></div>
 
 How to read this information:
 
-- 100% current capacity
-- it took ~2.5 hours to fully charge (almost as predicted!!!)
+- charging, current capacity is 100%, fully charged
+- it took about 2.5 hours to fully charge (almost as predicted!!!)
 
 <a name="prediction-algorithm"></a>
 ## Prediction Algorithm
