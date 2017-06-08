@@ -1,9 +1,8 @@
-Battery Monitor
--------------
+# Battery Monitor
 
 <!-- MarkdownTOC -->
 
-- [Intro](#intro)
+- [Brief Description](#brief-description)
 - [Screenshots](#screenshots)
 	- [Example #1](#example-1)
 	- [Example #2](#example-2)
@@ -16,17 +15,17 @@ Battery Monitor
 - [Installation](#installation)
 - [Uninstallation](#uninstallation)
 - [Licensing](#licensing)
-- [Links](#links)
+- [Reference Links](#reference-links)
 
 <!-- /MarkdownTOC -->
 
-<a name="intro"></a>
-## Intro
+<a name="brief-description"></a>
+## Brief Description
 
-Battery Monitor is an application for Ubuntu laptops that tracks battery capacity history and provides time-to-end prediction. It has a simple user interface that gives just enough information to answer the following questions:
+Battery Monitor is an application for Ubuntu laptops that tracks battery capacity and provides time-to-end prediction. It has a simple user interface that gives just enough information to answer the following questions:
 
 - what is current capacity?
-- what is predicted time to full charge/discharge (time-to-end)?
+- what is predicted time-to-end (time to full charge/discharge)?
 - what is recent capacity history?
 - what is predicted capacity trend?
 
@@ -100,8 +99,8 @@ Timelines:
 <a name="quick-links"></a>
 ## Quick Links
 
-- [TODO](todo.md)
 - [Release Notes](release-notes.md)
+- [TODO](todo.md)
 
 <a name="dependencies"></a>
 ## Dependencies
@@ -138,11 +137,12 @@ Make sure you have `install_log.txt` next to `uninstall.sh`.
 
 Apache License, Version 2.0. See LICENSE for the full license text.
 
-<a name="links"></a>
-## Links
+<a name="reference-links"></a>
+## Reference Links
 
-- http://candidtim.github.io/appindicator/2014/09/13/ubuntu-appindicator-step-by-step.html
-- http://askubuntu.com/questions/751608/how-can-i-write-a-dynamically-updated-panel-app-indicator
-- http://askubuntu.com/questions/750815/fuzzy-clock-for-ubuntu/752675#752675
-- http://askubuntu.com/questions/150970/how-can-i-change-the-application-indicator-label-after-delay
-- http://stackoverflow.com/questions/11132929/showing-a-gtk-calendar-in-a-menu
+- Article: [Why Apple is removing ‘time remaining’ battery life estimates following MacBook Pro complaints](https://9to5mac.com/2016/12/13/why-apple-is-removing-time-remaining-battery-life-estimates-macbook-pro/)
+- Blog: [Create an Ubuntu Application Indicator in Python: step-by-step guide](http://candidtim.github.io/appindicator/2014/09/13/ubuntu-appindicator-step-by-step.html)
+- Ask Ubuntu: [How can I write a dynamically updated panel app / indicator?](http://askubuntu.com/questions/751608/how-can-i-write-a-dynamically-updated-panel-app-indicator)
+- Ask Ubuntu: [Textual / speaking clock for Mate and other Ubuntu variants](http://askubuntu.com/questions/750815/fuzzy-clock-for-ubuntu/752675#752675)
+- Ask Ubuntu: [How can I change the application indicator label after delay?](http://askubuntu.com/questions/150970/how-can-i-change-the-application-indicator-label-after-delay)
+- Stackoverflow: [Showing a gtk.Calendar in a menu?](http://stackoverflow.com/questions/11132929/showing-a-gtk-calendar-in-a-menu)
