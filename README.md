@@ -1,48 +1,62 @@
-<!-- MarkdownTOC -->
+Battery Monitor
+-------------
 
-- [Battery Monitor](#battery-monitor)
-- [Quick Links](#quick-links)
-- [Dependencies](#dependencies)
-	- [Usage](#usage)
-	- [Build Tools](#build-tools)
-- [Installation](#installation)
-- [Uninstallation](#uninstallation)
-- [Licensing](#licensing)
-- [Reference Links](#reference-links)
+Battery Monitor is an application for Ubuntu laptops that tracks battery capacity history and provides time-to-end prediction. It has a simple user interface that gives just enough information to answer the following questions:
 
-<!-- /MarkdownTOC -->
+- what is current capacity?
+- what is predicted time to full charge/discharge (time-to-end)?
+- what is recent capacity history?
+- what is predicted capacity trend?
 
 
-<a name="battery-monitor"></a>
-## Battery Monitor
+## Screenshots
 
-Battery Monitor is an application for Ubuntu laptops that provides timeline power usage and prediction graph.
+### Example 1
 
-![Battery Monitor](img/battery_monitor.png)
+![Battery Monitor](img/batterym_1.png)
 
-![Battery Monitor](img/battery_monitor2.png)
+How to read this information:
 
-<a name="quick-links"></a>
+- 13% current capacity
+- predicted remaining 53 minutes till full discharge
+- it took ~9.5 hours to fully discharge from 100%
+- predicted discharging trend is linear
+
+### Example 2
+
+![Battery Monitor](img/batterym_2.png)
+
+How to read this information:
+
+- 4% current capacity
+- predicted 2 hours 35 minutes till full charge
+- predicted charging trend is exponential
+
+### Example 3
+
+![Battery Monitor](img/batterym_3.png)
+
+How to read this information:
+
+- 100% current capacity
+- it took ~2.5 hours to fully charge (almost as predicted!!!)
+
 ## Quick Links
 
 - [TODO](todo.md)
 - [Release Notes](release-notes.md)
 
-<a name="dependencies"></a>
 ## Dependencies
 
-<a name="usage"></a>
 ### Usage
 
 - Python 2.7
 - `sudo apt-get install --reinstall python-gi`
 
-<a name="build-tools"></a>
-### Build Tools
+### Build tools
 
 - `sudo pip install coverage`
 
-<a name="installation"></a>
 ## Installation
 
 Non-root, non-sudo user installation is supported. Application will be installed in `/home/{$USER}/.local/batterym/` folder. After installation the file `install_log.txt` should appear in the source folder.
@@ -51,20 +65,17 @@ Non-root, non-sudo user installation is supported. Application will be installed
 - save `install_log.txt` for the later uninstallation
 - add `batterym` to `Startup Applications`
 
-<a name="uninstallation"></a>
 ## Uninstallation
 
 Make sure you have `install_log.txt` next to `uninstall.sh`.
 
 - run `./uninstall.sh`
 
-<a name="licensing"></a>
 ## Licensing
 
 Apache License, Version 2.0. See LICENSE for the full license text.
 
-<a name="reference-links"></a>
-## Reference Links
+## Links
 
 - http://candidtim.github.io/appindicator/2014/09/13/ubuntu-appindicator-step-by-step.html
 - http://askubuntu.com/questions/751608/how-can-i-write-a-dynamically-updated-panel-app-indicator
