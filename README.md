@@ -42,7 +42,7 @@ Predicted time-to-end is a rough estimation. In order not to give a false feelin
 <a name="example-1"></a>
 ### Example #1
 
-<div style="text-align:center"><img src ="img/batterym_4.png" /></div>
+<div style="text-align:center"><img src ="img/batterym_1.png" /></div>
 
 How to read this information:
 
@@ -54,7 +54,7 @@ How to read this information:
 <a name="example-2"></a>
 ### Example #2
 
-<div style="text-align:center"><img src ="img/batterym_1.png" /></div>
+<div style="text-align:center"><img src ="img/batterym_2.png" /></div>
 
 How to read this information:
 
@@ -66,7 +66,7 @@ How to read this information:
 <a name="example-3"></a>
 ### Example #3
 
-<div style="text-align:center"><img src ="img/batterym_2.png" /></div>
+<div style="text-align:center"><img src ="img/batterym_3.png" /></div>
 
 How to read this information:
 
@@ -77,7 +77,7 @@ How to read this information:
 <a name="example-4"></a>
 ### Example #4
 
-<div style="text-align:center"><img src ="img/batterym_3.png" /></div>
+<div style="text-align:center"><img src ="img/batterym_4.png" /></div>
 
 How to read this information:
 
