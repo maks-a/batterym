@@ -98,9 +98,12 @@ class Indicator:
             return None
         minutes = int(seconds / 60)
         pattern = {
-            0: 1,
-            120: 5,
-            240: 10
+            0: 1,       # >0m
+            120: 5,     # >2h
+            240: 10,    # >4h
+            480: 20,    # >8h
+            720: 30,    # >12h
+            1440: 60    # >24h
         }
         round_min = mathstat.round_pattern(minutes, pattern)
         return to_hhmm(round_min)

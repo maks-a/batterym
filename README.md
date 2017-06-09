@@ -32,9 +32,12 @@ Battery Monitor is an application for Ubuntu laptops that tracks battery capacit
 
 Predicted time-to-end is a rough estimation. In order not to give a false feeling of high precision the result is rounded (max. error 4.2%):
 
-- up to 1 minute for the values within 0...2 hours
-- up to 5 minutes for the values within 2...4 hours
-- up to 10 minutes for everything that is higher than 4 hours
+- up to 1 minute for values within 0...2 hours
+- up to 5 minutes for values within 2...4 hours
+- up to 10 minutes for values within 4...8 hours
+- up to 20 minutes for values within 8...12 hours
+- up to 30 minutes for values within 12...24 hours
+- up to 1 hour for values higher than 24 hours
 
 <a name="screenshots"></a>
 ## Screenshots
