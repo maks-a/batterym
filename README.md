@@ -100,7 +100,7 @@ There are three charging timelines for different percentiles (10%, 50%, 90%). Ho
 
 - 10% of cases charged from 0% to 100% in less than ~2.3 hours
 - 50% of cases charged from 0% to 100% in less than ~2.8 hours
-- 90% of cases charged from 0% to 100% in less than ~4 hours
+- 90% of cases charged from 0% to 100% in less than ~5.7 hours
 
 <div style="text-align:center"><img src ="img/reconstructed_charge.png" /></div>
 
@@ -111,7 +111,7 @@ Slopes:
 
 Timelines:
 
-- 10% of cases discharged from 100% to 0% in less than ~5.5 hours
+- 10% of cases discharged from 100% to 0% in less than ~4.5 hours
 - 50% of cases discharged from 100% to 0% in less than ~7.5 hours
 - 90% of cases discharged from 100% to 0% in less than ~11 hours
 
