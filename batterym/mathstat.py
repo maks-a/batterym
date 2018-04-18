@@ -28,14 +28,14 @@ def median(lst):
 
 
 def is_ascending_order(arr):
-    for i in xrange(1, len(arr)):
+    for i in range(1, len(arr)):
         if arr[i-1] > arr[i]:
             return False
     return True
 
 
 def is_descending_order(arr):
-    for i in xrange(1, len(arr)):
+    for i in range(1, len(arr)):
         if arr[i-1] < arr[i]:
             return False
     return True
@@ -58,7 +58,7 @@ def interpolate_linear(x, y, new_x):
         y = list(reversed(y))
     new_y = [None] * new_n
     j = 0
-    for i in xrange(1, n):
+    for i in range(1, n):
         if j >= new_n:
             break
         dx = x[i] - x[i-1]
@@ -108,7 +108,7 @@ def linspace(lo, hi, step):
     sz = int((hi - lo) / step)
     if sz == 0:
         return []
-    return [interpolate_point(lo, hi, 1.0*i/sz) for i in xrange(0, sz+1)]
+    return [interpolate_point(lo, hi, 1.0*i/sz) for i in range(0, sz+1)]
 
 
 def round_pattern(val, pattern):

@@ -129,8 +129,8 @@ Timelines:
 <a name="usage"></a>
 ### Usage
 
-- Python 2.7
-- `sudo apt-get install --reinstall python-gi`
+- On Debian/Ubuntu: `sudo apt-get install --reinstall python-gi`
+- On Arch: `sudo pacman -S python-gobject libappindicator-gtk3`
 
 <a name="build-tools"></a>
 ### Build tools

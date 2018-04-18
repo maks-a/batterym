@@ -1,7 +1,6 @@
 #!/usr/bin/python
 import signal
-from indicator import Indicator
-import unittest
+from batterym.indicator import Indicator
 
 
 def run():

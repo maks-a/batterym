@@ -15,8 +15,8 @@ def find_resources(folder):
 
 
 version = config.get_entry('version', 'config/config_default.json')
-print 'batterym v{0}'.format(version)
-print 'installation path:', paths.RESOURCES_DIR
+print('batterym v{0}'.format(version))
+print('installation path:', paths.RESOURCES_DIR)
 
 setup(name='batterym',
       version=version,
@@ -39,4 +39,4 @@ fileio.create_missing_dirs(paths.LOGS_DIR)
 fileio.append('', paths.LOG_BATTERY_FILE)
 fileio.append('', paths.LOG_BATTERY_ALL_FILE)
 
-print 'batterym is successfully installed.'
+print('batterym is successfully installed.')

@@ -1,9 +1,9 @@
 #!/usr/bin/python
 import os
-import ui
 import unittest
 
-from paths import IMAGE_FOLDER_PATTERN
+from batterym import ui
+from batterym.paths import IMAGE_FOLDER_PATTERN
 
 
 def image_path(name, theme):

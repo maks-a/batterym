@@ -1,5 +1,5 @@
 #!/usr/bin/python
-import config
+from batterym import config
 import unittest
 
 

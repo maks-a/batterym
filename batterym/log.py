@@ -1,15 +1,14 @@
 #!/usr/bin/python
 import os
 import re
-import fileio
-import config
 import datetime
-import resource
 import unittest
 
-from paths import LOG_BATTERY_FILE
-from paths import LOG_BATTERY_ALL_FILE
-
+from batterym import config
+from batterym import fileio
+from batterym import resource
+from batterym.paths import LOG_BATTERY_ALL_FILE
+from batterym.paths import LOG_BATTERY_FILE
 
 def battery(capacity, status):
     t = datetime.datetime.now().isoformat()
