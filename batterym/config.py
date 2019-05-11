@@ -1,12 +1,12 @@
 #!/usr/bin/python
 import os
 import json
-import fileio
-import resource
 import unittest
 
-from paths import CONFIG_DEFAULT_FILE
-from paths import CONFIG_USER_FILE
+from batterym import resource
+from batterym import fileio
+from batterym.paths import CONFIG_DEFAULT_FILE
+from batterym.paths import CONFIG_USER_FILE
 
 
 def _write_json(data, fname):

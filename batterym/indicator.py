@@ -1,28 +1,26 @@
 #!/usr/bin/python
 import os  # temp
-import ui
-import log
-import battery
-import resource
-import plotter
+
 from datetime import datetime, timedelta
 import unittest
-import mathstat
 
 import gi
 gi.require_version('Gtk', '3.0')
-gi.require_version('AppIndicator3', '0.1')
+#gi.require_version('AppIndicator3', '0.1')
 
 from gi.repository import Gtk as gtk
 from gi.repository import GObject as gobject
-from gi.repository import AppIndicator3 as appindicator
 
-from paths import BATTERY_MONITOR_ICON
-from paths import CAPACITY_HISTORY_CHART
-
+from batterym import battery
+from batterym import log
+from batterym import mathstat
+from batterym import plotter
+from batterym import resource
+from batterym import ui
+from batterym.paths import BATTERY_MONITOR_ICON
+from batterym.paths import CAPACITY_HISTORY_CHART
 
 APPINDICATOR_ID = 'batterym'
-CATEGORY = appindicator.IndicatorCategory.SYSTEM_SERVICES
 
 
 def to_hhmm(minutes):
@@ -43,10 +41,20 @@ class Indicator:
         self.battery.register_callback(self.battery_update_callback)
         self.battery.update()
 
-        self.indicator = appindicator.Indicator.new(
-            APPINDICATOR_ID, self.get_icon(), CATEGORY)
-        self.indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
-        self.indicator.set_menu(self.build_menu())
+
+        menu = self.build_menu()
+        try:
+            from gi.repository import AppIndicator3 as appindicator
+            CATEGORY = appindicator.IndicatorCategory.SYSTEM_SERVICES
+            self.indicator = appindicator.Indicator.new(
+                APPINDICATOR_ID, self.get_icon(), CATEGORY)
+            self.indicator.set_status(appindicator.IndicatorStatus.ACTIVE)
+            self.indicator.set_menu(menu)
+        except ImportError:
+            self.ind = Gtk.StatusIcon()
+            self.ind.set_from_file(icon)
+            self.ind.connect('popup-menu', menu)
+
         self.window = None
 
         self.log_update_period = timedelta(minutes=5)

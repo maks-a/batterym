@@ -1,5 +1,5 @@
 #!/usr/bin/python
-import mathstat
+from batterym import mathstat
 import unittest
 
 
@@ -24,15 +24,15 @@ def extrapolate(data, lo=0, hi=100):
     if len(keys) == 0:
         return data
     mx = max(keys)
-    for k in xrange(mx+1, hi+1, 1):
+    for k in range(mx+1, hi+1, 1):
         data[k] = data[mx]
     mn = min(keys)
-    for k in xrange(mn-1, lo-1, -1):
+    for k in range(mn-1, lo-1, -1):
         data[k] = data[mn]
     keys = data.keys()
     values = data.values()
-    for i in xrange(1, len(keys)):
-        for k in xrange(keys[i-1]+1, keys[i]):
+    for i in range(1, len(keys)):
+        for k in range(keys[i-1]+1, keys[i]):
             data[k] = (values[i-1] + values[i]) / 2
     return data
 
@@ -45,7 +45,7 @@ def reconstruct_timeline(slopes, ys):
         return []
     xs = [0]
     ys2 = [0]
-    for i in xrange(1, len(ys)):
+    for i in range(1, len(ys)):
         dy = float(ys[i] - ys[i-1])
         slope = slopes.get(ys[i-1])
         if slope is None:

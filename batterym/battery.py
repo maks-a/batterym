@@ -1,6 +1,6 @@
 #!/usr/bin/python
-import osdata
-import observable
+from batterym import osdata
+from batterym import observable
 
 
 class Battery(observable.Observable):

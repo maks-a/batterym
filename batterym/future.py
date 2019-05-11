@@ -1,9 +1,9 @@
 #!/usr/bin/python
 from __future__ import division
-from history import separate_by_sequence_id
-import model
-import config
-import mathstat
+from batterym.history import separate_by_sequence_id
+from batterym import model
+from batterym import config
+from batterym import mathstat
 import unittest
 
 
@@ -77,7 +77,7 @@ class Future:
 
     def calculate_slope(self, data):
         slopes = []
-        for i in xrange(1, len(data)):
+        for i in range(1, len(data)):
             dy = data[i]['capacity'] - data[0]['capacity']
             dx = data[i]['virtual_time_hour'] - data[0]['virtual_time_hour']
             if not mathstat.is_zero(dx):

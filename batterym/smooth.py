@@ -4,7 +4,7 @@
 # import scipy.ndimage
 # from scipy.optimize import curve_fit
 # from scipy.interpolate import interp1d
-import mathstat
+from batterym import mathstat
 import unittest
 
 
@@ -12,7 +12,7 @@ def tangent_filter(a, w):
     n = len(a)
     k = int((w-1) / 2)
     result = [0 for x in a]
-    for i in xrange(0, n):
+    for i in range(0, n):
         l = max(0, i-k)
         r = min(n-1, i+k)
         d = min(i-l, r-i)
@@ -22,7 +22,7 @@ def tangent_filter(a, w):
 
 def subtract(a, b):
     n = len(a)
-    return [a[i]-b[i] for i in xrange(0, n)]
+    return [a[i]-b[i] for i in range(0, n)]
 
 
 def scale(a, k):
@@ -62,7 +62,7 @@ def steps_filter(x, y):
 
 #     k = len(l)
 #     N = min(k, N)
-#     for i in xrange(0, N):
+#     for i in range(0, N):
 #         sum += l[i]
 #         result[i] = sum / (i+1)
 

@@ -1,8 +1,9 @@
 #!/usr/bin/python
-import log
-import smooth
-import mathstat
 import unittest
+
+from batterym import log
+from batterym import smooth
+from batterym import mathstat
 
 
 def add_relative_time(data):
@@ -18,7 +19,7 @@ def add_virtual_time(samples, threshold_sec):
     virtual_time = 0
     n = len(samples)
     sequence_id = 0
-    for i in xrange(0, n):
+    for i in range(0, n):
         curr = samples[i]
         if i > 0:
             prev = samples[i - 1]
@@ -38,7 +39,7 @@ def add_virtual_time(samples, threshold_sec):
 
 def add_slope(data):
     n = len(data)
-    for i in xrange(1, n):
+    for i in range(1, n):
         dy = data[i]['capacity'] - data[i-1]['capacity']
         dx = data[i]['virtual_time_hour'] - data[i-1]['virtual_time_hour']
         tol = 1.0/(60.0 * 60.0)  # one second
@@ -52,13 +53,13 @@ def add_slope(data):
 def smooth_virtual_time(samples):
     chunks = separate_by_sequence_id(samples)
     k = len(chunks)
-    for j in xrange(0, k):
+    for j in range(0, k):
         chunk = chunks[j]
         xs = [x['virtual_time_hour'] for x in chunk]
         ys = [x['capacity'] for x in chunk]
         n = len(ys)
         xs, ys = smooth.steps_filter(xs, ys)
-        for i in xrange(0, n):
+        for i in range(0, n):
             e = chunk[i]
             e['capacity_raw'] = e['capacity']
             e['capacity'] = ys[i]

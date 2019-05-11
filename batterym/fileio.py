@@ -8,14 +8,14 @@ def create_missing_dirs(path):
     if len(basedir) == 0:
         return
     if not os.path.exists(basedir):
-        print 'creating {0}'.format(basedir)
+        print('creating {0}'.format(basedir))
         os.makedirs(basedir)
         if not os.path.exists(basedir):
             raise FileNotFoundError
 
 
 def delete_dir_and_content(path):
-    print 'deleting {0}'.format(path)
+    print('deleting {0}'.format(path))
     os.removedirs(path)
     if os.path.exists(path):
         raise FileExistsError

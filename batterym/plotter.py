@@ -1,12 +1,12 @@
 #!/usr/bin/python
-import log
-import config
 import unittest
 import datetime
 
-from history import History
-from future import Future
-from chart import Chart
+from batterym import log
+from batterym import config
+from batterym.history import History
+from batterym.future import Future
+from batterym.chart import Chart
 
 
 def extract_plot_data(history, future):

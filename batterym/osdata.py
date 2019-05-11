@@ -1,7 +1,8 @@
 #!/usr/bin/python
 import re
-import fileio
 import unittest
+
+from batterym import fileio
 
 
 _DEBUG = False

@@ -1,8 +1,9 @@
 #!/usr/bin/python
 from __future__ import division
 import copy
-import fileio
 import unittest
+
+from batterym import fileio
 
 
 def round_point(point):
@@ -205,7 +206,7 @@ class Chart:
 
         yn = len(self.ylabels)
         step = h / (yn-1)
-        for i in xrange(0, yn):
+        for i in range(0, yn):
             data = copy.deepcopy(data)
             y = i * step
             points = [[0, y], [w, y]]
@@ -226,7 +227,7 @@ class Chart:
 
         xn = len(self.xlabels)
         step = w / (xn-1)
-        for i in xrange(0, xn):
+        for i in range(0, xn):
             data = copy.deepcopy(data)
             x = i * step
             points = [[x, 0], [x, h]]
@@ -253,7 +254,7 @@ class Chart:
         xs = xs[:n]
         ys = ys[:n]
 
-        points = [[xs[i], ys[i]] for i in xrange(0, n)]
+        points = [[xs[i], ys[i]] for i in range(0, n)]
 
         drops = []
         if drop is not None and len(points) >= 1:
@@ -394,7 +395,7 @@ class Chart:
 #                   height=400)
 
 #     #import random
-#     #ys = [random.randrange(0, 100) for i in xrange(200)]
+#     #ys = [random.randrange(0, 100) for i in range(200)]
 #     # c90c28 dark red
 #     # 2e7eb3 blue
 #     # fa730c orange
